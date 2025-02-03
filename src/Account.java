@@ -15,7 +15,7 @@ public class Account implements Comparable<Account> {
 
     @Override
     public int compareTo(Account o) {
-        return 0;
+        return 0; // Fix later
     }
 
     @Override

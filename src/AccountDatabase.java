@@ -91,4 +91,10 @@ public class AccountDatabase {
     public void printByType() {
         //implement later
     }
+
+    public void print() {
+        for(int i = 0; i < size; i++) {
+            System.out.println(accounts[i].toString());
+        }
+    }
 }

@@ -1,5 +1,10 @@
 public enum Branch {
-    ;
+    EDISON("08817", "100", "Middlesex"),
+    BRIDGEWATER("08807", "200", "Somerset"),
+    PRINCETON("08542", "300", "Mercer"),
+    PISCATAWAY("08854", "400", "Middlesex"),
+    WARREN("07057", "500", "Somerset");
+
     private final String zip;
     private final String branchCode;
     private final String county;

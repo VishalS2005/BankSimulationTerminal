@@ -17,7 +17,7 @@ public class Date implements Comparable<Date> {
     public static final int DECEMBER  = 12;
     public static final int QUADRENNIAL = 4;
     public static final int CENTENNIAL = 100;
-    public static final int QUATERCENTENNIAL = 400;
+    public static final int QUARTERCENTENNIAL = 400;
     public static final int DAYS_IN_LONG_MONTH = 31;
     public static final int DAYS_IN_SHORT_MONTH = 30;
     public static final int DAYS_IN_FEBRUARY_NORMAL = 28;
@@ -57,7 +57,7 @@ public class Date implements Comparable<Date> {
         if(year % QUADRENNIAL != 0) {
             return false;
         }
-        return year % CENTENNIAL != 0 || year % QUATERCENTENNIAL == 0;
+        return year % CENTENNIAL != 0 || year % QUARTERCENTENNIAL == 0;
     }
 
 

@@ -3,7 +3,25 @@ public class Profile implements Comparable<Profile>{
     private String lname;
     private Date dob;
 
-    public int compareTo(Profile o) {
-        return 0;
+    @Override
+    public int compareTo(Profile other) {
+
+    }
+
+    @Override
+    public String toString() {
+        return fname + " " + lname;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Profile) {
+            return fname.equals(((Profile) obj).fname) && lname.equals(((Profile) obj).lname);
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+
     }
 }

@@ -14,7 +14,7 @@ public class Account implements Comparable<Account> {
     } //to update the balance
 
     @Override
-    public int compareTo(Account o) {
+    public int compareTo(Account other) {
         return 0; // Fix later
     }
 

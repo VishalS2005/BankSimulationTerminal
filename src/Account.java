@@ -26,8 +26,8 @@ public class Account implements Comparable<Account> {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Account) {
-            Account a = (Account) obj;
-            return a.number == this.number;
+            Account other = (Account) obj;
+            return other.number == this.number;
         }
         return false;
     }

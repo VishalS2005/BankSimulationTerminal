@@ -14,4 +14,9 @@ public enum Branch {
         this.branchCode = branchCode;
         this.county = county;
     }
+
+    @Override
+    public String toString() {
+        return branchCode;
+    }
 }

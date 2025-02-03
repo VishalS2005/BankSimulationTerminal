@@ -1,4 +1,3 @@
-
 public class Account implements Comparable<Account> {
     private AccountNumber number;
     private Profile holder;
@@ -18,7 +17,11 @@ public class Account implements Comparable<Account> {
 
     @Override
     public int compareTo(Account other) {
-        return 0; // Fix later
+        if (this.balance > other.balance)
+            return 1;
+        if (this.balance < other.balance)
+            return -1;
+        return 0;
     }
 
     @Override
@@ -33,9 +36,5 @@ public class Account implements Comparable<Account> {
             return other.number == this.number;
         }
         return false;
-    }
-
-    public static void main(String[] args) {
-
     }
 }

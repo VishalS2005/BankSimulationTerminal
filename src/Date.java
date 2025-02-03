@@ -25,11 +25,11 @@ public class Date implements Comparable<Date> {
 
 
     public boolean isValid() {
-        if(month < JANUARY || month > DECEMBER) {
+        if(this.month < JANUARY || this.month > DECEMBER) {
             return false;
         }
-        int maxDays;
-        if(month == FEBRUARY) {
+        int maxDays; //most amount of days in each month
+        if(this.month == FEBRUARY) {
             if(isLeapYear()) {
                 maxDays = DAYS_IN_FEBRUARY_LEAP;
             }
@@ -37,7 +37,13 @@ public class Date implements Comparable<Date> {
                 maxDays = DAYS_IN_FEBRUARY_NORMAL;
             }
         }
-        else if(month == JANUARY || month == MARCH || month == MAY || month == JULY || month == AUGUST || month == OCTOBER || month == DECEMBER) {
+        else if(this.month == JANUARY
+                || this.month == MARCH
+                || this.month == MAY
+                || this.month == JULY
+                || this.month == AUGUST
+                || this.month == OCTOBER
+                || this.month == DECEMBER) {
             maxDays = DAYS_IN_LONG_MONTH;
         }
         else {

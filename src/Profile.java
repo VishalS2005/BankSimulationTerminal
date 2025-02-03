@@ -5,13 +5,15 @@ public class Profile implements Comparable<Profile>{
 
     @Override
     public int compareTo(Profile other) {
-
+        String name = this.fname + this.lname;
+        String otherName = other.fname + other.lname;
+        return name.compareTo(otherName);
     }
 
     @Override
     public String toString() {
-        return fname + " " + lname;
-    }
+        return fname + " " + lname + dob;
+    } //this.firstname this.lastname and this.dob.toString
 
     @Override
     public boolean equals(Object obj) {
@@ -21,7 +23,4 @@ public class Profile implements Comparable<Profile>{
         return false;
     }
 
-    public static void main(String[] args) {
-
-    }
 }

@@ -56,14 +56,14 @@ public class Date implements Comparable<Date> {
 
 
     @Override
-    public int compareTo(Date o) {
-        if(this.year != o.year) {
-            return this.year - o.year;
+    public int compareTo(Date other) {
+        if(this.year != other.year) {
+            return this.year - other.year;
         }
-        else if(this.month != o.month) {
-            return this.month - o.month;
+        else if(this.month != other.month) {
+            return this.month - other.month;
         }
-        return this.day - o.day;
+        return this.day - other.day;
     }
 
     @Override

@@ -12,6 +12,9 @@ public class Account implements Comparable<Account> {
     public void deposit(double amount) {
         this.balance += amount;
     } //to update the balance
+    public AccountNumber getAccountNumber() {
+        return this.number;
+    }
 
     @Override
     public int compareTo(Account other) {

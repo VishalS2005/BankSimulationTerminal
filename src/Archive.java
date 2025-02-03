@@ -1,6 +1,9 @@
 public class Archive {
     private AccountNode first; //the head node of the linked list
 
+    public Archive() {
+        first = null;
+    }
 
     public void add(Account account) {
         AccountNode newNode = new AccountNode(account);

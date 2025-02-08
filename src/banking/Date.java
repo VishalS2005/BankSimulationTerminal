@@ -1,5 +1,7 @@
+package banking;
+
 /**
- * Date enum class has the information to provide the day, month, and year of a transaction
+ * banking.Date enum class has the information to provide the day, month, and year of a transaction
  * For the months of January, March, May, July, August, October, and December, each has 31 days;
  * April, June, September, and November each has 30 days;
  * February has 28 days in a non-leap year, and 29  days in a leap year
@@ -84,9 +86,9 @@ public class Date implements Comparable<Date> {
     }
 
     /**
-     * Compares this Date to another Date
+     * Compares this banking.Date to another banking.Date
      *
-     * @param other Date being compared with
+     * @param other banking.Date being compared with
      * @return difference of year/month/day
      */
     @Override
@@ -101,7 +103,7 @@ public class Date implements Comparable<Date> {
     }
 
     /**
-     * Converts the Date to Month/Day/Year format
+     * Converts the banking.Date to Month/Day/Year format
      *
      * @return String representation of the date MM/DD/YYYY
      */
@@ -113,7 +115,7 @@ public class Date implements Comparable<Date> {
     /**
      * Compares two Dates for equality
      *
-     * @param obj other Date being checked for equality
+     * @param obj other banking.Date being checked for equality
      * @return true if they are the same year, month, and day
      * false otherwise
      */

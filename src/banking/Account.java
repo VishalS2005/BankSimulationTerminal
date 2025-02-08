@@ -1,15 +1,17 @@
+package banking;
+
 /**
- * The Account class holds the information regarding a bank account
- * The account number, Profile object of the holder, and the balance are held in each account
+ * The banking.Account class holds the information regarding a bank account
+ * The account number, banking.Profile object of the holder, and the balance are held in each account
  *
  * @author Vishal Saravanan, Yining Chen
  */
 
 public class Account implements Comparable<Account> {
 
-    private AccountNumber number; //AccountNumber object with information about 9-digit number that represents bank account
+    private AccountNumber number; //banking.AccountNumber object with information about 9-digit number that represents bank account
 
-    private Profile holder; //Profile object with information about account holder
+    private Profile holder; //banking.Profile object with information about account holder
 
     /**
      * The amount of money in the checking/savings/money market account
@@ -38,19 +40,19 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Returns the AccountNumber associated with this Account.
+     * Returns the banking.AccountNumber associated with this banking.Account.
      *
-     * @return the AccountNumber of this Account
+     * @return the banking.AccountNumber of this banking.Account
      */
     public AccountNumber getAccountNumber() {
         return this.number;
     }
 
     /**
-     * Compares the Account Numbers of two accounts
+     * Compares the banking.Account Numbers of two accounts
      *
-     * @param other Account being compared with
-     * @return 0 if Account Numbers are equal,
+     * @param other banking.Account being compared with
+     * @return 0 if banking.Account Numbers are equal,
      * -1 if first account is less than second account,
      * 1 if first account is greater than second account
      */
@@ -64,20 +66,20 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Converts Account to a string that can be printed
+     * Converts banking.Account to a string that can be printed
      *
-     * @return a string that contains the Account Number, the Account Holder, and the Account Balance
+     * @return a string that contains the banking.Account Number, the banking.Account Holder, and the banking.Account Balance
      */
     @Override
     public String toString() {
-        return "Account#[" + this.number + "] Holder[" + this.holder + "] Balance[" + this.balance + "]";
+        return "banking.Account#[" + this.number + "] Holder[" + this.holder + "] Balance[" + this.balance + "]";
     }
 
     /**
-     * Compares two Account objects for equality
+     * Compares two banking.Account objects for equality
      *
-     * @param obj other Account being checked for equality
-     * @return true if they are the same object: Account object is compared using the Account Number
+     * @param obj other banking.Account being checked for equality
+     * @return true if they are the same object: banking.Account object is compared using the banking.Account Number
      * false otherwise
      */
     @Override

@@ -1,5 +1,7 @@
+package banking;
+
 /**
- * The AccountDatabase class holds the information regarding all the bank accounts
+ * The banking.AccountDatabase class holds the information regarding all the bank accounts
  * A new account is always added to the end of the array. An instance of this class is a growable list
  * with an initial array capacity of 4, and it automatically increases the capacity by 4 whenever it is full.
  * The list does not decrease in capacity.
@@ -35,7 +37,7 @@ public class AccountDatabase {
     }
 
     /**
-     * Resizes the original database by increasing the size of the array that holds the Account objects by 4
+     * Resizes the original database by increasing the size of the array that holds the banking.Account objects by 4
      * Creates a temporary array with the new length and replaces the old array
      */
     private void grow() {
@@ -45,13 +47,13 @@ public class AccountDatabase {
             newAccounts[i] = this.accounts[i];
         }
         this.accounts = newAccounts;
-        this.size = newLength; //updates size of AccountDatabase
+        this.size = newLength; //updates size of banking.AccountDatabase
     }
 
     /**
-     * Iterates through the AccountDatabase to check for an account
+     * Iterates through the banking.AccountDatabase to check for an account
      *
-     * @param account that is being searched for in the AccountDatabase
+     * @param account that is being searched for in the banking.AccountDatabase
      * @return true if the account is found in the database,
      * false otherwise
      */
@@ -65,11 +67,11 @@ public class AccountDatabase {
     }
 
     /**
-     * Adds an Account to the AccountDatabase
+     * Adds an banking.Account to the banking.AccountDatabase
      * Checks for duplicate accounts and returns if there is one found
-     * Checks size and resizes as needed to make space for the new Account
+     * Checks size and resizes as needed to make space for the new banking.Account
      *
-     * @param account that is being added to AccountDatabase
+     * @param account that is being added to banking.AccountDatabase
      */
     public void add(Account account) {
         if(this.contains(account)) {
@@ -84,13 +86,13 @@ public class AccountDatabase {
     }
 
     /**
-     * Removes an Account to the AccountDatabase
-     * Checks if the account to be removed is in the AccountDatabase and returns if it is not
-     * Adds removed Account to the archive before deleting the Account
-     * Replaces Account being deleted with the last Account
-     * Updates the size of the AccountDatabase
+     * Removes an banking.Account to the banking.AccountDatabase
+     * Checks if the account to be removed is in the banking.AccountDatabase and returns if it is not
+     * Adds removed banking.Account to the archive before deleting the banking.Account
+     * Replaces banking.Account being deleted with the last banking.Account
+     * Updates the size of the banking.AccountDatabase
      *
-     * @param account that is being added to AccountDatabase
+     * @param account that is being added to banking.AccountDatabase
      */
     public void remove(Account account) {
         int index = find(account); //represents index of account
@@ -107,7 +109,7 @@ public class AccountDatabase {
     /**
      * Checks if money can be withdrawn from an account
      *
-     * @param number AccountNumber that identifies the account
+     * @param number banking.AccountNumber that identifies the account
      * @param amount value of money that will be withdrawn
      * @return true if the amount can be withdrawn
      * false otherwise
@@ -117,10 +119,10 @@ public class AccountDatabase {
     }
 
     /**
-     * Deposits money into an Account which will increase the account balance
-     * Searches through the AccountDatabase for the Account before depositing the amount of money into that Account
+     * Deposits money into an banking.Account which will increase the account balance
+     * Searches through the banking.AccountDatabase for the banking.Account before depositing the amount of money into that banking.Account
      *
-     * @param number AccountNumber that identifies the account
+     * @param number banking.AccountNumber that identifies the account
      * @param amount value of money that will be deposited
      */
     public void deposit(AccountNumber number, double amount) {
@@ -133,7 +135,7 @@ public class AccountDatabase {
     }
 
     /**
-     * Prints all the Accounts that have been closed and are in the Archive
+     * Prints all the Accounts that have been closed and are in the banking.Archive
      */
     public void printArchive() {
         this.archive.print();
@@ -151,7 +153,7 @@ public class AccountDatabase {
     }
 
     /**
-     * Prints all the Accounts in the AccountDatabase
+     * Prints all the Accounts in the banking.AccountDatabase
      */
     public void print() {
         for(int i = 0; i < this.size; i++) {

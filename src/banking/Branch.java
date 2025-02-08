@@ -1,6 +1,8 @@
+package banking;
+
 /**
- * The Branch enum class holds the information regarding all the different types of Branch locations
- * Each Branch object has a 5-digit ZIP code, 3-digit branch code, and the county the branch is located in
+ * The banking.Branch enum class holds the information regarding all the different types of banking.Branch locations
+ * Each banking.Branch object has a 5-digit ZIP code, 3-digit branch code, and the county the branch is located in
  *
  * @author Vishal Saravanan, Yining Chen
  */
@@ -23,7 +25,7 @@ public enum Branch {
     }
 
     /**
-     * Converts Branch to a string that can be printed
+     * Converts banking.Branch to a string that can be printed
      *
      * @return the 3-digit branch code as a String
      */

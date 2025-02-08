@@ -1,5 +1,7 @@
+package banking;
+
 /**
- * The AccountType class holds the information regarding all the different types of accounts that can be opened at the bank
+ * The banking.AccountType class holds the information regarding all the different types of accounts that can be opened at the bank
  * Each two-digit account type represents a different type
  *
  * @author Vishal Saravanan, Yining Chen
@@ -17,7 +19,7 @@ public enum AccountType {
     }
 
     /**
-     * Converts AccountType to a string that can be printed
+     * Converts banking.AccountType to a string that can be printed
      *
      * @return the 2-digit account type as a String
      */

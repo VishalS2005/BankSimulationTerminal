@@ -1,3 +1,10 @@
+/**
+ * The Branch enum class holds the information regarding all the different types of Branch locations
+ * Each Branch object has a 5-digit ZIP code, 3-digit branch code, and the county the branch is located in
+ *
+ * @author Vishal Saravanan, Yining Chen
+ */
+
 public enum Branch {
     EDISON("08817", "100", "Middlesex"),
     BRIDGEWATER("08807", "200", "Somerset"),
@@ -5,16 +12,21 @@ public enum Branch {
     PISCATAWAY("08854", "400", "Middlesex"),
     WARREN("07057", "500", "Somerset");
 
-    private final String zip;
-    private final String branchCode;
-    private final String county;
+    private final String zip; //5-digit number that represents the ZIP code
+    private final String branchCode; //3-digit number that represents the branch code
+    private final String county; //String that represents the county the branch is located in
 
-    Branch(String zip, String branchCode, String county) {
+    Branch(String zip, String branchCode, String county) { //constructor
         this.zip = zip;
         this.branchCode = branchCode;
         this.county = county;
     }
 
+    /**
+     * Converts Branch to a string that can be printed
+     *
+     * @return the 3-digit branch code as a String
+     */
     @Override
     public String toString() {
         return branchCode;

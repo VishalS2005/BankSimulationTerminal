@@ -1,3 +1,9 @@
+/**
+ * Transaction Manager class that reads in transactions from the command line
+ * Depending on the action, completes transaction or does not execute it
+ *
+ @author Vishal Saravanan, Yining Chen
+ */
 import java.util.Scanner;
 
 public class TransactionManager {

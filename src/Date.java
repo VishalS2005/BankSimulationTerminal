@@ -1,3 +1,13 @@
+/**
+ * Date enum class has the information to provide the day, month, and year of a transaction
+ * For the months of January, March, May, July, August, October, and December, each has 31 days;
+ * April, June, September, and November each has 30 days;
+ * February has 28 days in a non-leap year, and 29  days in a leap year
+ * Quadrennial is 4 years, centennial is 100 years, and quartercentennial is 400 years
+ *
+ @author Vishal Saravanan, Yining Chen
+ */
+
 public class Date implements Comparable<Date> {
     private int year;
     private int month;
@@ -23,7 +33,13 @@ public class Date implements Comparable<Date> {
     public static final int DAYS_IN_FEBRUARY_NORMAL = 28;
     public static final int DAYS_IN_FEBRUARY_LEAP = 29;
 
-
+    /**
+     * Checks if the date provided by the user is on the calendar
+     * Checks the month, the days in the month, and if it is a leap year
+     *
+     * @return true if the date is a valid date on the calendar
+     * false otherwise
+     */
     public boolean isValid() {
         if(this.month < JANUARY || this.month > DECEMBER) {
             return false;
@@ -50,9 +66,16 @@ public class Date implements Comparable<Date> {
             maxDays = DAYS_IN_SHORT_MONTH;
         }
 
-        return day >= 1 && day <= maxDays;
-    } //check if the date is a valid calendar date
+        return this.day >= 1 && this.day <= maxDays;
+    }
 
+    /**
+     * Checks if the year provided is a leap year
+     * Every 4 years, 100 years, and 400 years is a leap year
+     *
+     * @return true if the year is a leap year
+     * false otherwise
+     */
     public boolean isLeapYear() {
         if(year % QUADRENNIAL != 0) {
             return false;
@@ -60,9 +83,14 @@ public class Date implements Comparable<Date> {
         return year % CENTENNIAL != 0 || year % QUARTERCENTENNIAL == 0;
     }
 
-
+    /**
+     * Compares this Date to another Date
+     *
+     * @param other Date being compared with
+     * @return difference of year/month/day
+     */
     @Override
-    public int compareTo(Date other) {
+    public int compareTo(Date other) { //fix this method
         if(this.year != other.year) {
             return this.year - other.year;
         }
@@ -72,21 +100,29 @@ public class Date implements Comparable<Date> {
         return this.day - other.day;
     }
 
+    /**
+     * Converts the Date to Month/Day/Year format
+     *
+     * @return String representation of the date MM/DD/YYYY
+     */
     @Override
     public String toString() {
-        return month + "/" + day + "/" + year;
+        return this.month + "/" + this.day + "/" + this.year;
     }
 
+    /**
+     * Compares two Dates for equality
+     *
+     * @param obj other Date being checked for equality
+     * @return true if they are the same year, month, and day
+     * false otherwise
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Date) {
-            Date d = (Date) obj;
-            return year == d.year && month == d.month && day == d.day;
+            Date other = (Date) obj;
+            return this.year == other.year && this.month == other.month && this.day == other.day;
         }
         return false;
-    }
-
-    public static void main(String[] args) {
-
     }
 }

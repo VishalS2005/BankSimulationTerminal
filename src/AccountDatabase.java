@@ -1,45 +1,78 @@
-public class AccountDatabase {
-    private Account [] accounts;
-    private int size;
-    private Archive archive; //a linked list of closed account
+/**
+ * The AccountDatabase class holds the information regarding all the bank accounts
+ * A new account is always added to the end of the array. An instance of this class is a growable list
+ * with an initial array capacity of 4, and it automatically increases the capacity by 4 whenever it is full.
+ * The list does not decrease in capacity.
+ *
+ * @author Vishal Saravanan, Yining Chen
+ */
 
-    public AccountDatabase() {
+public class AccountDatabase {
+    private Account [] accounts; //array-based implementation of a linear data structure to hold the list of account objects
+    private int size; //represents the amount of accounts
+    private final Archive archive; //a linked list of closed account
+
+    public AccountDatabase() { //constructor
         this.accounts = new Account[4];
         this.size = 0;
         this.archive = new Archive();
     }
 
-
+    /**
+     * Searches for an account in the account database
+     *
+     * @param account that is being searched for
+     * @return index of the account in the account database when found,
+     * -1 otherwise
+     */
     private int find(Account account) {
-        for(int i = 0; i < size; i++) {
-            if(accounts[i].equals(account)) {
+        for(int i = 0; i < this.size; i++) {
+            if(this.accounts[i].equals(account)) {
                 return i;
             }
         }
         return -1;
-    } //return the index or -1 not found.
+    }
 
+    /**
+     * Resizes the original database by increasing the size of the array that holds the Account objects by 4
+     * Creates a temporary array with the new length and replaces the old array
+     */
     private void grow() {
-        Account[] newAccounts = new Account[accounts.length + 4];
-        for(int i = 0; i < size; i++) {
-            newAccounts[i] = accounts[i];
+        int newLength = this.accounts.length + 4; //the new length can hold 4 more accounts than the old length
+        Account[] newAccounts = new Account[newLength];
+        for(int i = 0; i < this.size; i++) {
+            newAccounts[i] = this.accounts[i];
         }
-        accounts = newAccounts;
-    } //increase the array capacity by 4
+        this.accounts = newAccounts;
+        this.size = newLength; //updates size of AccountDatabase
+    }
 
-
+    /**
+     * Iterates through the AccountDatabase to check for an account
+     *
+     * @param account that is being searched for in the AccountDatabase
+     * @return true if the account is found in the database,
+     * false otherwise
+     */
     public boolean contains(Account account) {
-        for(int i = 0; i < size; i++) {
-            if(accounts[i].equals(account)) {
+        for(int i = 0; i < this.size; i++) {
+            if(this.accounts[i].equals(account)) {
                 return true;
             }
         }
         return false;
-    } //check before add/remove
+    }
 
-
+    /**
+     * Adds an Account to the AccountDatabase
+     * Checks for duplicate accounts and returns if there is one found
+     * Checks size and resizes as needed to make space for the new Account
+     *
+     * @param account that is being added to AccountDatabase
+     */
     public void add(Account account) {
-        if(contains(account)) {
+        if(this.contains(account)) {
             return;
         }
         if(size == accounts.length) {
@@ -48,10 +81,19 @@ public class AccountDatabase {
 
         accounts[size] = account;
         size++;
-    } //add to end of array
+    }
 
+    /**
+     * Removes an Account to the AccountDatabase
+     * Checks if the account to be removed is in the AccountDatabase and returns if it is not
+     * Adds removed Account to the archive before deleting the Account
+     * Replaces Account being deleted with the last Account
+     * Updates the size of the AccountDatabase
+     *
+     * @param account that is being added to AccountDatabase
+     */
     public void remove(Account account) {
-        int index = find(account);
+        int index = find(account); //represents index of account
         if(index == -1) {
             return;
         }
@@ -60,27 +102,43 @@ public class AccountDatabase {
         accounts[size - 1] = null;
         size--;
 
-    }//replace it with the last item
+    }
 
-
+    /**
+     * Checks if money can be withdrawn from an account
+     *
+     * @param number AccountNumber that identifies the account
+     * @param amount value of money that will be withdrawn
+     * @return true if the amount can be withdrawn
+     * false otherwise
+     */
     public boolean withdraw(AccountNumber number, double amount) {
         return false; // implement later
     }
 
-
+    /**
+     * Deposits money into an Account which will increase the account balance
+     * Searches through the AccountDatabase for the Account before depositing the amount of money into that Account
+     *
+     * @param number AccountNumber that identifies the account
+     * @param amount value of money that will be deposited
+     */
     public void deposit(AccountNumber number, double amount) {
         for (int i = 0; i < size; i++) {
-            if (accounts[i].getAccountNumber().equals(number)) {
-                accounts[i].deposit(amount); // Perform deposit
+            if (this.accounts[i].getAccountNumber().equals(number)) {
+                this.accounts[i].deposit(amount);
                 return;
             }
         }
     }
 
-
+    /**
+     * Prints all the Accounts that have been closed and are in the Archive
+     */
     public void printArchive() {
-        archive.print();
+        this.archive.print();
     }//print closed accounts
+
 
     public void printByBranch() {
         //implement later
@@ -92,9 +150,12 @@ public class AccountDatabase {
         //implement later
     }
 
+    /**
+     * Prints all the Accounts in the AccountDatabase
+     */
     public void print() {
-        for(int i = 0; i < size; i++) {
-            System.out.println(accounts[i].toString());
+        for(int i = 0; i < this.size; i++) {
+            System.out.println(this.accounts[i].toString());
         }
     }
 }

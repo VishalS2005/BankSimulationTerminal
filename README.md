@@ -1,5 +1,5 @@
-# SQLQueries
-Assignments using data from the Paris 2024 Summer Olympics
+# Project-1
+Assignment from Software Methodology
 
 ## Table of Contents
 - [Introduction](#introduction)
@@ -10,10 +10,8 @@ Assignments using data from the Paris 2024 Summer Olympics
 
 ## Introduction
 
-The Paris 2024 Olympics brought together nations from across the globe to celebrate athletic excellence and international camaraderie. Participants from various countries showcased their talents, making this event an unforgettable spectacle.
-
 ### Goal of Project-1
-Create a bank
+Create a bank as epicly as awesomely as legendarily as possible
 
 ### Concepts Utilized
 Object Oriented Programming

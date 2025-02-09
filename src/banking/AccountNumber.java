@@ -23,6 +23,37 @@ public class AccountNumber implements Comparable<AccountNumber> {
         this.number = generateSerialNumber(); //random 4 digit number
     }
 
+    public AccountNumber(String number) {
+        String branchCode = number.substring(0, 3);
+        String typeCode = number.substring(3, 5);
+        String serialNumber = number.substring(5, 9);
+
+        // Find matching branch
+        for (Branch branch : Branch.values()) {
+            if (branch.toString().equalsIgnoreCase(branchCode)) {
+                this.branch = branch;
+                break;
+            }
+        }
+        // Find matching account type
+        for (AccountType type : AccountType.values()) {
+            if (type.toString().equalsIgnoreCase(typeCode)) {
+                this.type = type;
+                break;
+            }
+        }
+
+        this.number = serialNumber;
+    }
+
+    public Branch getBranch() {
+        return branch;
+    }
+
+    public AccountType getType() {
+        return type;
+    }
+
     /**
      * Randomly generates a 4-digit number for the last 4 digits of the account number
      * Uses the Random library
@@ -55,7 +86,7 @@ public class AccountNumber implements Comparable<AccountNumber> {
      */
     @Override
     public String toString() {
-        return this.branch.toString() + this.type.toString() + this.number;
+        return this.branch.getBranchCode() + this.type.getCode() + this.number;
     }
 
     /**

@@ -106,6 +106,14 @@ public class AccountDatabase {
 
     }
 
+    public void remove (String firstName, String lastName) {
+        for(int i = 0; i < this.size; i++) {
+            if(this.accounts[i].getFirstName().equals(firstName) && this.accounts[i].getLastName().equals(lastName)) {
+                this.remove(accounts[i]);
+            }
+        }
+    }
+
     /**
      * Checks if money can be withdrawn from an account
      *
@@ -156,8 +164,14 @@ public class AccountDatabase {
      * Prints all the Accounts in the banking.AccountDatabase
      */
     public void print() {
+        if(size == 0) {
+            System.out.println("Account database is empty!");
+            return;
+        }
+        System.out.println("*List of accounts in the account database.");
         for(int i = 0; i < this.size; i++) {
             System.out.println(this.accounts[i].toString());
         }
+        System.out.println("*end of list.\n");
     }
 }

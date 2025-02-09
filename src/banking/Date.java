@@ -1,5 +1,9 @@
 package banking;
 
+import java.util.Calendar;
+
+
+
 /**
  * banking.Date enum class has the information to provide the day, month, and year of a transaction
  * For the months of January, March, May, July, August, October, and December, each has 31 days;
@@ -15,18 +19,8 @@ public class Date implements Comparable<Date> {
     private int month;
     private int day;
 
-    public static final int JANUARY   = 1;
-    public static final int FEBRUARY  = 2;
-    public static final int MARCH     = 3;
-    public static final int APRIL     = 4;
-    public static final int MAY       = 5;
-    public static final int JUNE      = 6;
-    public static final int JULY      = 7;
-    public static final int AUGUST    = 8;
-    public static final int SEPTEMBER = 9;
-    public static final int OCTOBER   = 10;
-    public static final int NOVEMBER  = 11;
-    public static final int DECEMBER  = 12;
+    public static final int MONTH_OFFSET = 1;  // Calendar months are 0-based
+    public static final int YEARS_TO_SUBTRACT = 18; // To check if the person is at least 18 years old
     public static final int QUADRENNIAL = 4;
     public static final int CENTENNIAL = 100;
     public static final int QUARTERCENTENNIAL = 400;
@@ -48,11 +42,11 @@ public class Date implements Comparable<Date> {
      * false otherwise
      */
     public boolean isValid() {
-        if(this.month < JANUARY || this.month > DECEMBER) {
+        if(this.month < Calendar.JANUARY + MONTH_OFFSET || this.month > Calendar.DECEMBER + MONTH_OFFSET) {
             return false;
         }
         int maxDays; //most amount of days in each month
-        if(this.month == FEBRUARY) {
+        if(this.month == Calendar.FEBRUARY + MONTH_OFFSET) {
             if(isLeapYear()) {
                 maxDays = DAYS_IN_FEBRUARY_LEAP;
             }
@@ -60,13 +54,13 @@ public class Date implements Comparable<Date> {
                 maxDays = DAYS_IN_FEBRUARY_NORMAL;
             }
         }
-        else if(this.month == JANUARY
-                || this.month == MARCH
-                || this.month == MAY
-                || this.month == JULY
-                || this.month == AUGUST
-                || this.month == OCTOBER
-                || this.month == DECEMBER) {
+        else if(this.month == Calendar.JANUARY + MONTH_OFFSET
+                || this.month == Calendar.MARCH + MONTH_OFFSET
+                || this.month == Calendar.MAY + MONTH_OFFSET
+                || this.month == Calendar.JULY + MONTH_OFFSET
+                || this.month == Calendar.AUGUST + MONTH_OFFSET
+                || this.month == Calendar.OCTOBER + MONTH_OFFSET
+                || this.month == Calendar.DECEMBER + MONTH_OFFSET) {
             maxDays = DAYS_IN_LONG_MONTH;
         }
         else {
@@ -74,6 +68,21 @@ public class Date implements Comparable<Date> {
         }
 
         return this.day >= 1 && this.day <= maxDays;
+    }
+
+    public boolean isEighteen() {
+        Calendar today = Calendar.getInstance();
+        Calendar birthDate = Calendar.getInstance();
+        birthDate.set(this.year, this.month - MONTH_OFFSET, this.day); // Month is 0-based in Calendar
+        today.add(Calendar.YEAR, -YEARS_TO_SUBTRACT); // Subtract 18 years from today
+        return !birthDate.after(today); // Return true if birthDate is on or before the adjusted date
+    }
+
+    public boolean isAfterToday() {
+        Calendar today = Calendar.getInstance();
+        Calendar birthDate = Calendar.getInstance();
+        birthDate.set(this.year, this.month - MONTH_OFFSET, this.day);
+        return birthDate.after(today);
     }
 
     /**
@@ -89,6 +98,7 @@ public class Date implements Comparable<Date> {
         }
         return year % CENTENNIAL != 0 || year % QUARTERCENTENNIAL == 0;
     }
+
 
     /**
      * Compares this banking.Date to another banking.Date

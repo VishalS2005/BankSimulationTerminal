@@ -8,14 +8,26 @@ package banking;
  */
 
 public class Profile implements Comparable<Profile>{
-    private String fname; //full name
-    private String lname; //last name
-    private Date dob; //date of birth
+    private String firstName;
+    private String lastName;
+    private Date dateOfBirth; //date of birth
 
-    public Profile(String fname, String lname, Date dob) { //constructor
-        this.fname = fname;
-        this.lname = lname;
-        this.dob = dob;
+    public Profile(String firstName, String lastName, Date dateOfBirth) { //constructor
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
     }
 
     /**
@@ -29,8 +41,8 @@ public class Profile implements Comparable<Profile>{
      */
     @Override
     public int compareTo(Profile other) {
-        String name = this.fname + this.lname;
-        String otherName = other.fname + other.lname;
+        String name = this.firstName + this.lastName;
+        String otherName = other.firstName + other.lastName;
         return name.compareTo(otherName);
     }
 
@@ -41,23 +53,21 @@ public class Profile implements Comparable<Profile>{
      */
     @Override
     public String toString() {
-        return this.fname + " " + this.lname + " " + this.dob;
+        return this.firstName + " " + this.lastName + " " + this.dateOfBirth;
     }
 
     /**
      * Compares two banking.Profile objects for equality
      *
      * @param obj other banking.Profile being checked for equality
-     * @return true if they are the same object: first name, last name, and date of birth are all the same
+     * @return true if they are the same object: first name and last name are the same
      * false otherwise
      */
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Profile) {
             Profile other = (Profile) obj;
-            return this.fname.equals(other.fname)      //String .equals
-                    && this.lname.equals(other.lname)  //String .equals
-                    && this.dob.equals(other.dob);     //uses .equals from banking.Date class
+            return this.firstName.equals(other.firstName) && this.lastName.equals(other.lastName);
         }
         return false;
     }

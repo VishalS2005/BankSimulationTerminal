@@ -18,6 +18,10 @@ public enum AccountType {
         this.code = code;
     }
 
+    public String getCode() {
+        return code;
+    }
+
     /**
      * Converts banking.AccountType to a string that can be printed
      *
@@ -25,6 +29,6 @@ public enum AccountType {
      */
     @Override
     public String toString() {
-        return code;
+        return name();
     }
 }

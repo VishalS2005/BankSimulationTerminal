@@ -26,6 +26,17 @@ public class Account implements Comparable<Account> {
         this.balance = balance;
     }
 
+    public Account(Branch branch, AccountType type, Profile holder) {
+        this.number = new AccountNumber(branch, type);
+        this.holder = holder;
+    }
+
+    public Account(AccountNumber number) {
+        this.number = number;
+        this.holder = null;
+    }
+
+
 
     /**
      * Takes money out of the account and updates the balance of an account
@@ -54,6 +65,15 @@ public class Account implements Comparable<Account> {
         return this.number;
     }
 
+    public String getFirstName() {
+        return this.holder.getFirstName();
+    }
+
+    public String getLastName() {
+        return this.holder.getLastName();
+    }
+
+
     /**
      * Compares the banking.Account Numbers of two accounts
      *
@@ -78,7 +98,7 @@ public class Account implements Comparable<Account> {
      */
     @Override
     public String toString() {
-        return "banking.Account#[" + this.number + "] Holder[" + this.holder + "] Balance[" + this.balance + "]";
+        return "Account#[" + this.number + "] Holder[" + this.holder + "] Balance[" + this.balance + "]";
     }
 
     /**
@@ -92,7 +112,7 @@ public class Account implements Comparable<Account> {
     public boolean equals(Object obj) {
         if (obj instanceof Account) {
             Account other = (Account) obj;
-            return other.number == this.number;
+            return other.number.equals(this.number) || other.holder.equals(this.holder);
         }
         return false;
     }

@@ -24,6 +24,10 @@ public enum Branch {
         this.county = county;
     }
 
+    public String getBranchCode() {
+        return branchCode;
+    }
+
     /**
      * Converts banking.Branch to a string that can be printed
      *
@@ -31,6 +35,6 @@ public enum Branch {
      */
     @Override
     public String toString() {
-        return branchCode;
+        return name();
     }
 }

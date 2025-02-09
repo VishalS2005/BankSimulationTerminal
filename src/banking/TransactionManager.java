@@ -10,14 +10,18 @@ import java.util.Scanner;
  */
 
 public class TransactionManager {
-    private static AccountDatabase accountDatabase = new AccountDatabase();
+    private static final AccountDatabase accountDatabase = new AccountDatabase();
 
     public static void run() {
+        System.out.println("Transaction Manager is running.");
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String command = scanner.nextLine();
             String[] commandArray = command.split("\\s+");
-            if (commandArray.length == 0) continue; // Skip empty input
+            if (commandArray[0].isEmpty()) {
+                System.out.println();
+                continue;
+            }
             if(commandArray[0].equals("Q")) {
                 System.out.println("Transaction Manager is terminated.");
                 return;
@@ -67,8 +71,67 @@ public class TransactionManager {
      *    O savings bridgewater John Doe 2/19/2000 500
      */
     private static void openAccount(String[] commandArray) {
-        AccountType acctType;
-        String typeToken = commandArray[1].toLowerCase();
+
+        String dateOfBirth = commandArray[5];
+        Date dob = getDate(dateOfBirth);
+        if (!dob.isValid()) {
+            System.out.println("DOB invalid: " + dob + " not a valid calendar date!");
+            return;
+        } else if (dob.isAfterToday()) {
+            System.out.println("DOB invalid: " + dob + " cannot be today or a future day.");
+            return;
+        } else if(!dob.isEighteen()) {
+            System.out.println("Not eligible to open: " +  dateOfBirth + " under 18.");
+            return;
+        }
+
+
+        AccountType acctType = getAccountType(commandArray[1]);
+        if(acctType == null) {
+            return;
+        }
+
+        Branch branch = getBranch(commandArray[2]);
+        if(branch == null) {
+            return;
+        }
+
+        String firstName = commandArray[3];
+        String lastName = commandArray[4];
+
+        Account account = getAccount(firstName, lastName, dob, branch, acctType);
+
+
+
+        try {
+            double balance = Double.parseDouble(commandArray[6]);
+            if(balance < 0) {
+                System.out.println("Initial deposit cannot be 0 or negative.");
+                return;
+            } else if(balance < 2000 && acctType.equals(AccountType.MONEY_MARKET_SAVINGS)) {
+                System.out.println("Minimum of $2,000 to open a Money Market account.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("For input string: \"" + commandArray[6] + "\" - not a valid amount.");
+            return;
+        }
+
+
+        if(accountDatabase.contains(account)) {
+            System.out.println(account.getFirstName() + " " + account.getLastName() +   " already has a checking account.");
+            return;
+        }
+
+
+        accountDatabase.add(account);
+        System.out.println(account.getAccountNumber().getType() +  " account " + account.getAccountNumber() + " has been opened.");
+
+    }
+
+    private static AccountType getAccountType (String type) {
+        AccountType acctType = null;
+        String typeToken = type.toLowerCase();
         switch (typeToken) {
             case "checking":
                 acctType = AccountType.CHECKING;
@@ -80,43 +143,52 @@ public class TransactionManager {
                 acctType = AccountType.MONEY_MARKET_SAVINGS;
                 break;
             default:  {
-                System.out.println(typeToken + "- invalid account type!");
-                return;
+                System.out.println(typeToken + " - invalid account type!");
             }
         }
+        return acctType;
+    }
 
-        Branch branch;
+    private static Branch getBranch(String branchName) {
+        Branch branch = null;
         try {
-            branch = Branch.valueOf(commandArray[2].toUpperCase());
+            branch = Branch.valueOf(branchName.toUpperCase());
         } catch (IllegalArgumentException e) {
-            System.out.println(commandArray[2] + "- invalid branch!");
-            return;
+            System.out.println(branchName + " - invalid branch!");
         }
-
-        Account account = getAccount(commandArray, branch, acctType);
-
-        accountDatabase.add(account);
+        return branch;
 
     }
 
-    private static Account getAccount(String[] commandArray, Branch branch, AccountType acctType) {
-        String firstName = commandArray[3];
-        String lastName = commandArray[4];
-        String dateOfBirth = commandArray[5];
-        String[] dobParts = dateOfBirth.split("/");
-        int month = Integer.parseInt(dobParts[0]);
-        int day = Integer.parseInt(dobParts[1]);
-        int year = Integer.parseInt(dobParts[2]);
-        Date dob = new Date(year, month, day);
-        Profile holder = new Profile(firstName, lastName, dob);
-        int deposit = Integer.parseInt(commandArray[6]);
-        return new Account(branch, acctType, holder, deposit);
+    private static Account getAccount(String firstName, String lastName, Date dateOfBirth, Branch branch, AccountType acctType) {
+        Profile holder = getProfile(firstName, lastName, dateOfBirth);
+        return new Account(branch, acctType, holder);
+    }
+
+    private static Profile getProfile(String firstName, String lastName, Date dateOfBirth) {
+        return new Profile(firstName, lastName, dateOfBirth);
+    }
+
+    private static Date getDate(String date) {
+        String[] dateParts = date.split("/");
+        int month = Integer.parseInt(dateParts[0]);
+        int day = Integer.parseInt(dateParts[1]);
+        int year = Integer.parseInt(dateParts[2]);
+        return new Date(year, month, day);
     }
 
 
     private static void closeAccount(String[] commandArray) {
-
+        if(commandArray.length == 2) {
+            accountDatabase.remove(new Account(new AccountNumber(commandArray[1])));
+        }
+        else {
+            String firstName = commandArray[1];
+            String lastName = commandArray[2];
+            accountDatabase.remove(firstName, lastName);
+        }
     }
+
 
     private static void depositMoney(String[] commandArray) {
 

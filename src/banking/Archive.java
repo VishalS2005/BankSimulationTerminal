@@ -14,7 +14,7 @@ public class Archive {
     }
 
     /**
-     * Adds an banking.AccountNode object to the front of the linked list instance variable, first
+     * Adds a banking.AccountNode object to the front of the linked list instance variable, first
      *
      * @param account object that will be used to create a banking.AccountNode and will be added to the front of the linked list instance variable, first
      */

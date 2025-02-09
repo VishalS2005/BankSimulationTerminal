@@ -67,7 +67,7 @@ public class AccountDatabase {
     }
 
     /**
-     * Adds an banking.Account to the banking.AccountDatabase
+     * Adds a banking.Account to the banking.AccountDatabase
      * Checks for duplicate accounts and returns if there is one found
      * Checks size and resizes as needed to make space for the new banking.Account
      *
@@ -86,7 +86,7 @@ public class AccountDatabase {
     }
 
     /**
-     * Removes an banking.Account to the banking.AccountDatabase
+     * Removes a banking.Account to the banking.AccountDatabase
      * Checks if the account to be removed is in the banking.AccountDatabase and returns if it is not
      * Adds removed banking.Account to the archive before deleting the banking.Account
      * Replaces banking.Account being deleted with the last banking.Account
@@ -119,7 +119,7 @@ public class AccountDatabase {
     }
 
     /**
-     * Deposits money into an banking.Account which will increase the account balance
+     * Deposits money into a banking.Account which will increase the account balance
      * Searches through the banking.AccountDatabase for the banking.Account before depositing the amount of money into that banking.Account
      *
      * @param number banking.AccountNumber that identifies the account

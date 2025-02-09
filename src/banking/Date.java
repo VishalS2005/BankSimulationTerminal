@@ -35,6 +35,11 @@ public class Date implements Comparable<Date> {
     public static final int DAYS_IN_FEBRUARY_NORMAL = 28;
     public static final int DAYS_IN_FEBRUARY_LEAP = 29;
 
+    public Date (int year, int month, int day) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+    }
     /**
      * Checks if the date provided by the user is on the calendar
      * Checks the month, the days in the month, and if it is a leap year
@@ -126,5 +131,10 @@ public class Date implements Comparable<Date> {
             return this.year == other.year && this.month == other.month && this.day == other.day;
         }
         return false;
+    }
+
+    /** Test bed */
+    public static void main(String[] args) {
+
     }
 }

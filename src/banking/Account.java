@@ -20,6 +20,12 @@ public class Account implements Comparable<Account> {
      */
     private double balance; //amount of money currently in bank account
 
+    public Account(Branch branch, AccountType type, Profile holder, double balance) {
+        this.number = new AccountNumber(branch, type);
+        this.holder = holder;
+        this.balance = balance;
+    }
+
 
     /**
      * Takes money out of the account and updates the balance of an account

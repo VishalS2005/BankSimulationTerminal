@@ -61,4 +61,9 @@ public class Profile implements Comparable<Profile>{
         }
         return false;
     }
+
+    /** Test bed*/
+    public static void main(String[] args) {
+
+    }
 }

@@ -14,7 +14,7 @@ public enum AccountType {
 
     private final String code; //2-digit code that represents the type of account
 
-    AccountType(String code) { //constructor
+    AccountType(String code) {
         this.code = code;
     }
 

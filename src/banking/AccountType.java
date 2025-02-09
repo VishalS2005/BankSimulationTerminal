@@ -9,8 +9,8 @@ package banking;
 
 public enum AccountType {
     CHECKING("01"),
-    REGULAR_SAVINGS("02"),
-    MONEY_MARKET_SAVINGS("03");
+    SAVINGS("02"),
+    MONEY_MARKET("03");
 
     private final String code; //2-digit code that represents the type of account
 

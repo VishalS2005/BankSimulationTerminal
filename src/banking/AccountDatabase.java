@@ -47,7 +47,6 @@ public class AccountDatabase {
             newAccounts[i] = this.accounts[i];
         }
         this.accounts = newAccounts;
-        this.size = newLength; //updates size of banking.AccountDatabase
     }
 
     /**
@@ -66,6 +65,18 @@ public class AccountDatabase {
         return false;
     }
 
+    public boolean contains(String firstName, String lastName, Date dateOfBirth, AccountType type) {
+        for(int i = 0; i < this.size; i++) {
+            if(this.accounts[i].getFirstName().equalsIgnoreCase(firstName) &&
+                    this.accounts[i].getLastName().equalsIgnoreCase(lastName) &&
+                    this.accounts[i].getAccountNumber().getType().equals(type) &&
+                    this.accounts[i].getDateOfBirth().equals(dateOfBirth)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Adds a banking.Account to the banking.AccountDatabase
      * Checks for duplicate accounts and returns if there is one found
@@ -77,7 +88,7 @@ public class AccountDatabase {
         if(this.contains(account)) {
             return;
         }
-        if(size == accounts.length) {
+        if(this.size == this.accounts.length - 1) {
             grow();
         }
 
@@ -106,9 +117,9 @@ public class AccountDatabase {
 
     }
 
-    public void remove (String firstName, String lastName) {
+    public void remove (String firstName, String lastName, Date dateOfBirth) {
         for(int i = 0; i < this.size; i++) {
-            if(this.accounts[i].getFirstName().equals(firstName) && this.accounts[i].getLastName().equals(lastName)) {
+            if(this.accounts[i].getFirstName().equals(firstName) && this.accounts[i].getLastName().equals(lastName) && this.accounts[i].getDateOfBirth().equals(dateOfBirth)) {
                 this.remove(accounts[i]);
             }
         }
@@ -123,7 +134,18 @@ public class AccountDatabase {
      * false otherwise
      */
     public boolean withdraw(AccountNumber number, double amount) {
-        return false; // implement later
+        for (int i = 0; i < size; i++) {
+            if (this.accounts[i].getAccountNumber().equals(number)) {
+                if(this.accounts[i].getBalance() >= amount) {
+                    this.accounts[i].withdraw(amount);
+                    if(this.accounts[i].getBalance() < 2000 && this.accounts[i].getAccountNumber().getType().equals(AccountType.MONEY_MARKET)) {
+                        this.accounts[i].setType(AccountType.SAVINGS);
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -168,7 +190,7 @@ public class AccountDatabase {
             System.out.println("Account database is empty!");
             return;
         }
-        System.out.println("*List of accounts in the account database.");
+        System.out.println("\n*List of accounts in the account database.");
         for(int i = 0; i < this.size; i++) {
             System.out.println(this.accounts[i].toString());
         }

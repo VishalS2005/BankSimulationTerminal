@@ -18,8 +18,7 @@ public class TransactionManager {
         while (true) {
             String command = scanner.nextLine();
             String[] commandArray = command.split("\\s+");
-            if (commandArray[0].isEmpty()) {
-                System.out.println();
+            if (command.trim().isEmpty()) {
                 continue;
             }
             if(commandArray[0].equals("Q")) {
@@ -72,6 +71,16 @@ public class TransactionManager {
      */
     private static void openAccount(String[] commandArray) {
 
+        AccountType acctType = getAccountType(commandArray[1]);
+        if(acctType == null) {
+            return;
+        }
+
+        Branch branch = getBranch(commandArray[2]);
+        if(branch == null) {
+            return;
+        }
+
         String dateOfBirth = commandArray[5];
         Date dob = getDate(dateOfBirth);
         if (!dob.isValid()) {
@@ -85,43 +94,38 @@ public class TransactionManager {
             return;
         }
 
-
-        AccountType acctType = getAccountType(commandArray[1]);
-        if(acctType == null) {
-            return;
-        }
-
-        Branch branch = getBranch(commandArray[2]);
-        if(branch == null) {
-            return;
-        }
-
         String firstName = commandArray[3];
         String lastName = commandArray[4];
 
-        Account account = getAccount(firstName, lastName, dob, branch, acctType);
 
 
 
+        double balance;
         try {
-            double balance = Double.parseDouble(commandArray[6]);
-            if(balance < 0) {
-                System.out.println("Initial deposit cannot be 0 or negative.");
-                return;
-            } else if(balance < 2000 && acctType.equals(AccountType.MONEY_MARKET_SAVINGS)) {
-                System.out.println("Minimum of $2,000 to open a Money Market account.");
-                return;
-            }
+            balance = Double.parseDouble(commandArray[6]);
         } catch (NumberFormatException e) {
             System.out.println("For input string: \"" + commandArray[6] + "\" - not a valid amount.");
             return;
         }
 
-
-        if(accountDatabase.contains(account)) {
-            System.out.println(account.getFirstName() + " " + account.getLastName() +   " already has a checking account.");
+        if(accountDatabase.contains(firstName, lastName, dob, acctType)) {
+            System.out.println(firstName + " " + lastName +   " already has a " + commandArray[1] + " account.");
             return;
         }
+
+        if(balance <= 0) {
+            System.out.println("Initial deposit cannot be 0 or negative.");
+            return;
+        } else if(balance < 2000 && acctType.equals(AccountType.MONEY_MARKET)) {
+            System.out.println("Minimum of $2,000 to open a Money Market account.");
+            return;
+        }
+
+
+
+        Account account = getAccount(firstName, lastName, dob, branch, acctType);
+
+        account.deposit(balance);
 
 
         accountDatabase.add(account);
@@ -137,13 +141,13 @@ public class TransactionManager {
                 acctType = AccountType.CHECKING;
                 break;
             case "savings":
-                acctType = AccountType.REGULAR_SAVINGS;
+                acctType = AccountType.SAVINGS;
                 break;
             case "moneymarket":
-                acctType = AccountType.MONEY_MARKET_SAVINGS;
+                acctType = AccountType.MONEY_MARKET;
                 break;
             default:  {
-                System.out.println(typeToken + " - invalid account type!");
+                System.out.println(typeToken + " - invalid account type.");
             }
         }
         return acctType;
@@ -154,7 +158,7 @@ public class TransactionManager {
         try {
             branch = Branch.valueOf(branchName.toUpperCase());
         } catch (IllegalArgumentException e) {
-            System.out.println(branchName + " - invalid branch!");
+            System.out.println(branchName + " - invalid branch.");
         }
         return branch;
 
@@ -185,17 +189,20 @@ public class TransactionManager {
         else {
             String firstName = commandArray[1];
             String lastName = commandArray[2];
-            accountDatabase.remove(firstName, lastName);
+            Date dateOfBirth = getDate(commandArray[3]);
+            accountDatabase.remove(firstName, lastName, dateOfBirth);
         }
     }
 
 
     private static void depositMoney(String[] commandArray) {
-
+        AccountNumber accountNumber = new AccountNumber(commandArray[1]);
+        accountDatabase.deposit(accountNumber, Double.parseDouble(commandArray[2]));
     }
 
     private static void withdrawMoney(String[] commandArray) {
-
+        AccountNumber accountNumber = new AccountNumber(commandArray[1]);
+        accountDatabase.withdraw(accountNumber, Double.parseDouble(commandArray[2]));
     }
     public static void main(String[] args) {
 

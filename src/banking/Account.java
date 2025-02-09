@@ -1,5 +1,7 @@
 package banking;
 
+import java.text.DecimalFormat;
+
 /**
  * The banking.Account class holds the information regarding a bank account
  * The account number, banking.Profile object of the holder, and the balance are held in each account
@@ -12,6 +14,8 @@ public class Account implements Comparable<Account> {
     private AccountNumber number; //banking.AccountNumber object with information about 9-digit number that represents bank account
 
     private Profile holder; //banking.Profile object with information about account holder
+
+    private static DecimalFormat df = new DecimalFormat("#,##0.00");
 
     /**
      * The amount of money in the checking/savings/money market account
@@ -36,6 +40,13 @@ public class Account implements Comparable<Account> {
         this.holder = null;
     }
 
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setType(AccountType type) {
+        number.setType(type);
+    }
 
 
     /**
@@ -73,6 +84,10 @@ public class Account implements Comparable<Account> {
         return this.holder.getLastName();
     }
 
+    public Date getDateOfBirth() {
+        return this.holder.getDateOfBirth();
+    }
+
 
     /**
      * Compares the banking.Account Numbers of two accounts
@@ -98,7 +113,7 @@ public class Account implements Comparable<Account> {
      */
     @Override
     public String toString() {
-        return "Account#[" + this.number + "] Holder[" + this.holder + "] Balance[" + this.balance + "]";
+        return "Account#[" + this.number + "] Holder[" + this.holder + "] Balance[$" + df.format(this.balance) + "] Branch[" + this.getAccountNumber().getBranch() + "]";
     }
 
     /**
@@ -112,7 +127,7 @@ public class Account implements Comparable<Account> {
     public boolean equals(Object obj) {
         if (obj instanceof Account) {
             Account other = (Account) obj;
-            return other.number.equals(this.number) || other.holder.equals(this.holder);
+            return other.number.equals(this.number) || (other.holder.equals(this.holder) && this.number.getType() == other.number.getType());
         }
         return false;
     }

@@ -67,7 +67,7 @@ public class Profile implements Comparable<Profile>{
     public boolean equals(Object obj) {
         if (obj instanceof Profile) {
             Profile other = (Profile) obj;
-            return this.firstName.equals(other.firstName) && this.lastName.equals(other.lastName);
+            return this.firstName.equalsIgnoreCase(other.firstName) && this.lastName.equalsIgnoreCase(other.lastName) && this.dateOfBirth.equals(other.dateOfBirth);
         }
         return false;
     }

@@ -1,7 +1,7 @@
 package banking;
 
 /**
- * The banking.AccountType class holds the information regarding all the different types of accounts that can be opened at the bank
+ * The AccountType class holds the information regarding all the different types of accounts that can be opened at the bank
  * Each two-digit account type represents a different type
  *
  * @author Vishal Saravanan, Yining Chen
@@ -16,14 +16,20 @@ public enum AccountType {
 
     AccountType(String code) {
         this.code = code;
-    }
+    } //constructor
 
+    /**
+     * Returns a 2-digit String representation of the AccountType
+     * Checking(01), Savings(02), and Money_Market(03)
+     *
+     * @return 2-digit String representation of the AccountType
+     */
     public String getCode() {
-        return code;
+        return this.code;
     }
 
     /**
-     * Converts banking.AccountType to a string that can be printed
+     * Converts AccountType to a string that can be printed
      *
      * @return the 2-digit account type as a String
      */

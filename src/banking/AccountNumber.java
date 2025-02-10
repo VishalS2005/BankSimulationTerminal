@@ -34,14 +34,14 @@ public class AccountNumber implements Comparable<AccountNumber> {
 
         // Find matching branch
         for (Branch branch : Branch.values()) {
-            if (branch.toString().equalsIgnoreCase(branchCode)) {
+            if (branch.getBranchCode().equalsIgnoreCase(branchCode)) {
                 this.branch = branch;
                 break;
             }
         }
         // Find matching account type
         for (AccountType type : AccountType.values()) {
-            if (type.toString().equalsIgnoreCase(typeCode)) {
+            if (type.getCode().equalsIgnoreCase(typeCode)) {
                 this.type = type;
                 break;
             }
@@ -105,6 +105,7 @@ public class AccountNumber implements Comparable<AccountNumber> {
         System.out.println(RANDOM.nextInt(9999));
         System.out.println(RANDOM.nextInt(9999));
         System.out.println(RANDOM.nextInt(9999));
-
+        AccountNumber number =  new AccountNumber("100016789");
+        System.out.println(number);
     }
 }

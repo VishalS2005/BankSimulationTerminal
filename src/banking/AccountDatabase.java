@@ -36,6 +36,15 @@ public class AccountDatabase {
         return -1;
     }
 
+    public int find(AccountNumber accountNumber) {
+        for(int i = 0; i < this.size; i++) {
+            if(this.accounts[i].getAccountNumber().equals(accountNumber)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     /**
      * Resizes the original database by increasing the size of the array that holds the banking.Account objects by 4
      * Creates a temporary array with the new length and replaces the old array
@@ -134,18 +143,23 @@ public class AccountDatabase {
      * false otherwise
      */
     public boolean withdraw(AccountNumber number, double amount) {
-        for (int i = 0; i < size; i++) {
-            if (this.accounts[i].getAccountNumber().equals(number)) {
-                if(this.accounts[i].getBalance() >= amount) {
-                    this.accounts[i].withdraw(amount);
-                    if(this.accounts[i].getBalance() < 2000 && this.accounts[i].getAccountNumber().getType().equals(AccountType.MONEY_MARKET)) {
-                        this.accounts[i].setType(AccountType.SAVINGS);
-                    }
-                    return true;
-                }
-            }
+        int index = find(number);
+        if(index == -1) {
+            return false;
         }
-        return false;
+        accounts[index].withdraw(amount);
+        if(accounts[index].getBalance() < 2000 && accounts[index].getType() == AccountType.MONEY_MARKET) {
+            accounts[index].setAccountType(AccountType.SAVINGS);
+        }
+        return true;
+    }
+
+    public boolean hasSufficientFunds(int index, double amount) {
+        return accounts[index].getBalance() >= amount;
+    }
+
+    public boolean willDowngrade(int index, double amount) {
+        return accounts[index].getBalance() - amount < 2000 && accounts[index].getType() == AccountType.MONEY_MARKET;
     }
 
     /**

@@ -44,10 +44,13 @@ public class Account implements Comparable<Account> {
         return balance;
     }
 
-    public void setType(AccountType type) {
-        number.setType(type);
+    public AccountType getType() {
+        return number.getType();
     }
 
+    public void setAccountType(AccountType type) {
+        number.setType(type);
+    }
 
     /**
      * Takes money out of the account and updates the balance of an account

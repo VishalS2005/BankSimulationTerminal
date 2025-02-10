@@ -1,5 +1,6 @@
 package banking;
 
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 /**
@@ -11,6 +12,10 @@ import java.util.Scanner;
 
 public class TransactionManager {
     private static final AccountDatabase accountDatabase = new AccountDatabase();
+
+    private static DecimalFormat df = new DecimalFormat("#,##0.00");
+
+
 
     public static void run() {
         System.out.println("Transaction Manager is running.");
@@ -196,14 +201,52 @@ public class TransactionManager {
 
 
     private static void depositMoney(String[] commandArray) {
-        AccountNumber accountNumber = new AccountNumber(commandArray[1]);
-        accountDatabase.deposit(accountNumber, Double.parseDouble(commandArray[2]));
+        try {
+            double depositAmount = Double.parseDouble(commandArray[2]);
+            if(depositAmount <= 0) {
+                System.out.println(depositAmount + " - deposit amount cannot be 0 or negative.");
+                return;
+            }
+            AccountNumber accountNumber = new AccountNumber(commandArray[1]);
+            accountDatabase.deposit(accountNumber, depositAmount);
+            System.out.println("$" + df.format(depositAmount) +  " deposited to " + accountNumber);
+        } catch (NumberFormatException e) {
+            System.out.println("For input string: \"" + commandArray[2] + "\" - not a valid amount.");
+        }
+
+
     }
 
     private static void withdrawMoney(String[] commandArray) {
-        AccountNumber accountNumber = new AccountNumber(commandArray[1]);
-        accountDatabase.withdraw(accountNumber, Double.parseDouble(commandArray[2]));
+        try {
+            double withdrawalAmount = Double.parseDouble(commandArray[2]);
+            if(withdrawalAmount <= 0) {
+                System.out.println(withdrawalAmount + " withdrawal amount cannot be 0 or negative.");
+                return;
+            }
+            AccountNumber accountNumber = new AccountNumber(commandArray[1]);
+
+            int index = accountDatabase.find(accountNumber);
+            if(index == -1) {
+                System.out.println(accountNumber + " does not exist.");
+                return;
+            }
+            if(!accountDatabase.hasSufficientFunds(index, withdrawalAmount)) {
+                System.out.println(accountNumber + " - insufficient funds.");
+                return;
+            }
+            if(accountDatabase.willDowngrade(index, withdrawalAmount)) {
+                System.out.print(accountNumber + " is downgraded to SAVINGS - ");
+            }
+            System.out.println("$" + df.format(withdrawalAmount) +  " withdrawn from " + accountNumber);
+            accountDatabase.withdraw(accountNumber, withdrawalAmount);
+        } catch (NumberFormatException e) {
+            System.out.println("For input string: \"" + commandArray[2] + "\" - not a valid amount.");
+        }
+
+
     }
+
     public static void main(String[] args) {
 
     }

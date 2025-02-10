@@ -15,9 +15,10 @@ public class Account implements Comparable<Account> {
 
     private Profile holder; //banking.Profile object with information about account holder
 
-    private static final DecimalFormat df = new DecimalFormat("#,##0.00");
-
     private double balance; //amount of money currently in bank account
+
+
+    private static final DecimalFormat df = new DecimalFormat("#,##0.00");
 
     public Account(Branch branch, AccountType type, Profile holder, double balance) {
         this.number = new AccountNumber(branch, type);

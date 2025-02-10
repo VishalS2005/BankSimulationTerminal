@@ -17,25 +17,6 @@ public class AccountNode {
         this.next = null;
     }
 
-
-    /**
-     * Gets the banking.Account stored in the banking.AccountNode
-     *
-     * @return the banking.Account being accessed
-     */
-    public Account getAccount() {
-        return this.Account;
-    }
-
-    /**
-     * Replaces the banking.Account stored in the banking.AccountNode with the banking.Account provided
-     *
-     * @param account that will replace the account that is already in the banking.AccountNode
-     */
-    public void setAccount(Account account) {
-        this.Account = account;
-    }
-
     /**
      * Gets the banking.AccountNode that is being pointed to
      *

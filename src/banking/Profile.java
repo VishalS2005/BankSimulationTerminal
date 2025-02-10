@@ -30,21 +30,23 @@ public class Profile implements Comparable<Profile>{
         return dateOfBirth;
     }
 
-    /**
-     * Compares this banking.Profile to another banking.Profile based on their full names
-     * Concatenates the first and last names of both profile and compares the resulting strings.
-     *
-     * @param other banking.Profile being compared with
-     * @return 0 if the full names are equal,
-     * a negative integer if this banking.Profile's full name comes before the other banking.Profile's full name,
-     * or a positive integer if this banking.Profile's full name comes after the other banking.Profile's full name
-     */
+
     @Override
     public int compareTo(Profile other) {
+        // Compare first by full name
         String name = this.firstName + this.lastName;
         String otherName = other.firstName + other.lastName;
-        return name.compareTo(otherName);
+        int nameComparison = name.compareTo(otherName);
+
+        // If names are not equal, return the comparison result
+        if (nameComparison != 0) {
+            return nameComparison;
+        }
+
+        // If names are equal, compare by date of birth
+        return this.dateOfBirth.compareTo(other.dateOfBirth);
     }
+
 
     /**
      * Converts banking.Profile to a string that can be printed

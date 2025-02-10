@@ -27,7 +27,7 @@ public class TransactionManager {
                 continue;
             }
             if(commandArray[0].equals("Q")) {
-                System.out.println("Transaction Manager is terminated.  ");
+                System.out.println("Transaction Manager is terminated.");
                 return;
             }
             processCommand(commandArray);

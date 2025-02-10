@@ -62,20 +62,9 @@ public class AccountDatabase {
         this.accounts = newAccounts;
     }
 
-    /**
-     * Iterates through the banking.AccountDatabase to check for an account
-     *
-     * @param account that is being searched for in the banking.AccountDatabase
-     * @return true if the account is found in the database,
-     * false otherwise
-     */
+
     public boolean contains(Account account) {
-        for(int i = 0; i < this.size; i++) {
-            if(this.accounts[i].equals(account)) {
-                return true;
-            }
-        }
-        return false;
+        return find(account) != NOT_FOUND;
     }
 
     public boolean contains(AccountNumber accountNumber) {

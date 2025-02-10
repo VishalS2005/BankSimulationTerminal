@@ -1,7 +1,7 @@
 package banking;
 
 /**
- * The banking.AccountDatabase class holds the information regarding all the bank accounts
+ * The AccountDatabase class holds the information regarding all the bank accounts
  * A new account is always added to the end of the array. An instance of this class is a growable list
  * with an initial array capacity of 4, and it automatically increases the capacity by 4 whenever it is full.
  * The list does not decrease in capacity.
@@ -25,7 +25,7 @@ public class AccountDatabase {
     }
 
     /**
-     * Searches for an account in the account database
+     * Searches for an Account in the AccountDatabase using Account
      *
      * @param account that is being searched for
      * @return index of the account in the account database when found,
@@ -40,6 +40,13 @@ public class AccountDatabase {
         return NOT_FOUND;
     }
 
+    /**
+     * Searches for an Account in the AccountDatabase using AccountNumber
+     *
+     * @param accountNumber that is being searched for
+     * @return index of the Account in the AccountDatabase when found,
+     * -1 otherwise
+     */
     public int find(AccountNumber accountNumber) {
         for(int i = 0; i < this.size; i++) {
             if(this.accounts[i].getAccountNumber().equals(accountNumber)) {
@@ -50,7 +57,7 @@ public class AccountDatabase {
     }
 
     /**
-     * Resizes the original database by increasing the size of the array that holds the banking.Account objects by 4
+     * Resizes the original database by increasing the size of the array that holds the Account objects by 4
      * Creates a temporary array with the new length and replaces the old array
      */
     private void grow() {
@@ -62,11 +69,24 @@ public class AccountDatabase {
         this.accounts = newAccounts;
     }
 
-
+    /**
+     * Searches through the AccountDatabase for an Account
+     *
+     * @param account that is being searched for
+     * @return true if Account is found in AccountDatabase
+     * false otherwise
+     */
     public boolean contains(Account account) {
         return find(account) != NOT_FOUND;
     }
 
+    /**
+     * Searches through the AccountDatabase for an Account using accountNumber
+     *
+     * @param accountNumber that is being searched for
+     * @return true if Account is found in AccountDatabase
+     * false otherwise
+     */
     public boolean contains(AccountNumber accountNumber) {
         for(int i = 0; i < this.size; i++) {
             if(this.accounts[i].getAccountNumber().equals(accountNumber)) {
@@ -76,18 +96,37 @@ public class AccountDatabase {
         return false;
     }
 
+    /**
+     * Searches through the AccountDatabase for an Account based on first name, last name, dateOfBirth, and account type
+     *
+     * @param firstName String that is being searched for, comparison is case-insensitive
+     * @param lastName String that is being searched for, comparison is case-insensitive
+     * @param dateOfBirth object that is being searched for
+     * @param type AccountType object that is being searched for
+     * @return true if Account is found in AccountDatabase
+     * false otherwise
+     */
     public boolean contains(String firstName, String lastName, Date dateOfBirth, AccountType type) {
         for(int i = 0; i < this.size; i++) {
-            if(this.accounts[i].getFirstName().equalsIgnoreCase(firstName) &&
-                    this.accounts[i].getLastName().equalsIgnoreCase(lastName) &&
-                    this.accounts[i].getAccountNumber().getType().equals(type) &&
-                    this.accounts[i].getDateOfBirth().equals(dateOfBirth)) {
+            if(this.accounts[i].getFirstName().equalsIgnoreCase(firstName)
+               && this.accounts[i].getLastName().equalsIgnoreCase(lastName)
+               && this.accounts[i].getAccountNumber().getType().equals(type)
+               && this.accounts[i].getDateOfBirth().equals(dateOfBirth)) {
                 return true;
             }
         }
         return false;
     }
 
+    /**
+     * Searches through the AccountDatabase for an Account based on first name, last name, and dateOfBirth
+     *
+     * @param firstName String that is being searched for
+     * @param lastName String that is being searched for
+     * @param dateOfBirth object that is being searched for
+     * @return true if Account is found in AccountDatabase
+     * false otherwise
+     */
     public boolean contains(String firstName, String lastName, Date dateOfBirth) {
         for(int i = 0; i < this.size; i++) {
             if(this.accounts[i].getFirstName().equalsIgnoreCase(firstName) &&
@@ -100,11 +139,11 @@ public class AccountDatabase {
     }
 
     /**
-     * Adds a banking.Account to the banking.AccountDatabase
+     * Adds a Account to the AccountDatabase
      * Checks for duplicate accounts and returns if there is one found
-     * Checks size and resizes as needed to make space for the new banking.Account
+     * Checks size and resizes as needed to make space for the new Account
      *
-     * @param account that is being added to banking.AccountDatabase
+     * @param account being added to AccountDatabase
      */
     public void add(Account account) {
         if(this.contains(account)) {
@@ -119,13 +158,13 @@ public class AccountDatabase {
     }
 
     /**
-     * Removes a banking.Account to the banking.AccountDatabase
-     * Checks if the account to be removed is in the banking.AccountDatabase and returns if it is not
-     * Adds removed banking.Account to the archive before deleting the banking.Account
-     * Replaces banking.Account being deleted with the last banking.Account
-     * Updates the size of the banking.AccountDatabase
+     * Removes a Account to the AccountDatabase
+     * Checks if the account to be removed is in the AccountDatabase and returns if it is not
+     * Adds removed Account to the archive before deleting the Account
+     * Replaces Account being deleted with the last Account
+     * Updates the size of the AccountDatabase
      *
-     * @param account that is being added to banking.AccountDatabase
+     * @param account that is being added to AccountDatabase
      */
     public void remove(Account account) {
         int index = find(account.getAccountNumber()); //represents index of account
@@ -137,16 +176,26 @@ public class AccountDatabase {
         accounts[index] = accounts[size - 1];
         accounts[size - 1] = null;
         size--;
-
     }
 
+    /**
+     * Removes a Account to the AccountDatabase
+     * Checks if the account to be removed is in the AccountDatabase and returns if it is not
+     * Adds removed Account to the archive before deleting the Account
+     * Replaces Account being deleted with the last Account
+     * Updates the size of the AccountDatabase
+     *
+     * @param firstName of the Account
+     * @param lastName of the Account
+     * @param dateOfBirth of the Account
+     */
     public void remove (String firstName, String lastName, Date dateOfBirth) {
         for(int i = 0; i < this.size; i++) {
-            if(this.accounts[i].getFirstName().equalsIgnoreCase(firstName) &&
-                    this.accounts[i].getLastName().equalsIgnoreCase(lastName) &&
-                    this.accounts[i].getDateOfBirth().equals(dateOfBirth)) {
-                this.remove(accounts[i]);
-                i--; //check the last element since when removing, last element is switched with current
+            if(this.accounts[i].getFirstName().equalsIgnoreCase(firstName)
+               && this.accounts[i].getLastName().equalsIgnoreCase(lastName)
+               && this.accounts[i].getDateOfBirth().equals(dateOfBirth)) {
+                  this.remove(accounts[i]);
+                  i--; //check the last element since when removing, last element is switched with current
             }
         }
     }
@@ -154,7 +203,7 @@ public class AccountDatabase {
     /**
      * Checks if money can be withdrawn from an account
      *
-     * @param number banking.AccountNumber that identifies the account
+     * @param number AccountNumber that identifies the account
      * @param amount value of money that will be withdrawn
      * @return true if the amount can be withdrawn
      * false otherwise
@@ -180,10 +229,10 @@ public class AccountDatabase {
     }
 
     /**
-     * Deposits money into a banking.Account which will increase the account balance
-     * Searches through the banking.AccountDatabase for the banking.Account before depositing the amount of money into that banking.Account
+     * Deposits money into a Account which will increase the account balance
+     * Searches through the AccountDatabase for the Account before depositing the amount of money into that Account
      *
-     * @param number banking.AccountNumber that identifies the account
+     * @param number AccountNumber that identifies the account
      * @param amount value of money that will be deposited
      */
     public void deposit(AccountNumber number, double amount) {
@@ -196,7 +245,7 @@ public class AccountDatabase {
     }
 
     /**
-     * Prints all the Accounts that have been closed and are in the banking.Archive
+     * Prints all the Accounts that have been closed and are in the Archive
      */
     public void printArchive() {
         this.archive.print();
@@ -288,7 +337,7 @@ public class AccountDatabase {
 
 
     /**
-     * Prints all the Accounts in the banking.AccountDatabase
+     * Prints all the Accounts in the AccountDatabase
      */
     public void print() {
         for(int i = 0; i < this.size; i++) {

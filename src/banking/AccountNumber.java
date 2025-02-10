@@ -53,11 +53,11 @@ public class AccountNumber implements Comparable<AccountNumber> {
     }
 
     public Branch getBranch() {
-        return branch;
+        return this.branch;
     }
 
     public AccountType getType() {
-        return type;
+        return this.type;
     }
 
     public void setType(AccountType type) {

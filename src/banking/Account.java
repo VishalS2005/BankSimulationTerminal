@@ -3,49 +3,66 @@ package banking;
 import java.text.DecimalFormat;
 
 /**
- * The banking.Account class holds the information regarding a bank account
- * The account number, banking.Profile object of the holder, and the balance are held in each account
+ * The Account class holds the information regarding a bank account
+ * The account number, Profile object of the holder, and the balance are held in each account
  *
  * @author Vishal Saravanan, Yining Chen
  */
 
 public class Account implements Comparable<Account> {
 
-    private AccountNumber number; //banking.AccountNumber object with information about 9-digit number that represents bank account
+    private AccountNumber number; //AccountNumber object with information about 9-digit number that represents bank account
 
-    private Profile holder; //banking.Profile object with information about account holder
+    private Profile holder; //Profile object with information about account holder
 
     private double balance; //amount of money currently in bank account
 
 
-    private static final DecimalFormat df = new DecimalFormat("#,##0.00");
+    private static final DecimalFormat df = new DecimalFormat("#,##0.00"); //formatted in a readable manner for money
 
-    public Account(Branch branch, AccountType type, Profile holder, double balance) {
+    public Account(Branch branch, AccountType type, Profile holder, double balance) { //constructor
         this.number = new AccountNumber(branch, type);
         this.holder = holder;
         this.balance = balance;
     }
 
-    public Account(Branch branch, AccountType type, Profile holder) {
+    public Account(Branch branch, AccountType type, Profile holder) { //constructor
         this.number = new AccountNumber(branch, type);
         this.holder = holder;
     }
 
-    public Account(AccountNumber number) {
+    public Account(AccountNumber number) { //constructor
         this.number = number;
         this.holder = null;
     }
 
+    /**
+     * Returns a double value that represents the balance of an Account
+     *
+     * @return balance of an Account
+     */
     public double getBalance() {
-        return balance;
+        return this.balance;
     }
 
+    /**
+     * Returns a 2-digit AccountType object representation of the AccountType
+     * Checking(01), Savings(02), and Money_Market(03)
+     *
+     * @return AccountType of the account
+     */
     public AccountType getType() {
-        return number.getType();
+        return this.number.getType();
     }
 
+    /**
+     * Changes the 2-digit AccountType object representation of the AccountType to parameter input 'type'
+     * Checking(01), savings(02), or money market account(03)
+     *
+     * @param type 2-digit AccountType object representation of account type
+     */
     public void setAccountType(AccountType type) {
-        number.setType(type);
+        this.number.setType(type);
     }
 
     /**
@@ -67,26 +84,49 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Returns the banking.AccountNumber associated with this banking.Account.
+     * Returns the AccountNumber object associated with this Account.
      *
-     * @return the banking.AccountNumber of this banking.Account
+     * @return the AccountNumber object of this Account
      */
     public AccountNumber getAccountNumber() {
         return this.number;
     }
 
+    /**
+     * Returns a string that represents the first name in an Account
+     *
+     * @return first name of an Account
+     */
     public String getFirstName() {
         return this.holder.getFirstName();
     }
 
+    /**
+     * Returns a string that represents the last name in an Account
+     *
+     * @return last name of an Account
+     */
     public String getLastName() {
         return this.holder.getLastName();
     }
 
+    /**
+     * Returns a date of birth of Account holder
+     *
+     * @return Date object representation of date of birth
+     */
     public Date getDateOfBirth() {
         return this.holder.getDateOfBirth();
     }
 
+    /**
+     * Compares two accounts by the AccountType parameter
+     *
+     * @param other Account being compared to
+     * @return 0 if the AccountType of both accounts are the same,
+     * -1 if first AccountType is less than second,
+     * 1 if first AccountType is greater than second
+     */
     public int compareByAccountType(Account other) {
         int cmp = this.number.getType().compareTo(other.number.getType());
         if (cmp != 0) {
@@ -95,7 +135,18 @@ public class Account implements Comparable<Account> {
         return this.getAccountNumber().compareTo(other.getAccountNumber());
     }
 
+    /**
+     * Compares two accounts by the Branch parameter
+     * First checks if the Accounts are the same county before checking the Branch
+     * Comparison is case-insensitive
+     *
+     * @param other Account being compared to
+     * @return 0 if the Branch of both accounts are the same,
+     * -1 if first Branch is less than second,
+     * 1 if first Branch is greater than second
+     */
     public int compareByBranch(Account other) {
+        //gets the String representation of county based on the AccountNumber of the holder
         String countyA = this.getAccountNumber().getBranch().getCounty();
         String countyB = other.getAccountNumber().getBranch().getCounty();
 
@@ -103,23 +154,29 @@ public class Account implements Comparable<Account> {
         if (countyComparison != 0) {
             return countyComparison;
         }
+        //County is the same, so now compare the Branch
 
         String cityA = this.getAccountNumber().getBranch().name();
         String cityB = other.getAccountNumber().getBranch().name();
         return cityA.compareToIgnoreCase(cityB);
     }
 
+    /**
+     * Account's balance parameter is changed to 0
+     */
     public void emptyBalance() {
         this.balance = 0;
     }
 
     /**
-     * Compares the banking.Account Numbers of two accounts
+     * Compares the AccountNumber of two accounts
+     * First checks the first name, last name, and date of birth and returns if not equal to 'other'
      *
-     * @param other banking.Account being compared with
-     * @return 0 if banking.Account Numbers are equal,
-     * -1 if first account is less than second account,
-     * 1 if first account is greater than second account
+     *
+     * @param other AccountNumber being compared with
+     * @return 0 if AccountNumber are equal,
+     * negative integer if first AccountNumber is less than AccountNumber,
+     * positive integer if first AccountNumber is greater than AccountNumber
      */
     @Override
     public int compareTo(Account other) {
@@ -144,9 +201,9 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Converts banking.Account to a string that can be printed
+     * Converts Account to a string that can be printed
      *
-     * @return a string that contains the banking.Account Number, the banking.Account Holder, and the banking.Account Balance
+     * @return a string that contains the Account Number, the Account Holder, and the Account Balance
      */
     @Override
     public String toString() {
@@ -154,10 +211,10 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Compares two banking.Account objects for equality
+     * Compares two Account objects for equality
      *
-     * @param obj other banking.Account being checked for equality
-     * @return true if they are the same object: banking.Account object is compared using the banking.Account Number
+     * @param obj other Account being checked for equality
+     * @return true if they are the same object: Account object is compared using the Account Number
      * false otherwise
      */
     @Override

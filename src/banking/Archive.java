@@ -31,11 +31,13 @@ public class Archive {
      * Every banking.Account Number, Holder, and Balance of the banking.Account are printed from the banking.Archive
      */
     public void print() {
+        System.out.println("\n*List of closed accounts in the archive.");
         AccountNode current = first; //current is the variable used to iterate through the linked list, first
         while(current != null) {
             System.out.println(current);
             current = current.getNext();
         }
+        System.out.println("*end of list.\n");
     }
 
 }

@@ -131,7 +131,7 @@ public class Account implements Comparable<Account> {
         if (cmp != 0) {
             return cmp;
         }
-        // Compare dates of birth (assuming Date implements Comparable)
+        // Compare dates of birth
         cmp = this.getDateOfBirth().compareTo(other.getDateOfBirth());
         if (cmp != 0) {
             return cmp;

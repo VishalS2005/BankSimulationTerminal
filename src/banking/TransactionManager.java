@@ -27,7 +27,7 @@ public class TransactionManager {
                 continue;
             }
             if(commandArray[0].equals("Q")) {
-                System.out.println("Transaction Manager is terminated.");
+                System.out.println("Transaction Manager is terminated.  ");
                 return;
             }
             processCommand(commandArray);
@@ -225,7 +225,7 @@ public class TransactionManager {
             String lastName = commandArray[2];
             Date dateOfBirth = getDate(commandArray[3]);
             if(!accountDatabase.contains(firstName, lastName, dateOfBirth)) {
-                System.out.println(firstName + dateOfBirth +  " does not have any accounts in the database.");
+                System.out.println(firstName + " " + lastName + " " + dateOfBirth +  " does not have any accounts in the database.");
                 return;
             }
             accountDatabase.remove(firstName, lastName, dateOfBirth);

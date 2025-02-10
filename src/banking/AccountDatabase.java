@@ -153,10 +153,11 @@ public class AccountDatabase {
 
     public void remove (String firstName, String lastName, Date dateOfBirth) {
         for(int i = 0; i < this.size; i++) {
-            if(this.accounts[i].getFirstName().equals(firstName) &&
-                    this.accounts[i].getLastName().equals(lastName) &&
+            if(this.accounts[i].getFirstName().equalsIgnoreCase(firstName) &&
+                    this.accounts[i].getLastName().equalsIgnoreCase(lastName) &&
                     this.accounts[i].getDateOfBirth().equals(dateOfBirth)) {
                 this.remove(accounts[i]);
+                i--; //check the last element since when removing, last element is switched with current
             }
         }
     }

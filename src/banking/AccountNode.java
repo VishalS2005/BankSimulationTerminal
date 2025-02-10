@@ -10,19 +10,13 @@ public class AccountNode {
     private AccountNode next; //pointer to the next banking.AccountNode
     private Account Account;  //banking.Account object with account number, profile of holder, and balance
 
-    public AccountNode() { //constructor
-        next = null;
-        Account = null;
-    }
+
 
     public AccountNode(Account account) { //constructor
         this.Account = account;
+        this.next = null;
     }
 
-    public AccountNode(Account account, AccountNode next) { //constructor
-        this.Account = account;
-        this.next = next;
-    }
 
     /**
      * Gets the banking.Account stored in the banking.AccountNode

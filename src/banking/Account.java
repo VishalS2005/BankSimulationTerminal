@@ -15,13 +15,8 @@ public class Account implements Comparable<Account> {
 
     private Profile holder; //banking.Profile object with information about account holder
 
-    private static DecimalFormat df = new DecimalFormat("#,##0.00");
+    private static final DecimalFormat df = new DecimalFormat("#,##0.00");
 
-    /**
-     * The amount of money in the checking/savings/money market account
-     * Money market savings accounts must maintain a minimum balance of $2,000.
-     * If the account balance falls under the minimum, the account will be downgraded to a regular savings account.
-     */
     private double balance; //amount of money currently in bank account
 
     public Account(Branch branch, AccountType type, Profile holder, double balance) {
@@ -91,6 +86,31 @@ public class Account implements Comparable<Account> {
         return this.holder.getDateOfBirth();
     }
 
+    public int compareByAccountType(Account other) {
+        int cmp = this.number.getType().compareTo(other.number.getType());
+        if (cmp != 0) {
+            return cmp;
+        }
+        return this.getAccountNumber().compareTo(other.getAccountNumber());
+    }
+
+    public int compareByBranch(Account other) {
+        String countyA = this.getAccountNumber().getBranch().getCounty();
+        String countyB = other.getAccountNumber().getBranch().getCounty();
+
+        int countyComparison = countyA.compareToIgnoreCase(countyB);
+        if (countyComparison != 0) {
+            return countyComparison;
+        }
+
+        String cityA = this.getAccountNumber().getBranch().name();
+        String cityB = other.getAccountNumber().getBranch().name();
+        return cityA.compareToIgnoreCase(cityB);
+    }
+
+    public void emptyBalance() {
+        this.balance = 0;
+    }
 
     /**
      * Compares the banking.Account Numbers of two accounts
@@ -102,11 +122,24 @@ public class Account implements Comparable<Account> {
      */
     @Override
     public int compareTo(Account other) {
-        if (this.balance > other.balance)
-            return 1;
-        if (this.balance < other.balance)
-            return -1;
-        return 0;
+        int cmp = this.getLastName().compareToIgnoreCase(other.getLastName());
+        if (cmp != 0) {
+            return cmp;
+        }
+        // Compare first names, ignoring case
+        cmp = this.getFirstName().compareToIgnoreCase(other.getFirstName());
+        if (cmp != 0) {
+            return cmp;
+        }
+        // Compare dates of birth (assuming Date implements Comparable)
+        cmp = this.getDateOfBirth().compareTo(other.getDateOfBirth());
+        if (cmp != 0) {
+            return cmp;
+        }
+        // Compare account numbers numerically.
+        int aNumber = Integer.parseInt(this.getAccountNumber().toString());
+        int bNumber = Integer.parseInt(other.getAccountNumber().toString());
+        return aNumber - bNumber;
     }
 
     /**

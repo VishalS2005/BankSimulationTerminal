@@ -49,19 +49,43 @@ public class TransactionManager {
                 withdrawMoney(commandArray);
                 break;
             case "P":
-                accountDatabase.print();
+                if(accountDatabase.isEmpty()) {
+                    System.out.println("Account database is empty!");
+                }
+                else {
+                    System.out.println("\n*List of accounts in the account database.");
+                    accountDatabase.print();
+                }
                 break;
             case "PA":
                 accountDatabase.printArchive();
                 break;
             case "PB":
-                accountDatabase.printByBranch();
+                if(accountDatabase.isEmpty()) {
+                    System.out.println("Account database is empty!");
+                }
+                else {
+                    System.out.println("\n*List of accounts ordered by branch location (county, city).");
+                    accountDatabase.printByBranch();
+                }
                 break;
             case "PH":
-                accountDatabase.printByHolder();
+                if(accountDatabase.isEmpty()) {
+                    System.out.println("Account database is empty!");
+                }
+                else {
+                    System.out.println("\n*List of accounts ordered by account holder and number.");
+                    accountDatabase.printByHolder();
+                }
                 break;
             case "PT":
-                accountDatabase.printByType();
+                if(accountDatabase.isEmpty()) {
+                    System.out.println("Account database is empty!");
+                }
+                else {
+                    System.out.println("\n*List of accounts ordered by account type and number.");
+                    accountDatabase.printByType();
+                }
                 break;
             default:
                 System.out.println("Invalid command!");
@@ -189,13 +213,23 @@ public class TransactionManager {
 
     private static void closeAccount(String[] commandArray) {
         if(commandArray.length == 2) {
-            accountDatabase.remove(new Account(new AccountNumber(commandArray[1])));
-        }
-        else {
+            AccountNumber accountNumber = new AccountNumber(commandArray[1]);
+            if(!accountDatabase.contains(accountNumber)) {
+                System.out.println(accountNumber + " account does not exist.");
+                return;
+            }
+            accountDatabase.remove(new Account(accountNumber));
+            System.out.println(accountNumber +  " is closed and moved to archive; balance set to 0.");
+        } else {
             String firstName = commandArray[1];
             String lastName = commandArray[2];
             Date dateOfBirth = getDate(commandArray[3]);
+            if(!accountDatabase.contains(firstName, lastName, dateOfBirth)) {
+                System.out.println(firstName + dateOfBirth +  " does not have any accounts in the database.");
+                return;
+            }
             accountDatabase.remove(firstName, lastName, dateOfBirth);
+            System.out.println("All accounts for " + firstName + " " + lastName + " " + dateOfBirth + " are closed and moved to archive; balance set to 0.");
         }
     }
 

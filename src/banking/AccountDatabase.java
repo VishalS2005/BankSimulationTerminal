@@ -14,6 +14,10 @@ public class AccountDatabase {
     private int size; //represents the amount of accounts
     private final Archive archive; //a linked list of closed account
 
+    private static final int NOT_FOUND = -1;
+    private static final int GROW_SIZE = 4;
+
+
     public AccountDatabase() { //constructor
         this.accounts = new Account[4];
         this.size = 0;
@@ -33,7 +37,7 @@ public class AccountDatabase {
                 return i;
             }
         }
-        return -1;
+        return NOT_FOUND;
     }
 
     public int find(AccountNumber accountNumber) {
@@ -42,7 +46,7 @@ public class AccountDatabase {
                 return i;
             }
         }
-        return -1;
+        return NOT_FOUND;
     }
 
     /**
@@ -50,7 +54,7 @@ public class AccountDatabase {
      * Creates a temporary array with the new length and replaces the old array
      */
     private void grow() {
-        int newLength = this.accounts.length + 4; //the new length can hold 4 more accounts than the old length
+        int newLength = this.accounts.length + GROW_SIZE; //the new length can hold 4 more accounts than the old length
         Account[] newAccounts = new Account[newLength];
         for(int i = 0; i < this.size; i++) {
             newAccounts[i] = this.accounts[i];
@@ -74,11 +78,31 @@ public class AccountDatabase {
         return false;
     }
 
+    public boolean contains(AccountNumber accountNumber) {
+        for(int i = 0; i < this.size; i++) {
+            if(this.accounts[i].getAccountNumber().equals(accountNumber)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean contains(String firstName, String lastName, Date dateOfBirth, AccountType type) {
         for(int i = 0; i < this.size; i++) {
             if(this.accounts[i].getFirstName().equalsIgnoreCase(firstName) &&
                     this.accounts[i].getLastName().equalsIgnoreCase(lastName) &&
                     this.accounts[i].getAccountNumber().getType().equals(type) &&
+                    this.accounts[i].getDateOfBirth().equals(dateOfBirth)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean contains(String firstName, String lastName, Date dateOfBirth) {
+        for(int i = 0; i < this.size; i++) {
+            if(this.accounts[i].getFirstName().equalsIgnoreCase(firstName) &&
+                    this.accounts[i].getLastName().equalsIgnoreCase(lastName) &&
                     this.accounts[i].getDateOfBirth().equals(dateOfBirth)) {
                 return true;
             }
@@ -115,10 +139,11 @@ public class AccountDatabase {
      * @param account that is being added to banking.AccountDatabase
      */
     public void remove(Account account) {
-        int index = find(account); //represents index of account
+        int index = find(account.getAccountNumber()); //represents index of account
         if(index == -1) {
             return;
         }
+        accounts[index].emptyBalance();
         archive.add(accounts[index]);
         accounts[index] = accounts[size - 1];
         accounts[size - 1] = null;
@@ -128,7 +153,9 @@ public class AccountDatabase {
 
     public void remove (String firstName, String lastName, Date dateOfBirth) {
         for(int i = 0; i < this.size; i++) {
-            if(this.accounts[i].getFirstName().equals(firstName) && this.accounts[i].getLastName().equals(lastName) && this.accounts[i].getDateOfBirth().equals(dateOfBirth)) {
+            if(this.accounts[i].getFirstName().equals(firstName) &&
+                    this.accounts[i].getLastName().equals(lastName) &&
+                    this.accounts[i].getDateOfBirth().equals(dateOfBirth)) {
                 this.remove(accounts[i]);
             }
         }
@@ -186,28 +213,101 @@ public class AccountDatabase {
     }//print closed accounts
 
 
+
+
     public void printByBranch() {
-        //implement later
+        // Bubble sort: iterate through the array and swap adjacent elements if they are out of order.
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size - i - 1; j++) {
+                if ((accounts[j].compareByBranch(accounts[j + 1])) > 0) {
+                    Account temp = accounts[j];
+                    accounts[j] = accounts[j + 1];
+                    accounts[j + 1] = temp;
+                }
+            }
+        }
+
+        String currentCounty = null;
+
+        for (int i = 0; i < this.size; i++) {
+            Account account = this.accounts[i];
+            String county = account.getAccountNumber().getBranch().getCounty();
+
+            // Print county header when encountering a new county
+            if (currentCounty == null || !currentCounty.equals(county)) {
+                System.out.println("County: " + county);
+                currentCounty = county;
+            }
+
+            System.out.println(account);
+        }
+
+        System.out.println("*end of list.\n");
+
+
+
     }
+
     public void printByHolder() {
-        //implement later
+        // Bubble sort: iterate through the array and swap adjacent elements if they are out of order.
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size - i - 1; j++) {
+                if ((accounts[j].compareTo(accounts[j + 1])) > 0) {
+                    Account temp = accounts[j];
+                    accounts[j] = accounts[j + 1];
+                    accounts[j + 1] = temp;
+                }
+            }
+        }
+
+        print();
     }
+
+
+
+
     public void printByType() {
-        //implement later
+        // Bubble sort by account type, then account number
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size - i - 1; j++) {
+                int typeComparison = accounts[j].compareByAccountType(accounts[j + 1]);
+                if (typeComparison > 0 || (typeComparison == 0 && accounts[j].getAccountNumber().compareTo(accounts[j + 1].getAccountNumber()) > 0)) {
+                    Account temp = accounts[j];
+                    accounts[j] = accounts[j + 1];
+                    accounts[j + 1] = temp;
+                }
+            }
+        }
+        AccountType currentType = null;
+
+        for (int i = 0; i < this.size; i++) {
+            Account account = this.accounts[i];
+            AccountType accountType = account.getAccountNumber().getType();
+
+            // Print type header when encountering a new type
+            if (currentType == null || !currentType.equals(accountType)) {
+                System.out.println("Account Type: " + accountType);
+                currentType = accountType;
+            }
+
+            System.out.println(account);
+        }
+
+        System.out.println("*end of list.\n");
     }
+
 
     /**
      * Prints all the Accounts in the banking.AccountDatabase
      */
     public void print() {
-        if(size == 0) {
-            System.out.println("Account database is empty!");
-            return;
-        }
-        System.out.println("\n*List of accounts in the account database.");
         for(int i = 0; i < this.size; i++) {
             System.out.println(this.accounts[i].toString());
         }
         System.out.println("*end of list.\n");
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
     }
 }

@@ -62,17 +62,12 @@ public class AccountNumber implements Comparable<AccountNumber> {
         this.type = type;
     }
 
-    /**
-     * Compares the serial number portion of two banking.Account Numbers
-     *
-     * @param other account number's serial code being compared with
-     * @return 0 if banking.Account Numbers are equal,
-     * a negative integer if first account serial number is less than second account,
-     * a positive integer if first account serial number is greater than second account
-     */
+
     @Override
     public int compareTo(AccountNumber other) {
-        return this.number.compareTo(other.number); //String compare
+        int aNumber = Integer.parseInt(this.branch.getBranchCode() + this.getType().getCode() + this.number);
+        int bNumber = Integer.parseInt(other.getBranch().getBranchCode() + other.getType().getCode() + other.number);
+        return aNumber - bNumber;
     }
 
     /**

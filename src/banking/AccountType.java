@@ -14,9 +14,15 @@ public enum AccountType {
 
     private final String code; //2-digit code that represents the type of account
 
+    /**
+     * Constructor for AccountType object
+     * Checking(01), Savings(02), and Money_Market(03)
+     *
+     * @param code String representation of the 2-digit account type
+     */
     AccountType(String code) {
         this.code = code;
-    } //constructor
+    }
 
     /**
      * Returns a 2-digit String representation of the AccountType

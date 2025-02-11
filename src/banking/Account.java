@@ -17,52 +17,28 @@ public class Account implements Comparable<Account> {
 
     private double balance; //amount of money currently in bank account
 
-
     private static final DecimalFormat df = new DecimalFormat("#,##0.00"); //formatted in a readable manner for money
 
-    public Account(Branch branch, AccountType type, Profile holder, double balance) { //constructor
+    /**
+     * Constructor for an Account object
+     *
+     * @param branch 3-digit integer representation of a Branch
+     * @param type 2-digit integer representation of the type of Account
+     * @param holder Profile object that represents the full name and date of birth of an Account holder
+     */
+    public Account(Branch branch, AccountType type, Profile holder) {
         this.number = new AccountNumber(branch, type);
         this.holder = holder;
-        this.balance = balance;
     }
 
-    public Account(Branch branch, AccountType type, Profile holder) { //constructor
-        this.number = new AccountNumber(branch, type);
-        this.holder = holder;
-    }
-
-    public Account(AccountNumber number) { //constructor
+    /**
+     * Constructor for an Account object
+     *
+     * @param number 9-digit account number
+     */
+    public Account(AccountNumber number) {
         this.number = number;
         this.holder = null;
-    }
-
-    /**
-     * Returns a double value that represents the balance of an Account
-     *
-     * @return balance of an Account
-     */
-    public double getBalance() {
-        return this.balance;
-    }
-
-    /**
-     * Returns a 2-digit AccountType object representation of the AccountType
-     * Checking(01), Savings(02), and Money_Market(03)
-     *
-     * @return AccountType of the account
-     */
-    public AccountType getType() {
-        return this.number.getType();
-    }
-
-    /**
-     * Changes the 2-digit AccountType object representation of the AccountType to parameter input 'type'
-     * Checking(01), savings(02), or money market account(03)
-     *
-     * @param type 2-digit AccountType object representation of account type
-     */
-    public void setAccountType(AccountType type) {
-        this.number.setType(type);
     }
 
     /**
@@ -84,12 +60,38 @@ public class Account implements Comparable<Account> {
     }
 
     /**
+     * Account's balance parameter is changed to 0
+     */
+    public void emptyBalance() {
+        this.balance = 0;
+    }
+
+    /**
      * Returns the AccountNumber object associated with this Account.
      *
      * @return the AccountNumber object of this Account
      */
     public AccountNumber getAccountNumber() {
         return this.number;
+    }
+
+    /**
+     * Returns a double value that represents the balance of an Account
+     *
+     * @return balance of an Account
+     */
+    public double getBalance() {
+        return this.balance;
+    }
+
+    /**
+     * Returns a 2-digit AccountType object representation of the AccountType
+     * Checking(01), Savings(02), and Money_Market(03)
+     *
+     * @return AccountType of the account
+     */
+    public AccountType getType() {
+        return this.number.getType();
     }
 
     /**
@@ -117,6 +119,16 @@ public class Account implements Comparable<Account> {
      */
     public Date getDateOfBirth() {
         return this.holder.getDateOfBirth();
+    }
+
+    /**
+     * Changes the 2-digit AccountType object representation of the AccountType to parameter input 'type'
+     * Checking(01), savings(02), or money market account(03)
+     *
+     * @param type 2-digit AccountType object representation of account type
+     */
+    public void setAccountType(AccountType type) {
+        this.number.setType(type);
     }
 
     /**
@@ -162,14 +174,7 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Account's balance parameter is changed to 0
-     */
-    public void emptyBalance() {
-        this.balance = 0;
-    }
-
-    /**
-     * Compares the AccountNumber of two accounts
+     * Compares the name and date of birth of two accounts
      * First checks the first name, last name, and date of birth and returns if not equal to 'other'
      *
      *

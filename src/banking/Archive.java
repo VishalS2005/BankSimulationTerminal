@@ -1,22 +1,25 @@
 package banking;
 
 /**
- * banking.Archive will hold Accounts that have been closed
+ * Archive will hold Accounts that have been closed
  *
  * @author Vishal Saravanan, Yining Chen
  */
 
 public class Archive {
-    private AccountNode first; //'first' represents the head node of the linked list of banking.Account objects
+    private AccountNode first; //'first' represents the head node of the linked list of Account objects
 
-    public Archive() { //Initializes an empty banking.Archive with no banking.Account objects.
-        first = null;
+    /**
+     * Constructor for a new Archive that holds all closed Accounts
+     */
+    public Archive() {
+        this.first = null;
     }
 
     /**
-     * Adds a banking.AccountNode object to the front of the linked list instance variable, first
+     * Adds a AccountNode object to the front of the linked list instance variable, first
      *
-     * @param account object that will be used to create a banking.AccountNode and will be added to the front of the linked list instance variable, first
+     * @param account object that will be used to create a AccountNode and will be added to the front of the linked list instance variable, first
      */
     public void add(Account account) {
         AccountNode newNode = new AccountNode(account);
@@ -28,7 +31,7 @@ public class Archive {
 
     /**
      * Traverses through the linked list, first, and prints each account
-     * Every banking.Account Number, Holder, and Balance of the banking.Account are printed from the banking.Archive
+     * Every Account Number, Holder, and Balance of the Account are printed from the Archive
      */
     public void print() {
         System.out.println("\n*List of closed accounts in the archive.");
@@ -39,5 +42,4 @@ public class Archive {
         }
         System.out.println("*end of list.\n");
     }
-
 }

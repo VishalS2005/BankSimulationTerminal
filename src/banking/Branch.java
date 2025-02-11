@@ -18,7 +18,14 @@ public enum Branch {
     private final String branchCode; //3-digit number that represents the branch code
     private final String county; //String that represents the county the branch is located in
 
-    Branch(String zip, String branchCode, String county) { //constructor
+    /**
+     * Constructor for Branch object
+     *
+     * @param zip 5-digit ZIP code that represents location
+     * @param branchCode 3-digit representation of the Branch
+     * @param county String representation of the county
+     */
+    Branch(String zip, String branchCode, String county) {
         this.zip = zip;
         this.branchCode = branchCode;
         this.county = county;

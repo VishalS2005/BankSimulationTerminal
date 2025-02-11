@@ -14,14 +14,170 @@ public class AccountDatabase {
     private int size; //represents the amount of accounts
     private final Archive archive; //a linked list of closed account
 
+    private static final int STARTING_SIZE = 0;
     private static final int NOT_FOUND = -1;
     private static final int GROW_SIZE = 4;
 
-
-    public AccountDatabase() { //constructor
-        this.accounts = new Account[4];
-        this.size = 0;
+    /**
+     * Constructor for AccountDatabase
+     * An AccountDatabase object will hold an array implementation of the Account objects,
+     * the size of the database itself, and a linked list representation of closed accounts
+     *
+     */
+    public AccountDatabase() {
+        this.accounts = new Account[GROW_SIZE];
+        this.size = STARTING_SIZE;
         this.archive = new Archive();
+    }
+
+    /**
+     * Deposits money into an Account which will increase the Account's balance
+     * Searches through the AccountDatabase for the Account before depositing the amount of money into that Account
+     * Does nothing if Account is not found using the number
+     *
+     * @param number AccountNumber that identifies the account
+     * @param amount value of money that will be deposited
+     */
+    public void deposit(AccountNumber number, double amount) {
+        for (int i = 0; i < this.size; i++) {
+            if (this.accounts[i].getAccountNumber().equals(number)) {
+                this.accounts[i].deposit(amount);
+                return;
+            }
+        }
+    }
+
+    /**
+     * Checks if money can be withdrawn from an account
+     * If the AccountType is Money Market and the balance falls below 2000, changes the AccountType to a savings account
+     *
+     * @param number AccountNumber that identifies the Account
+     * @param amount value of money that will be withdrawn
+     * @return true if the amount can be withdrawn
+     * false otherwise
+     */
+    public boolean withdraw(AccountNumber number, double amount) {
+        int index = find(number);
+        if(index == -1) {
+            return false;
+        }
+        this.accounts[index].withdraw(amount);
+        if(this.accounts[index].getBalance() < 2000 && this.accounts[index].getType() == AccountType.MONEY_MARKET) {
+            this.accounts[index].setAccountType(AccountType.SAVINGS);
+        }
+        return true;
+    }
+
+    /**
+     * Resizes the original database by increasing the size of the array that holds the Account objects by 4
+     * Creates a temporary array with the new length and replaces the old array
+     */
+    private void grow() {
+        int newLength = this.accounts.length + GROW_SIZE; //the new length can hold 4 more accounts than the old length
+        Account[] newAccounts = new Account[newLength];
+        for(int i = 0; i < this.size; i++) {
+            newAccounts[i] = this.accounts[i];
+        }
+        this.accounts = newAccounts;
+    }
+
+    /**
+     * Checks if the Account has at least a certain amount of money
+     *
+     * @param index of AccountDatabase that represents an Account being checked
+     * @param amount value of money will be checked
+     * @return true if the amount of money in the account is greater than or equal to how much the user is checking for
+     * false otherwise
+     */
+    public boolean hasSufficientFunds(int index, double amount) {
+        return this.accounts[index].getBalance() >= amount;
+    }
+
+    /**
+     * Checks if the account will downgrade from a Money Market to a savings account after a withdrawal
+     * If the balance of a Money Market account falls below 2000, it will be downgraded
+     *
+     * @param index of AccountDatabase that represents an Account being checked
+     * @param amount value of money that will be withdrawn
+     * @return true if the amount can be withdrawn
+     * false otherwise
+     */
+    public boolean willDowngrade(int index, double amount) {
+        return this.accounts[index].getBalance() - amount < 2000 && this.accounts[index].getType() == AccountType.MONEY_MARKET;
+    }
+
+    /**
+     * Adds an Account to the AccountDatabase
+     * Checks for duplicate accounts and returns if there is one found
+     * Checks size and resizes as needed to make space for the new Account
+     *
+     * @param account being added to AccountDatabase
+     */
+    public void add(Account account) {
+        if(this.contains(account)) {
+            return;
+        }
+        if(this.size == this.accounts.length - 1) {
+            grow();
+        }
+
+        this.accounts[this.size] = account;
+        this.size++;
+    }
+
+    /**
+     * Removes an Account to the AccountDatabase
+     * Checks if the account to be removed is in the AccountDatabase and returns if it is not
+     * Adds removed Account to the archive before deleting the Account
+     * Replaces Account being deleted with the last Account
+     * Updates the size of the AccountDatabase
+     *
+     * @param account that is being added to AccountDatabase
+     */
+    public void remove(Account account) {
+        int index = find(account.getAccountNumber()); //represents index of account
+        if(index == -1) {
+            return;
+        }
+        this.accounts[index].emptyBalance();
+        this.archive.add(this.accounts[index]);
+        this.accounts[index] = this.accounts[this.size - 1];
+        this.accounts[this.size - 1] = null;
+        this.size--;
+    }
+
+    /**
+     * Removes an Account to the AccountDatabase
+     * Checks if the account to be removed is in the AccountDatabase
+     * by checking first name, last name, and date of birth
+     * Calls the remove method that
+     *      * Adds removed Account to the archive before deleting the Account
+     *      * Replaces Account being deleted with the last Account
+     *      * Updates the size of the AccountDatabase
+     *
+     * @param firstName of the Account
+     * @param lastName of the Account
+     * @param dateOfBirth of the Account
+     */
+    public void remove (String firstName, String lastName, Date dateOfBirth) {
+        for(int i = 0; i < this.size; i++) {
+            if (this.accounts[i].getFirstName().equalsIgnoreCase(firstName)
+                    && this.accounts[i].getLastName().equalsIgnoreCase(lastName)
+                    && this.accounts[i].getDateOfBirth().equals(dateOfBirth)) {
+                this.remove(accounts[i]);
+                i--; //check the last element since when removing, last element is switched with current
+            }
+        }
+    }
+
+    /**
+     * Checks the AccountDatabase to determine if it is empty
+     *
+     * @return true if the AccountDatabase has no Accounts
+     * false otherwise
+     */
+    public boolean isEmpty() {
+        return this.size == STARTING_SIZE;
     }
 
     /**
@@ -57,19 +213,6 @@ public class AccountDatabase {
     }
 
     /**
-     * Resizes the original database by increasing the size of the array that holds the Account objects by 4
-     * Creates a temporary array with the new length and replaces the old array
-     */
-    private void grow() {
-        int newLength = this.accounts.length + GROW_SIZE; //the new length can hold 4 more accounts than the old length
-        Account[] newAccounts = new Account[newLength];
-        for(int i = 0; i < this.size; i++) {
-            newAccounts[i] = this.accounts[i];
-        }
-        this.accounts = newAccounts;
-    }
-
-    /**
      * Searches through the AccountDatabase for an Account
      *
      * @param account that is being searched for
@@ -77,7 +220,7 @@ public class AccountDatabase {
      * false otherwise
      */
     public boolean contains(Account account) {
-        return find(account) != NOT_FOUND;
+        return this.find(account) != NOT_FOUND;
     }
 
     /**
@@ -139,205 +282,7 @@ public class AccountDatabase {
     }
 
     /**
-     * Adds a Account to the AccountDatabase
-     * Checks for duplicate accounts and returns if there is one found
-     * Checks size and resizes as needed to make space for the new Account
-     *
-     * @param account being added to AccountDatabase
-     */
-    public void add(Account account) {
-        if(this.contains(account)) {
-            return;
-        }
-        if(this.size == this.accounts.length - 1) {
-            grow();
-        }
-
-        accounts[size] = account;
-        size++;
-    }
-
-    /**
-     * Removes a Account to the AccountDatabase
-     * Checks if the account to be removed is in the AccountDatabase and returns if it is not
-     * Adds removed Account to the archive before deleting the Account
-     * Replaces Account being deleted with the last Account
-     * Updates the size of the AccountDatabase
-     *
-     * @param account that is being added to AccountDatabase
-     */
-    public void remove(Account account) {
-        int index = find(account.getAccountNumber()); //represents index of account
-        if(index == -1) {
-            return;
-        }
-        accounts[index].emptyBalance();
-        archive.add(accounts[index]);
-        accounts[index] = accounts[size - 1];
-        accounts[size - 1] = null;
-        size--;
-    }
-
-    /**
-     * Removes a Account to the AccountDatabase
-     * Checks if the account to be removed is in the AccountDatabase and returns if it is not
-     * Adds removed Account to the archive before deleting the Account
-     * Replaces Account being deleted with the last Account
-     * Updates the size of the AccountDatabase
-     *
-     * @param firstName of the Account
-     * @param lastName of the Account
-     * @param dateOfBirth of the Account
-     */
-    public void remove (String firstName, String lastName, Date dateOfBirth) {
-        for(int i = 0; i < this.size; i++) {
-            if(this.accounts[i].getFirstName().equalsIgnoreCase(firstName)
-               && this.accounts[i].getLastName().equalsIgnoreCase(lastName)
-               && this.accounts[i].getDateOfBirth().equals(dateOfBirth)) {
-                  this.remove(accounts[i]);
-                  i--; //check the last element since when removing, last element is switched with current
-            }
-        }
-    }
-
-    /**
-     * Checks if money can be withdrawn from an account
-     *
-     * @param number AccountNumber that identifies the account
-     * @param amount value of money that will be withdrawn
-     * @return true if the amount can be withdrawn
-     * false otherwise
-     */
-    public boolean withdraw(AccountNumber number, double amount) {
-        int index = find(number);
-        if(index == -1) {
-            return false;
-        }
-        accounts[index].withdraw(amount);
-        if(accounts[index].getBalance() < 2000 && accounts[index].getType() == AccountType.MONEY_MARKET) {
-            accounts[index].setAccountType(AccountType.SAVINGS);
-        }
-        return true;
-    }
-
-    public boolean hasSufficientFunds(int index, double amount) {
-        return accounts[index].getBalance() >= amount;
-    }
-
-    public boolean willDowngrade(int index, double amount) {
-        return accounts[index].getBalance() - amount < 2000 && accounts[index].getType() == AccountType.MONEY_MARKET;
-    }
-
-    /**
-     * Deposits money into a Account which will increase the account balance
-     * Searches through the AccountDatabase for the Account before depositing the amount of money into that Account
-     *
-     * @param number AccountNumber that identifies the account
-     * @param amount value of money that will be deposited
-     */
-    public void deposit(AccountNumber number, double amount) {
-        for (int i = 0; i < size; i++) {
-            if (this.accounts[i].getAccountNumber().equals(number)) {
-                this.accounts[i].deposit(amount);
-                return;
-            }
-        }
-    }
-
-    /**
-     * Prints all the Accounts that have been closed and are in the Archive
-     */
-    public void printArchive() {
-        this.archive.print();
-    }//print closed accounts
-
-
-
-
-    public void printByBranch() {
-        // Bubble sort: iterate through the array and swap adjacent elements if they are out of order.
-        for (int i = 0; i < size - 1; i++) {
-            for (int j = 0; j < size - i - 1; j++) {
-                if ((accounts[j].compareByBranch(accounts[j + 1])) > 0) {
-                    Account temp = accounts[j];
-                    accounts[j] = accounts[j + 1];
-                    accounts[j + 1] = temp;
-                }
-            }
-        }
-
-        String currentCounty = null;
-
-        for (int i = 0; i < this.size; i++) {
-            Account account = this.accounts[i];
-            String county = account.getAccountNumber().getBranch().getCounty();
-
-            // Print county header when encountering a new county
-            if (currentCounty == null || !currentCounty.equals(county)) {
-                System.out.println("County: " + county);
-                currentCounty = county;
-            }
-
-            System.out.println(account);
-        }
-
-        System.out.println("*end of list.\n");
-
-
-
-    }
-
-    public void printByHolder() {
-        // Bubble sort: iterate through the array and swap adjacent elements if they are out of order.
-        for (int i = 0; i < size - 1; i++) {
-            for (int j = 0; j < size - i - 1; j++) {
-                if ((accounts[j].compareTo(accounts[j + 1])) > 0) {
-                    Account temp = accounts[j];
-                    accounts[j] = accounts[j + 1];
-                    accounts[j + 1] = temp;
-                }
-            }
-        }
-
-        print();
-    }
-
-
-
-
-    public void printByType() {
-        // Bubble sort by account type, then account number
-        for (int i = 0; i < size - 1; i++) {
-            for (int j = 0; j < size - i - 1; j++) {
-                int typeComparison = accounts[j].compareByAccountType(accounts[j + 1]);
-                if (typeComparison > 0 || (typeComparison == 0 && accounts[j].getAccountNumber().compareTo(accounts[j + 1].getAccountNumber()) > 0)) {
-                    Account temp = accounts[j];
-                    accounts[j] = accounts[j + 1];
-                    accounts[j + 1] = temp;
-                }
-            }
-        }
-        AccountType currentType = null;
-
-        for (int i = 0; i < this.size; i++) {
-            Account account = this.accounts[i];
-            AccountType accountType = account.getAccountNumber().getType();
-
-            // Print type header when encountering a new type
-            if (currentType == null || !currentType.equals(accountType)) {
-                System.out.println("Account Type: " + accountType);
-                currentType = accountType;
-            }
-
-            System.out.println(account);
-        }
-
-        System.out.println("*end of list.\n");
-    }
-
-
-    /**
-     * Prints all the Accounts in the AccountDatabase
+     * Prints all the Accounts in the AccountDatabase from the beginning of AccountDatabase to the end
      */
     public void print() {
         for(int i = 0; i < this.size; i++) {
@@ -346,7 +291,91 @@ public class AccountDatabase {
         System.out.println("*end of list.\n");
     }
 
-    public boolean isEmpty() {
-        return size == 0;
+    /**
+     * Orders AccountDatabase by the 2-digit String, Branch
+     * Bubble Sort implementation is used to iterate through the array
+     * and swap adjacent elements if they are out of order.
+     * To print, iterate through AccountDatabase and print County followed by City
+     */
+    public void printByBranch() {
+        for (int i = 0; i < this.size - 1; i++) {
+            for (int j = 0; j < this.size - i - 1; j++) {
+                if ((this.accounts[j].compareByBranch(this.accounts[j + 1])) > 0) {
+                    Account temp = this.accounts[j];
+                    this.accounts[j] = this.accounts[j + 1];
+                    this.accounts[j + 1] = temp;
+                }
+            }
+        }
+        String currentCounty = null;
+        for (int i = 0; i < this.size; i++) {
+            Account account = this.accounts[i];
+            String county = account.getAccountNumber().getBranch().getCounty();
+            if (currentCounty == null || !currentCounty.equals(county)) { // Print county header when encountering a new county
+                System.out.println("County: " + county);
+                currentCounty = county;
+            }
+            System.out.println(account);
+        }
+        System.out.println("*end of list.\n");
     }
+
+    /**
+     * Orders AccountDatabase by the name and date of birth of the account
+     * Bubble Sort implementation is used to iterate through the array
+     * and swap adjacent elements if they are out of order.
+     * Calls the print() method
+     */
+    public void printByHolder() {
+        for (int i = 0; i < this.size - 1; i++) {
+            for (int j = 0; j < this.size - i - 1; j++) {
+                if ((this.accounts[j].compareTo(this.accounts[j + 1])) > 0) {
+                    Account temp = this.accounts[j];
+                    this.accounts[j] = this.accounts[j + 1];
+                    this.accounts[j + 1] = temp;
+                }
+            }
+        }
+        this.print();
+    }
+
+    /**
+     * Orders AccountDatabase by the AccountType
+     * Bubble Sort implementation is used to iterate through the array
+     * and swap adjacent elements if they are out of order.
+     * The compareTo method referenced below compares by AccountNumber
+     * Prints organized by AccountType
+     */
+    public void printByType() {
+        for (int i = 0; i < this.size - 1; i++) {
+            for (int j = 0; j < this.size - i - 1; j++) {
+                int typeComparison = this.accounts[j].compareByAccountType(this.accounts[j + 1]);
+                if (typeComparison > 0 || ( typeComparison == 0
+                    && (this.accounts[j].getAccountNumber().compareTo(this.accounts[j + 1].getAccountNumber()) > 0))) {
+                    Account temp = this.accounts[j];
+                    this.accounts[j] = this.accounts[j + 1];
+                    this.accounts[j + 1] = temp;
+                }
+            }
+        }
+        AccountType currentType = null;
+        for (int i = 0; i < this.size; i++) {
+            Account account = this.accounts[i];
+            AccountType accountType = account.getAccountNumber().getType();
+            if (currentType == null || !currentType.equals(accountType)) { // Print type header when encountering a new type
+                System.out.println("Account Type: " + accountType);
+                currentType = accountType;
+            }
+            System.out.println(account);
+        }
+        System.out.println("*end of list.\n");
+    }
+
+    /**
+     * Prints all the Accounts that have been closed and are in the Archive
+     */
+    public void printArchive() {
+        this.archive.print();
+    }
+
 }

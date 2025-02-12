@@ -132,7 +132,7 @@ public class TransactionManager {
     /**
      * Chooses which action to complete depending on a single input line that has been read.
      * VALID COMMANDS: O, C, D, W, P, PA, PB, PH, PT
-     * otherwise will identify that the command was invalid.
+     * Otherwise, will identify that the command was invalid.
      * O --> opens a new Account, if not already there
      * C --> closes an Account, if in the database
      * D --> deposits money into an Account, if in the database
@@ -146,106 +146,81 @@ public class TransactionManager {
      * @param commandArray Holds the input that has been extracted and put into a String array
      */
     private static void processCommand(String[] commandArray) {
-        switch (commandArray[0]) {
-            case "O":
-                openAccount(commandArray);
-                break;
-            case "C":
-                closeAccount(commandArray);
-                break;
-            case "D":
-                depositMoney(commandArray);
-                break;
-            case "W":
-                withdrawMoney(commandArray);
-                break;
+        if (isValidCommand(commandArray[0])) {
+            switch (commandArray[0]) {
+                case "O":
+                    openAccount(commandArray);
+                    return;
+                case "C":
+                    closeAccount(commandArray);
+                    return;
+                case "D":
+                    depositMoney(commandArray);
+                    return;
+                case "W":
+                    withdrawMoney(commandArray);
+                    return;
+            }
+            if (accountDatabase.isEmpty()) {
+                System.out.println("Account database is empty!");
+            } else {
+                printAccounts(commandArray[0]);
+            }
+        }
+    }
+
+    /**
+     * Determines which type of print command is needed and prints the Accounts in a certain order.
+     * VALID COMMANDS: P, PA ,PB, PH, PT.
+     * P --> prints the AccountDatabase
+     * PA --> prints the Archive
+     * PB --> prints ordered by Branch (county, then city)
+     * PH --> prints by holder then AccountNumber
+     * PT --> prints by AccountType then AccountNumber
+     *
+     * @param command 1-2 letter String command to determine what action to take
+     */
+    private static void printAccounts(String command) {
+        switch (command) {
             case "P":
-                if(accountDatabase.isEmpty()) {
-                    System.out.println("Account database is empty!");
-                }
-                else {
-                    System.out.println("\n*List of accounts in the account database.");
-                    accountDatabase.print();
-                }
+                System.out.println("\n*List of accounts in the account database.");
+                accountDatabase.print();
                 break;
             case "PA":
                 accountDatabase.printArchive();
                 break;
             case "PB":
-                if(accountDatabase.isEmpty()) {
-                    System.out.println("Account database is empty!");
-                }
-                else {
-                    System.out.println("\n*List of accounts ordered by branch location (county, city).");
-                    accountDatabase.printByBranch();
-                }
+                System.out.println("\n*List of accounts ordered by branch location (county, city).");
+                accountDatabase.printByBranch();
                 break;
             case "PH":
-                if(accountDatabase.isEmpty()) {
-                    System.out.println("Account database is empty!");
-                }
-                else {
-                    System.out.println("\n*List of accounts ordered by account holder and number.");
-                    accountDatabase.printByHolder();
-                }
+                System.out.println("\n*List of accounts ordered by account holder and number.");
+                accountDatabase.printByHolder();
                 break;
             case "PT":
-                if(accountDatabase.isEmpty()) {
-                    System.out.println("Account database is empty!");
-                }
-                else {
-                    System.out.println("\n*List of accounts ordered by account type and number.");
-                    accountDatabase.printByType();
-                }
+                System.out.println("\n*List of accounts ordered by account type and number.");
+                accountDatabase.printByType();
                 break;
-            default:
+        }
+    }
+
+    /**
+     * Determines if the command provided is valid.
+     * VALID COMMANDS: O, C, D, W, P, PA, PB, PH, PT.
+     * Otherwise, will identify that the command was invalid.
+     *
+     * @param command 1-2 letter String command to determine what action to take
+     * @return true if the command is recognized and can be executed
+     * false otherwise
+     */
+    private static boolean isValidCommand(String command) {
+        return switch (command) {
+            case "O", "C", "D", "W", "P", "PA", "PB", "PH", "PT" -> true;
+            default -> {
                 System.out.println("Invalid command!");
-        }
-    }
-
-    /**
-     * Checks a Date object to see if it is a valid date.
-     * Returns false if not a valid calendar date,
-     * if the birthdate provided is after the current date,
-     * or if the birthdate provided indicates that the person is 18 years old.
-     *
-     * @param dob Date object which represents the date of birth
-     * @return true if valid date of birth
-     * false otherwise
-     */
-    private static boolean checkDateOfBirth(Date dob) {
-        if (!dob.isValid()) {
-            System.out.println("DOB invalid: " + dob + " not a valid calendar date!");
-            return false;
-        } else if (dob.isAfterToday()) {
-            System.out.println("DOB invalid: " + dob + " cannot be today or a future day.");
-            return false;
-        } else if(!dob.isEighteen()) {
-            System.out.println("Not eligible to open: " +  dob + " under 18.");
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Checks if balance of the Account being opened is valid.
-     * A starting balance of 0 or less is invalid.
-     * A Money Market Account with less than 2000 is invalid.
-     *
-     * @param balance value of money stored in Account being opened
-     * @param acctType type of Account being opened
-     * @return true if balance is a valid amount
-     * false otherwise
-     */
-    private static boolean checkBalance(double balance, AccountType acctType) {
-        if(balance <= 0) { //balance must be more than 0
-            System.out.println("Initial deposit cannot be 0 or negative.");
-            return false;
-        } else if(balance < 2000 && acctType.equals(AccountType.MONEY_MARKET)) { //Money Market account must have at least $2000
-            System.out.println("Minimum of $2,000 to open a Money Market account.");
-            return false;
-        }
-        return true;
+                yield false;
+            }
+        };
     }
 
     /**
@@ -294,6 +269,51 @@ public class TransactionManager {
         account.deposit(balance);
         accountDatabase.add(account); //adds the Account to the database
         System.out.println(account.getAccountNumber().getType() +  " account " + account.getAccountNumber() + " has been opened.");
+    }
+
+    /**
+     * Checks a Date object to see if it is a valid date.
+     * Returns false if not a valid calendar date,
+     * if the birthdate provided is after the current date,
+     * or if the birthdate provided indicates that the person is 18 years old.
+     *
+     * @param dob Date object which represents the date of birth
+     * @return true if valid date of birth
+     * false otherwise
+     */
+    private static boolean checkDateOfBirth(Date dob) {
+        if (!dob.isValid()) {
+            System.out.println("DOB invalid: " + dob + " not a valid calendar date!");
+            return false;
+        } else if (dob.isAfterToday()) {
+            System.out.println("DOB invalid: " + dob + " cannot be today or a future day.");
+            return false;
+        } else if(!dob.isEighteen()) {
+            System.out.println("Not eligible to open: " +  dob + " under 18.");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Checks if balance of the Account being opened is valid.
+     * A starting balance of 0 or less is invalid.
+     * A Money Market Account with less than 2000 is invalid.
+     *
+     * @param balance value of money stored in Account being opened
+     * @param acctType type of Account being opened
+     * @return true if balance is a valid amount
+     * false otherwise
+     */
+    private static boolean checkBalance(double balance, AccountType acctType) {
+        if(balance <= 0) { //balance must be more than 0
+            System.out.println("Initial deposit cannot be 0 or negative.");
+            return false;
+        } else if(balance < 2000 && acctType.equals(AccountType.MONEY_MARKET)) { //Money Market account must have at least $2000
+            System.out.println("Minimum of $2,000 to open a Money Market account.");
+            return false;
+        }
+        return true;
     }
 
     /**

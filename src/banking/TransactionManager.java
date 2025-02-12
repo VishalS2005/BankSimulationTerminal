@@ -306,7 +306,7 @@ public class TransactionManager {
      * @param commandArray Holds the input that has been extracted and put into a String array
      */
     private static void closeAccount(String[] commandArray) {
-        if(commandArray.length == 2) {
+        if(commandArray.length == 2) { //AccountNumber input
             AccountNumber accountNumber = new AccountNumber(commandArray[1]);
             if(!accountDatabase.contains(accountNumber)) {
                 System.out.println(accountNumber + " account does not exist.");
@@ -314,7 +314,7 @@ public class TransactionManager {
             }
             accountDatabase.remove(new Account(accountNumber));
             System.out.println(accountNumber +  " is closed and moved to archive; balance set to 0.");
-        } else {
+        } else { //First Name, Last Name, and Date of Birth input
             String firstName = commandArray[1];
             String lastName = commandArray[2];
             Date dateOfBirth = createDate(commandArray[3]);

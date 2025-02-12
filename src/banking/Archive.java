@@ -10,14 +10,15 @@ public class Archive {
     private AccountNode first; //'first' represents the head node of the linked list of Account objects
 
     /**
-     * Constructor for a new Archive that holds all closed Accounts
+     * Creates a new Archive that holds all closed Accounts
+     * Linked List data structure representation using AccountNodes are used for the Archive
      */
     public Archive() {
         this.first = null;
     }
 
     /**
-     * Adds a AccountNode object to the front of the linked list instance variable, first
+     * Adds an AccountNode object to the front of the linked list instance variable, first.
      *
      * @param account object that will be used to create a AccountNode and will be added to the front of the linked list instance variable, first
      */
@@ -30,8 +31,8 @@ public class Archive {
     }
 
     /**
-     * Traverses through the linked list, first, and prints each account
-     * Every Account Number, Holder, and Balance of the Account are printed from the Archive
+     * Traverses through the linked list, first, and prints each account.
+     * Every Account Number, Holder, and Balance of the Account are printed from the Archive.
      */
     public void print() {
         System.out.println("\n*List of closed accounts in the archive.");

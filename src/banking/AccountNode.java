@@ -1,7 +1,7 @@
 package banking;
 
 /**
- * AccountNode class used for the Archive to store closed Accounts in a linked list implementation
+ * AccountNode class used for the Archive to store closed Accounts in a linked list implementation.
  *
  @author Vishal Saravanan, Yining Chen
  */
@@ -11,7 +11,7 @@ public class AccountNode {
     private final Account Account;  //Account object with account number, profile of holder, and balance
 
     /**
-     * Constructor for an AccountNode object
+     * Creates an AccountNode object.
      *
      * @param account represents an Account that was closed
      */
@@ -21,7 +21,7 @@ public class AccountNode {
     }
 
     /**
-     * Gets the AccountNode that is being pointed to
+     * Gets the AccountNode that is being pointed to.
      *
      * @return the AccountNode being accessed
      */
@@ -30,7 +30,7 @@ public class AccountNode {
     }
 
     /**
-     * Replaces the AccountNode that is being pointed to with the one provided
+     * Replaces the AccountNode that is being pointed to with the one provided.
      *
      * @param next represents the AccountNode being pointed to
      */
@@ -39,7 +39,7 @@ public class AccountNode {
     }
 
     /**
-     * Converts AccountNode to a string that can be printed
+     * Converts AccountNode to a string that can be printed.
      *
      * @return the String representation of the Account as Account Number, Profile of the holder, and balance
      */

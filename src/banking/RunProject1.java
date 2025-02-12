@@ -1,13 +1,13 @@
 package banking;
 
 /**
- * RunProject1 is a class that calls the TransactionManager which will manage transactions
- * Inputs will be read and corresponding outputs will be printed after the call to run TransactionManager
+ * RunProject1 is a class that calls the TransactionManager which will manage transactions.
+ * Inputs will be read and corresponding outputs will be printed after the call to run TransactionManager.
  */
 public class RunProject1 {
 
     /**
-     * Executes the Transaction Manager
+     * Executes the Transaction Manager.
      *
      * @param args String representation of command line inputs
      */

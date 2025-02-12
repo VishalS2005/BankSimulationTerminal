@@ -1,7 +1,7 @@
 package banking;
 
 /**
- * The AccountDatabase class holds the information regarding all the bank accounts
+ * The AccountDatabase class holds the information regarding all the bank accounts.
  * A new account is always added to the end of the array. An instance of this class is a growable list
  * with an initial array capacity of 4, and it automatically increases the capacity by 4 whenever it is full.
  * The list does not decrease in capacity.
@@ -19,10 +19,9 @@ public class AccountDatabase {
     private static final int GROW_SIZE = 4;
 
     /**
-     * Constructor for AccountDatabase
+     * Creates an AccountDatabase object.
      * An AccountDatabase object will hold an array implementation of the Account objects,
-     * the size of the database itself, and a linked list representation of closed accounts
-     *
+     * the size of the database itself, and a linked list representation of closed accounts.
      */
     public AccountDatabase() {
         this.accounts = new Account[GROW_SIZE];
@@ -31,9 +30,9 @@ public class AccountDatabase {
     }
 
     /**
-     * Deposits money into an Account which will increase the Account's balance
-     * Searches through the AccountDatabase for the Account before depositing the amount of money into that Account
-     * Does nothing if Account is not found using the number
+     * Deposits money into an Account which will increase the Account's balance.
+     * Searches through the AccountDatabase for the Account before depositing the amount of money into that Account.
+     * Does nothing if Account is not found using the number.
      *
      * @param number AccountNumber that identifies the account
      * @param amount value of money that will be deposited
@@ -48,8 +47,8 @@ public class AccountDatabase {
     }
 
     /**
-     * Checks if money can be withdrawn from an account
-     * If the AccountType is Money Market and the balance falls below 2000, changes the AccountType to a savings account
+     * Checks if money can be withdrawn from an account.
+     * If the AccountType is Money Market and the balance falls below 2000, changes the AccountType to a savings account.
      *
      * @param number AccountNumber that identifies the Account
      * @param amount value of money that will be withdrawn
@@ -69,8 +68,8 @@ public class AccountDatabase {
     }
 
     /**
-     * Resizes the original database by increasing the size of the array that holds the Account objects by 4
-     * Creates a temporary array with the new length and replaces the old array
+     * Resizes the original database by increasing the size of the array that holds the Account objects by 4.
+     * Creates a temporary array with the new length and replaces the old array.
      */
     private void grow() {
         int newLength = this.accounts.length + GROW_SIZE; //the new length can hold 4 more accounts than the old length
@@ -82,7 +81,7 @@ public class AccountDatabase {
     }
 
     /**
-     * Checks if the Account has at least a certain amount of money
+     * Checks if the Account has at least a certain amount of money.
      *
      * @param index of AccountDatabase that represents an Account being checked
      * @param amount value of money will be checked
@@ -94,8 +93,8 @@ public class AccountDatabase {
     }
 
     /**
-     * Checks if the account will downgrade from a Money Market to a savings account after a withdrawal
-     * If the balance of a Money Market account falls below 2000, it will be downgraded
+     * Checks if the account will downgrade from a Money Market to a savings account after a withdrawal.
+     * If the balance of a Money Market account falls below 2000, it will be downgraded.
      *
      * @param index of AccountDatabase that represents an Account being checked
      * @param amount value of money that will be withdrawn
@@ -107,9 +106,9 @@ public class AccountDatabase {
     }
 
     /**
-     * Adds an Account to the AccountDatabase
-     * Checks for duplicate accounts and returns if there is one found
-     * Checks size and resizes as needed to make space for the new Account
+     * Adds an Account to the AccountDatabase.
+     * Checks for duplicate accounts and returns if there is one found.
+     * Checks size and resizes as needed to make space for the new Account.
      *
      * @param account being added to AccountDatabase
      */
@@ -126,11 +125,11 @@ public class AccountDatabase {
     }
 
     /**
-     * Removes an Account to the AccountDatabase
-     * Checks if the account to be removed is in the AccountDatabase and returns if it is not
-     * Adds removed Account to the archive before deleting the Account
-     * Replaces Account being deleted with the last Account
-     * Updates the size of the AccountDatabase
+     * Removes an Account from the AccountDatabase.
+     * Checks if the account to be removed is in the AccountDatabase and returns if it is not.
+     * Adds removed Account to the archive before deleting the Account.
+     * Replaces Account being deleted with the last Account.
+     * Updates the size of the AccountDatabase.
      *
      * @param account that is being added to AccountDatabase
      */
@@ -147,10 +146,10 @@ public class AccountDatabase {
     }
 
     /**
-     * Removes an Account to the AccountDatabase
+     * Removes an Account to the AccountDatabase.
      * Checks if the account to be removed is in the AccountDatabase
-     * by checking first name, last name, and date of birth
-     * Calls the remove method that
+     * by checking first name, last name, and date of birth.
+     * Calls the remove method that:
      *      * Adds removed Account to the archive before deleting the Account
      *      * Replaces Account being deleted with the last Account
      *      * Updates the size of the AccountDatabase
@@ -171,7 +170,7 @@ public class AccountDatabase {
     }
 
     /**
-     * Checks the AccountDatabase to determine if it is empty
+     * Checks the AccountDatabase to determine if it is empty.
      *
      * @return true if the AccountDatabase has no Accounts
      * false otherwise
@@ -181,7 +180,7 @@ public class AccountDatabase {
     }
 
     /**
-     * Searches for an Account in the AccountDatabase using Account
+     * Checks if Account is contained in the AccountDatabase and returns index of location in database.
      *
      * @param account that is being searched for
      * @return index of the account in the account database when found,
@@ -197,7 +196,8 @@ public class AccountDatabase {
     }
 
     /**
-     * Searches for an Account in the AccountDatabase using AccountNumber
+     * Checks if Account is contained in the AccountDatabase and returns index of location in database.
+     * Searches for an Account in the AccountDatabase using AccountNumber.
      *
      * @param accountNumber that is being searched for
      * @return index of the Account in the AccountDatabase when found,
@@ -213,7 +213,8 @@ public class AccountDatabase {
     }
 
     /**
-     * Searches through the AccountDatabase for an Account
+     * Checks if Account is contained in the AccountDatabase.
+     * Searches through the AccountDatabase for an Account.
      *
      * @param account that is being searched for
      * @return true if Account is found in AccountDatabase
@@ -224,7 +225,8 @@ public class AccountDatabase {
     }
 
     /**
-     * Searches through the AccountDatabase for an Account using accountNumber
+     * Checks if Account is contained in the AccountDatabase.
+     * Searches through the AccountDatabase for an Account using accountNumber.
      *
      * @param accountNumber that is being searched for
      * @return true if Account is found in AccountDatabase
@@ -240,7 +242,9 @@ public class AccountDatabase {
     }
 
     /**
-     * Searches through the AccountDatabase for an Account based on first name, last name, dateOfBirth, and account type
+     * Checks if Account is contained in the AccountDatabase.
+     * Searches through the AccountDatabase for an Account based on first name,
+     * last name, dateOfBirth, and account type.
      *
      * @param firstName String that is being searched for, comparison is case-insensitive
      * @param lastName String that is being searched for, comparison is case-insensitive
@@ -262,7 +266,8 @@ public class AccountDatabase {
     }
 
     /**
-     * Searches through the AccountDatabase for an Account based on first name, last name, and dateOfBirth
+     * Checks if Account is contained in the AccountDatabase.
+     * Searches through the AccountDatabase for an Account based on first name, last name, and dateOfBirth.
      *
      * @param firstName String that is being searched for
      * @param lastName String that is being searched for
@@ -282,7 +287,7 @@ public class AccountDatabase {
     }
 
     /**
-     * Prints all the Accounts in the AccountDatabase from the beginning of AccountDatabase to the end
+     * Prints all the Accounts in the AccountDatabase from the beginning of AccountDatabase to the end.
      */
     public void print() {
         for(int i = 0; i < this.size; i++) {
@@ -292,10 +297,10 @@ public class AccountDatabase {
     }
 
     /**
-     * Orders AccountDatabase by the 2-digit String, Branch
+     * Orders and prints AccountDatabase by the 2-digit String, Branch.
      * Bubble Sort implementation is used to iterate through the array
      * and swap adjacent elements if they are out of order.
-     * To print, iterate through AccountDatabase and print County followed by City
+     * To print, iterate through AccountDatabase and print County followed by City.
      */
     public void printByBranch() {
         for (int i = 0; i < this.size - 1; i++) {
@@ -321,10 +326,10 @@ public class AccountDatabase {
     }
 
     /**
-     * Orders AccountDatabase by the name and date of birth of the account
+     * Orders and prints AccountDatabase by the name and date of birth of the account.
      * Bubble Sort implementation is used to iterate through the array
      * and swap adjacent elements if they are out of order.
-     * Calls the print() method
+     * Calls the print() method.
      */
     public void printByHolder() {
         for (int i = 0; i < this.size - 1; i++) {
@@ -340,11 +345,11 @@ public class AccountDatabase {
     }
 
     /**
-     * Orders AccountDatabase by the AccountType
+     * Orders and prints AccountDatabase by the AccountType.
      * Bubble Sort implementation is used to iterate through the array
      * and swap adjacent elements if they are out of order.
-     * The compareTo method referenced below compares by AccountNumber
-     * Prints organized by AccountType
+     * The compareTo method referenced below compares by AccountNumber.
+     * Prints sorted by AccountType.
      */
     public void printByType() {
         for (int i = 0; i < this.size - 1; i++) {

@@ -1,8 +1,8 @@
 package banking;
 
 /**
- * The banking.Profile class holds the information regarding a person who has a bank account
- * Full name and date of birth are part of their profile
+ * The Profile class holds the information regarding a person who holds the bank account,
+ * Full name and date of birth are part of their profile.
  *
  * @author Vishal Saravanan, Yining Chen
  */
@@ -13,7 +13,7 @@ public class Profile implements Comparable<Profile>{
     private Date dateOfBirth;
 
     /**
-     * Constructor for a Profile object
+     * Creates a Profile object.
      *
      * @param firstName String representation of the holder's first name
      * @param lastName String representation of the holder's last name
@@ -26,7 +26,7 @@ public class Profile implements Comparable<Profile>{
     }
 
     /**
-     * Gets the first name of the holder
+     * Gets the first name of the holder.
      *
      * @return String representation of the holder's first name
      */
@@ -84,9 +84,9 @@ public class Profile implements Comparable<Profile>{
     }
 
     /**
-     * Compares two banking.Profile objects for equality
+     * Compares two Profile objects for equality
      *
-     * @param obj other banking.Profile being checked for equality
+     * @param obj other Profile being checked for equality
      * @return true if they are the same object: first name and last name are the same
      * false otherwise
      */

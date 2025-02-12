@@ -3,11 +3,11 @@ package banking;
 import java.util.Calendar;
 
 /**
- * Date enum class has the information to provide the day, month, and year of a transaction
+ * The Date enum class has the information to provide the day, month, and year of a transaction.
  * For the months of January, March, May, July, August, October, and December, each has 31 days;
  * April, June, September, and November each has 30 days;
- * February has 28 days in a non-leap year, and 29  days in a leap year
- * Quadrennial is 4 years, centennial is 100 years, and quartercentennial is 400 years
+ * February has 28 days in a non-leap year, and 29 days in a leap year;
+ * Quadrennial is 4 years, centennial is 100 years, and quarter centennial is 400 years.
  *
  @author Vishal Saravanan, Yining Chen
  */
@@ -28,7 +28,7 @@ public class Date implements Comparable<Date> {
     public static final int DAYS_IN_FEBRUARY_LEAP = 29;
 
     /**
-     * Constructor for Date object
+     * Creates a Date object.
      *
      * @param year time period in #### format
      * @param month time period in ## format
@@ -41,8 +41,8 @@ public class Date implements Comparable<Date> {
     }
 
     /**
-     * Checks if the date provided by the user is on the calendar
-     * Checks the month, the days in the month, and if it is a leap year
+     * Checks if the date provided by the user is on the calendar.
+     * Checks the month, the days in the month, and if it is a leap year.
      *
      * @return true if the date is a valid date on the calendar
      * false otherwise
@@ -76,9 +76,9 @@ public class Date implements Comparable<Date> {
     }
 
     /**
-     * Checks if the Account holder is 18 years or older
-     * Uses the Calendar library to import the actual date for calculations
-     * Note: Month is 0-based in Calendar
+     * Checks if the Account holder is 18 years or older.
+     * Uses the Calendar library to import the actual date for calculations.
+     * Note: Month is 0-based in Calendar.
      *
      * @return true if the account holder is 18 years or older
      * false otherwise
@@ -92,7 +92,7 @@ public class Date implements Comparable<Date> {
     }
 
     /**
-     * Checks if the birthdate comes after today's date
+     * Checks if the birthdate comes after today's date.
      *
      * @return true if birthdate comes after today's date
      * false otherwise
@@ -105,8 +105,8 @@ public class Date implements Comparable<Date> {
     }
 
     /**
-     * Checks if the year provided is a leap year
-     * Every 4 years, 100 years, and 400 years is a leap year
+     * Checks if the year provided is a leap year.
+     * Every 4 years, 100 years, and 400 years is a leap year.
      *
      * @return true if the year is a leap year
      * false otherwise
@@ -118,15 +118,14 @@ public class Date implements Comparable<Date> {
         return year % CENTENNIAL != 0 || year % QUARTERCENTENNIAL == 0;
     }
 
-
     /**
-     * Compares this Date to another Date
+     * Compares this Date to another Date.
      *
      * @param other Date being compared with
      * @return difference of year/month/day
      */
     @Override
-    public int compareTo(Date other) { //fix this method
+    public int compareTo(Date other) {
         if(this.year != other.year) {
             return this.year - other.year;
         }
@@ -137,7 +136,7 @@ public class Date implements Comparable<Date> {
     }
 
     /**
-     * Converts the Date to Month/Day/Year format
+     * Converts the Date to Month/Day/Year format.
      *
      * @return String representation of the date MM/DD/YYYY
      */
@@ -147,7 +146,7 @@ public class Date implements Comparable<Date> {
     }
 
     /**
-     * Compares two Dates for equality
+     * Compares two Dates for equality.
      *
      * @param obj other Date being checked for equality
      * @return true if they are the same year, month, and day

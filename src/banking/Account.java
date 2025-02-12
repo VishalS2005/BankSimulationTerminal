@@ -20,7 +20,7 @@ public class Account implements Comparable<Account> {
     private static final DecimalFormat df = new DecimalFormat("#,##0.00"); //formatted in a readable manner for money
 
     /**
-     * Constructor for an Account object
+     * Creates an Account object.
      *
      * @param branch 3-digit integer representation of a Branch
      * @param type 2-digit integer representation of the type of Account
@@ -32,7 +32,7 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Constructor for an Account object
+     * Creates an Account object.
      *
      * @param number 9-digit account number
      */
@@ -42,7 +42,7 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Takes money out of the account and updates the balance of an account
+     * Deducts money from the account and updates the balance.
      *
      * @param amount quantity of money deducted from the account
      */
@@ -51,7 +51,7 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Puts money into the account and updates the balance of an account
+     * Adds money to the account and updates the balance.
      *
      * @param amount quantity of money added to the account
      */
@@ -60,7 +60,7 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Account's balance parameter is changed to 0
+     * Sets the account's balance to 0.
      */
     public void emptyBalance() {
         this.balance = 0;
@@ -76,7 +76,7 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Returns a double value that represents the balance of an Account
+     * Returns a double value that represents the balance of an Account.
      *
      * @return balance of an Account
      */
@@ -85,8 +85,8 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Returns a 2-digit AccountType object representation of the AccountType
-     * Checking(01), Savings(02), and Money_Market(03)
+     * Returns a 2-digit AccountType object representation of the AccountType.
+     * The three types are: Checking(01), Savings(02), and Money_Market(03).
      *
      * @return AccountType of the account
      */
@@ -95,7 +95,7 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Returns a string that represents the first name in an Account
+     * Returns a string that represents the first name in an Account.
      *
      * @return first name of an Account
      */
@@ -104,7 +104,7 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Returns a string that represents the last name in an Account
+     * Returns a string that represents the last name in an Account.
      *
      * @return last name of an Account
      */
@@ -113,7 +113,7 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Returns a date of birth of Account holder
+     * Returns a date of birth of Account holder.
      *
      * @return Date object representation of date of birth
      */
@@ -122,8 +122,8 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Changes the 2-digit AccountType object representation of the AccountType to parameter input 'type'
-     * Checking(01), savings(02), or money market account(03)
+     * Changes the 2-digit AccountType object representation of the AccountType to parameter input 'type'.
+     * The three types are: Checking(01), Savings(02), and Money_Market(03).
      *
      * @param type 2-digit AccountType object representation of account type
      */
@@ -132,7 +132,7 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Compares two accounts by the AccountType parameter
+     * Compares two accounts by the AccountType parameter.
      *
      * @param other Account being compared to
      * @return 0 if the AccountType of both accounts are the same,
@@ -148,9 +148,9 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Compares two accounts by the Branch parameter
-     * First checks if the Accounts are the same county before checking the Branch
-     * Comparison is case-insensitive
+     * Compares two accounts by the Branch parameter.
+     * First checks if the Accounts are the same county before checking the Branch.
+     * Comparison is case-insensitive.
      *
      * @param other Account being compared to
      * @return 0 if the Branch of both accounts are the same,
@@ -174,8 +174,8 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Compares the name and date of birth of two accounts
-     * First checks the first name, last name, and date of birth and returns if not equal to 'other'
+     * Compares the name and date of birth of two accounts.
+     * First checks the first name, last name, and date of birth and returns if not equal to 'other'.
      *
      *
      * @param other AccountNumber being compared with
@@ -206,9 +206,9 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Converts Account to a string that can be printed
+     * Converts Account to a string that can be printed.
      *
-     * @return a string that contains the Account Number, the Account Holder, and the Account Balance
+     * @return a String that contains the Account Number, the Account Holder, and the Account Balance
      */
     @Override
     public String toString() {
@@ -216,7 +216,7 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Compares two Account objects for equality
+     * Compares two Account objects for equality.
      *
      * @param obj other Account being checked for equality
      * @return true if they are the same object: Account object is compared using the Account Number

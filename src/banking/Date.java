@@ -18,7 +18,7 @@ public class Date implements Comparable<Date> {
     private int day;
 
     public static final int MONTH_OFFSET = 1;  // Calendar months are 0-based
-    public static final int YEARS_TO_SUBTRACT = 18; // To check if the person is at least 18 years old
+    public static final int MINIMUM_AGE_YEARS = 18; // To check if the person is at least 18 years old
     public static final int QUADRENNIAL = 4;
     public static final int CENTENNIAL = 100;
     public static final int QUARTERCENTENNIAL = 400;
@@ -87,7 +87,7 @@ public class Date implements Comparable<Date> {
         Calendar today = Calendar.getInstance();
         Calendar birthDate = Calendar.getInstance();
         birthDate.set(this.year, this.month - MONTH_OFFSET, this.day); //must subtract 1 because month is 0-based
-        today.add(Calendar.YEAR, -YEARS_TO_SUBTRACT);
+        today.add(Calendar.YEAR, -MINIMUM_AGE_YEARS);
         return !birthDate.after(today);
     }
 

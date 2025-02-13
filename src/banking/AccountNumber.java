@@ -130,15 +130,4 @@ public class AccountNumber implements Comparable<AccountNumber> {
         }
         return false;
     }
-
-   /*
-        public static void main(String[] args) {
-        System.out.println(RANDOM.nextInt(SEED));
-        System.out.println(RANDOM.nextInt(SEED));
-        System.out.println(RANDOM.nextInt(SEED));
-        AccountNumber number =  new AccountNumber("100016789");
-        System.out.println(number);
-
-
-    } */
 }

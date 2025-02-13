@@ -94,7 +94,9 @@ public class Profile implements Comparable<Profile>{
     public boolean equals(Object obj) {
         if (obj instanceof Profile) {
             Profile other = (Profile) obj;
-            return this.firstName.equalsIgnoreCase(other.firstName) && this.lastName.equalsIgnoreCase(other.lastName) && this.dateOfBirth.equals(other.dateOfBirth);
+            return this.firstName.equalsIgnoreCase(other.firstName)
+                    && this.lastName.equalsIgnoreCase(other.lastName)
+                    && this.dateOfBirth.equals(other.dateOfBirth);
         }
         return false;
     }
@@ -107,24 +109,158 @@ public class Profile implements Comparable<Profile>{
      * @param args array of command-line arguments passed to the program
      */
     public static void main(String args[]) {
-        Date date1 = new Date(1,1,2000), date2 = new Date(1,1,1990);
-        Profile profile1 = new Profile("Alice","Smith", date1),
-                profile2 = new Profile("Bob", "Smith", date1),
-                profile3 = new Profile("Alice", "Brown", date1),
-                profile4 = new Profile("Alice","Smith", date2);
-        System.out.println("The result of comparing profile " + profile1 + " and the profile " + profile2 +
-                " is " + profile1.compareTo(profile2)); //test case 1
-        System.out.println("The result of comparing profile " + profile3 + " and the profile " + profile1 +
-                " is " + profile3.compareTo(profile1)); //test case 2
-        System.out.println("The result of comparing profile " + profile4 + " and the profile " + profile1 +
-                " is " + profile4.compareTo(profile1)); //test case 3
-        System.out.println("The result of comparing profile " + profile2 + " and the profile " + profile1 +
-                " is " + profile2.compareTo(profile1)); //test case 4
-        System.out.println("The result of comparing profile " + profile1 + " and the profile " + profile3 +
-                " is " + profile1.compareTo(profile3)); //test case 5
-        System.out.println("The result of comparing profile " + profile1 + " and the profile " + profile4 +
-                " is " + profile1.compareTo(profile4)); //test case 6
-        System.out.println("The result of comparing profile " + profile1 + " and the profile " + profile1 +
-                " is " + profile1.compareTo(profile1)); //test case 6
+        testProfile_DifferentFirstNameLess();
+        testProfile_DifferentLastNameLess();
+        testProfile_DifferentDOBLess();
+        testProfile_DifferentFirstNameGreater();
+        testProfile_DifferentLastNameGreater();
+        testProfile_DifferentDOBGreater();
+        testProfile_SameProfile();
+    }
+
+    /**
+     * Test case #1
+     * Tests the case where the profiles have different first names but the first profile's first name is less than
+     * the second profile's first name.
+     */
+    private static void testProfile_DifferentFirstNameLess() {
+        Date date1 = new Date(1,1,2000);                         //1. select first test date
+        Date date2 = new Date(1,1,2000);                         //2. select second test date
+        Profile profile1 = new Profile("Alice","Smith", date1); //3. select first profile
+        Profile profile2 = new Profile("Bob", "Smith", date2);  //4. select second profile
+        int expectedOutput = -1;                                                  //5. define expected output
+        int actualOutput = profile1.compareTo(profile2);                          //6. test the compareTo method
+        System.out.println("**Test case #1: Different first names same last name and DOB " +
+                           "and profile1 first name < profile2 first name.");
+        testProfileResult(profile1, profile2, expectedOutput, actualOutput);//7. compare actual with
+        // expected output
+    }
+
+    /**
+     * Test case #2
+     * Tests the case where the profiles have different last names but the first profile's last name is less than
+     * the second profile's last name.
+     */
+    private static void testProfile_DifferentLastNameLess() {
+        Date date1 = new Date(1,1,2000);                         //1. select test date
+        Date date2 = new Date(1,1,2000);                         //2. select second test date
+        Profile profile1 = new Profile("Alice","Brown", date1); //3. select first profile
+        Profile profile2 = new Profile("Alice", "Smith", date2);//4. select second profile
+        int expectedOutput = -1;                                                  //5. define expected output
+        int actualOutput = profile1.compareTo(profile2);                          //6. test the compareTo method
+        System.out.println("**Test case #2: Different last names same first name and DOB " +
+                           "and profile1 last name < profile2 last name.");
+        testProfileResult(profile1, profile2, expectedOutput, actualOutput);//7. compare actual with
+        // expected output
+    }
+
+    /**
+     * Test case #3
+     * Tests the case where the profiles have the same names but a different date of birth, and the first profile's
+     * date of birth comes before the second profile's date of birth.
+     */
+    private static void testProfile_DifferentDOBLess() {
+        Date date1 = new Date(1,1,1990);                         //1. select first test date
+        Date date2 = new Date(1,1,2000);                         //2. select second test date
+        Profile profile1 = new Profile("Alice","Smith", date1); //3. select first profile
+        Profile profile2 = new Profile("Alice", "Smith", date2);//4. select second profile
+        int expectedOutput = -1;                                                  //5. define expected output
+        int actualOutput = profile1.compareTo(profile2);                          //6. test the compareTo method
+        System.out.println("**Test case #3: Different DOB same first name and last name " +
+                           "and profile1 DOB < profile2 DOB.");
+        testProfileResult(profile1, profile2, expectedOutput, actualOutput);//7. compare actual with
+        // expected output
+    }
+
+    /**
+     * Test case #4
+     * Tests the case where the profiles have different first names but the first profile's first name is greater than
+     * the second profile's first name.
+     */
+    private static void testProfile_DifferentFirstNameGreater() {
+        Date date1 = new Date(1,1,2000);                         //1. select test date
+        Date date2 = new Date(1,1,2000);                        //2. select second test date
+        Profile profile1 = new Profile("Bob","Smith", date1);   //3. select first profile
+        Profile profile2 = new Profile("Alice", "Smith", date2);//4. select second profile
+        int expectedOutput = 1;                                                  //5. define expected output
+        int actualOutput = profile1.compareTo(profile2);                         //6. test the compareTo method
+        System.out.println("**Test case #4: Different first names same last name and DOB " +
+                "and profile1 first name > profile2 first name.");
+        testProfileResult(profile1, profile2, expectedOutput, actualOutput);//7. compare actual with
+        // expected output
+    }
+
+    /**
+     * Test case #5
+     * Tests the case where the profiles have different last names but the first profile's last name is greater than
+     * the second profile's last name.
+     */
+    private static void testProfile_DifferentLastNameGreater() {
+        Date date1 = new Date(1,1,2000);                         //1. select test date
+        Date date2 = new Date(1,1,2000);                         //2. select second test date
+        Profile profile1 = new Profile("Alice","Smith", date1); //3. select first profile
+        Profile profile2 = new Profile("Alice", "Brown", date2);//4. select second profile
+        int expectedOutput = 1;                                                   //5. define expected output
+        int actualOutput = profile1.compareTo(profile2);                          //6. test the compareTo method
+        System.out.println("**Test case #5: Different last names same first name and DOB " +
+                "and profile1 last name > profile2 last name.");
+        testProfileResult(profile1, profile2, expectedOutput, actualOutput);//7. compare actual with
+        // expected output
+    }
+
+    /**
+     * Test case #6
+     * Tests the case where the profiles have the same names but a different date of birth, and the first profile's
+     * date of birth comes after the second profile's date of birth.
+     */
+    private static void testProfile_DifferentDOBGreater() {
+        Date date1 = new Date(1,1,2000);                         //1. select first test date
+        Date date2 = new Date(1,1,1990);                         //2. select second test date
+        Profile profile1 = new Profile("Alice","Smith", date1); //3. select first profile
+        Profile profile2 = new Profile("Alice", "Smith", date2);//4. select second profile
+        int expectedOutput = 1;                                                   //5. define expected output
+        int actualOutput = profile1.compareTo(profile2);                          //6. test the compareTo method
+        System.out.println("**Test case #6: Different DOB same first name and last name " +
+                "and profile1 DOB > profile2 DOB.");
+        testProfileResult(profile1, profile2, expectedOutput, actualOutput);//7. compare actual with
+        // expected output
+    }
+
+    /**
+     * Test case #7
+     * Tests the case where both profiles have the same names and date of births.
+     */
+    private static void testProfile_SameProfile() {
+        Date date1 = new Date(1,1,2000);                         //1. select first test date
+        Date date2 = new Date(1,1,2000);                         //2. select second test date
+        Profile profile1 = new Profile("Alice","Smith", date1); //3. select first profile
+        Profile profile2 = new Profile("Alice", "Smith", date2);//4. select second profile
+        int expectedOutput = 0;                                                   //5. define expected output
+        int actualOutput = profile1.compareTo(profile2);                          //6. test the compareTo method
+        System.out.println("**Test case #7: Same names and DOB");
+        testProfileResult(profile1, profile2, expectedOutput, actualOutput);//7. compare actual with
+        // expected output
+    }
+
+    /**
+     * Helper method to test the compareTo method of the Profile class.
+     * Prints the inputs/outputs and FAIL if they don't match and PASS otherwise.
+     *
+     * @param profile1 the first profile that is being compared
+     * @param profile2 the second profile that is being compared
+     * @param expectedOutput boolean value we expect from checking if Date is valid
+     * @param actualOutput boolean value as a result of checking if Date is valid
+     */
+    private static void testProfileResult(Profile profile1, Profile profile2,
+                                          int expectedOutput, int actualOutput) {
+        System.out.println("Test Input 1: " + profile1);
+        System.out.println("Test Input 2: " + profile2);
+        System.out.println("Expected output: " + expectedOutput);
+        System.out.println("Actual output: " + actualOutput);
+        if(expectedOutput != actualOutput) {
+            System.out.println(" (FAIL) \n");
+        } else {
+            System.out.println(" (PASS) \n");
+        }
     }
 }

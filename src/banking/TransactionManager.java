@@ -84,7 +84,7 @@ public class TransactionManager {
         int month = Integer.parseInt(dateParts[0]);
         int day = Integer.parseInt(dateParts[1]);
         int year = Integer.parseInt(dateParts[2]);
-        return new Date(year, month, day);
+        return new Date(month, day, year);
     }
 
     /**

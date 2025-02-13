@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class TransactionManager {
     private static final AccountDatabase accountDatabase = new AccountDatabase(); //holds all the Accounts
 
-    private static DecimalFormat df = new DecimalFormat("#,##0.00");
+    private static final DecimalFormat df = new DecimalFormat("#,##0.00");
 
     /**
      * Creates an AccountType object using a provided String representation of the three types of Accounts.

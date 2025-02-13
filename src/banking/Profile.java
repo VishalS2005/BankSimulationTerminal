@@ -59,8 +59,8 @@ public class Profile implements Comparable<Profile>{
      *
      * @param other the Profile object to be compared to
      * @return 0 if their names are the same,
-     * negative integer if first full name/date of birth is less than second
-     * positive integer if first full name/date of birth is greater than second
+     * -1 if first full name/date of birth is less than second
+     * 1 if first full name/date of birth is greater than second
      */
     @Override
     public int compareTo(Profile other) {
@@ -68,7 +68,7 @@ public class Profile implements Comparable<Profile>{
         String otherName = other.firstName + other.lastName;
         int nameComparison = name.compareTo(otherName); //String compareTo() method
         if (nameComparison != 0) {
-            return nameComparison;
+            return nameComparison < 0 ? -1 : 1;
         }
         return this.dateOfBirth.compareTo(other.dateOfBirth);
     }
@@ -97,5 +97,34 @@ public class Profile implements Comparable<Profile>{
             return this.firstName.equalsIgnoreCase(other.firstName) && this.lastName.equalsIgnoreCase(other.lastName) && this.dateOfBirth.equals(other.dateOfBirth);
         }
         return false;
+    }
+
+    /**
+     * Tests 7 different cases for the method, "compareTo".
+     * Validates the user input against predefined rules.
+     * Test Bed: This method utilizes a test bed as described in the attached write-up.
+     *
+     * @param args array of command-line arguments passed to the program
+     */
+    public static void main(String args[]) {
+        Date date1 = new Date(1,1,2000), date2 = new Date(1,1,1990);
+        Profile profile1 = new Profile("Alice","Smith", date1),
+                profile2 = new Profile("Bob", "Smith", date1),
+                profile3 = new Profile("Alice", "Brown", date1),
+                profile4 = new Profile("Alice","Smith", date2);
+        System.out.println("The result of comparing profile " + profile1 + " and the profile " + profile2 +
+                " is " + profile1.compareTo(profile2)); //test case 1
+        System.out.println("The result of comparing profile " + profile3 + " and the profile " + profile1 +
+                " is " + profile3.compareTo(profile1)); //test case 2
+        System.out.println("The result of comparing profile " + profile4 + " and the profile " + profile1 +
+                " is " + profile4.compareTo(profile1)); //test case 3
+        System.out.println("The result of comparing profile " + profile2 + " and the profile " + profile1 +
+                " is " + profile2.compareTo(profile1)); //test case 4
+        System.out.println("The result of comparing profile " + profile1 + " and the profile " + profile3 +
+                " is " + profile1.compareTo(profile3)); //test case 5
+        System.out.println("The result of comparing profile " + profile1 + " and the profile " + profile4 +
+                " is " + profile1.compareTo(profile4)); //test case 6
+        System.out.println("The result of comparing profile " + profile1 + " and the profile " + profile1 +
+                " is " + profile1.compareTo(profile1)); //test case 6
     }
 }

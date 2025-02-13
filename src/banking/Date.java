@@ -34,10 +34,10 @@ public class Date implements Comparable<Date> {
      * @param month time period in ## format
      * @param day time period in ## format
      */
-    public Date (int year, int month, int day) {
-        this.year = year;
+    public Date (int month, int day, int year) {
         this.month = month;
         this.day = day;
+        this.year = year;
     }
 
     /**
@@ -122,17 +122,26 @@ public class Date implements Comparable<Date> {
      * Compares this Date to another Date.
      *
      * @param other Date being compared with
-     * @return difference of year/month/day
+     * @return 0 if dates are equal
+     * -1 if first date comes before the second
+     * 1 if first date comes after the second
      */
     @Override
     public int compareTo(Date other) {
-        if(this.year != other.year) {
-            return this.year - other.year;
+        if(this.year < other.year) {
+            return -1;
+        } else if (this.year > other.year) {
+            return 1;
+        } else if(this.month < other.month) {
+            return -1;
+        } else if(this.month > other.month) {
+            return 1;
+        } else if (this.day < other.day) {
+            return -1;
+        } else if(this.day > other.day) {
+            return 1;
         }
-        else if(this.month != other.month) {
-            return this.month - other.month;
-        }
-        return this.day - other.day;
+        return 0;
     }
 
     /**
@@ -161,8 +170,25 @@ public class Date implements Comparable<Date> {
         return false;
     }
 
-    /** Test bed */
+    /**
+     * Tests 6 different cases for the method, "isValid".
+     * Validates the user input against predefined rules.
+     * Test Bed: This method utilizes a test bed as described in the attached write-up.
+     *
+     *  @param args an array of command-line arguments passed to the program
+     */
     public static void main(String[] args) {
-
+        Date test1 = new Date(2, 29, 2023),
+             test2 = new Date(8, 32, 2021),
+             test3 = new Date(23, 29, 1900),
+             test4 = new Date(9, -30, 2000),
+             test5 = new Date(8, 23, 2008),
+             test6 = new Date(2, 29, 2024);
+        System.out.println("test1 result for " + test1 + ": " + test1.isValid());
+        System.out.println("test2 result for " + test2 + ": " + test2.isValid());
+        System.out.println("test3 result for " + test3 + ": " + test3.isValid());
+        System.out.println("test4 result for " + test4 + ": " + test4.isValid());
+        System.out.println("test5 result for " + test5 + ": " + test5.isValid());
+        System.out.println("test6 result for " + test6 + ": " + test6.isValid());
     }
 }

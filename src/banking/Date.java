@@ -1,5 +1,6 @@
 package banking;
 
+import java.sql.SQLOutput;
 import java.util.Calendar;
 
 /**
@@ -178,17 +179,102 @@ public class Date implements Comparable<Date> {
      *  @param args an array of command-line arguments passed to the program
      */
     public static void main(String[] args) {
-        Date test1 = new Date(2, 29, 2023),
-             test2 = new Date(8, 32, 2021),
-             test3 = new Date(23, 29, 1900),
-             test4 = new Date(9, -30, 2000),
-             test5 = new Date(8, 23, 2008),
-             test6 = new Date(2, 29, 2024);
-        System.out.println("test1 result for " + test1 + ": " + test1.isValid());
-        System.out.println("test2 result for " + test2 + ": " + test2.isValid());
-        System.out.println("test3 result for " + test3 + ": " + test3.isValid());
-        System.out.println("test4 result for " + test4 + ": " + test4.isValid());
-        System.out.println("test5 result for " + test5 + ": " + test5.isValid());
-        System.out.println("test6 result for " + test6 + ": " + test6.isValid());
+        testDate_FebNonLeapYear();
+        testDate_DayOutOfRangePositive();
+        testDate_MonthOutOfRange();
+        testDate_DayOutOfRangeNegative();
+        testDate_RandomDate();
+        testDate_FebLeapYear();
+    }
+
+    /**
+     * Test case #1
+     * Tests the case where the number of days in February is 29 in a non-leap year.
+     */
+    private static void testDate_FebNonLeapYear () {
+        Date date = new Date(2, 29, 2023);  //1. select test date
+        boolean expectedOutput = false;                      //2. define expected output
+        boolean actualOutput = date.isValid();               //3. test the isValid method
+        System.out.println("**Test case #1: # of days in February in a non-leap year is 28.");
+        testDateResult(date, expectedOutput, actualOutput);      //4. compare actual with expected output
+    }
+
+    /**
+     * Test case #2
+     * Tests the case where the amount of days in August does not fall within the valid range of [1,31].
+     */
+    private static void testDate_DayOutOfRangePositive(){
+        Date date = new Date(8, 32, 2021);  //1. select test date
+        boolean expectedOutput = false;                      //2. define expected output
+        boolean actualOutput = date.isValid();               //3. test the isValid method
+        System.out.println("**Test case #2: # of days in August is 31.");
+        testDateResult(date, expectedOutput, actualOutput);      //4. compare actual with expected output
+    }
+
+    /**
+     * Test case #3
+     * Tests the case where the month is outside valid range of [1,12].
+     */
+    private static void testDate_MonthOutOfRange() {
+        Date date = new Date(23, 29, 1900);  //1. select test date
+        boolean expectedOutput = false;                      //2. define expected output
+        boolean actualOutput = date.isValid();               //3. test the isValid method
+        System.out.println("**Test case #3: # of months in a year is 12.");
+        testDateResult(date, expectedOutput, actualOutput);      //4. compare actual with expected output
+    }
+
+    /**
+     * Test case #4
+     * Tests the case where the amount of days in September does not fall within the valid range of [1,31].
+     */
+    private static void testDate_DayOutOfRangeNegative() {
+        Date date = new Date(9, -30, 2000);  //1. select test date
+        boolean expectedOutput = false;                      //2. define expected output
+        boolean actualOutput = date.isValid();               //3. test the isValid method
+        System.out.println("**Test case #4: # of days in a month cannot be a negative number.");
+        testDateResult(date, expectedOutput, actualOutput);      //4. compare actual with expected output
+    }
+
+    /**
+     * Test case #5
+     * Tests the case where the amount of days in September does not fall within the valid range of [1,31].
+     */
+    private static void testDate_RandomDate(){
+        Date date = new Date(8, 23, 2008);   //1. select test date
+        boolean expectedOutput = true;                       //2. define expected output
+        boolean actualOutput = date.isValid();               //3. test the isValid method
+        System.out.println("**Test case #5: Month, day, and year are valid for a given date.");
+        testDateResult(date, expectedOutput, actualOutput);      //4. compare actual with expected output
+    }
+
+    /**
+     * Test case #6
+     * Tests the case where the number of days in February during a leap year is 29.
+     */
+    private static void testDate_FebLeapYear () {
+        Date date = new Date(2, 29, 2024);   //1. select test date
+        boolean expectedOutput = true;                       //2. define expected output
+        boolean actualOutput = date.isValid();               //3. test the isValid method
+        System.out.println("**Test case #6: # of days in February for a leap year is 29.");
+        testDateResult(date, expectedOutput, actualOutput);      //4. compare actual with expected output
+    }
+
+    /**
+     * Helper method to test the isValid method of the Date class.
+     * Prints the inputs/outputs and FAIL if they don't match and PASS otherwise.
+     *
+     * @param date Date being tested for validity
+     * @param expectedOutput boolean value we expect from checking if Date is valid
+     * @param actualOutput boolean value as a result of checking if Date is valid
+     */
+    private static void testDateResult (Date date, boolean expectedOutput, boolean actualOutput) {
+        System.out.println("Test input: " + date);
+        System.out.println("Expected output: " + expectedOutput);
+        System.out.println("Actual output: " + actualOutput);
+        if(expectedOutput != actualOutput) {
+            System.out.println(" (FAIL) \n");
+        } else {
+            System.out.println(" (PASS) \n");
+        }
     }
 }

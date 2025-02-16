@@ -10,14 +10,12 @@ import java.text.DecimalFormat;
  */
 
 public class Account implements Comparable<Account> {
-
     private AccountNumber number; //AccountNumber object with information about 9-digit number that represents bank account
-
     private Profile holder; //Profile object with information about account holder
-
     private double balance; //amount of money currently in bank account
 
     private static final DecimalFormat df = new DecimalFormat("#,##0.00"); //formatted in a readable manner for money
+    private static final int EMPTY_BALANCE = 0;
 
     /**
      * Creates an Account object.
@@ -63,7 +61,7 @@ public class Account implements Comparable<Account> {
      * Sets the account's balance to 0.
      */
     public void emptyBalance() {
-        this.balance = 0;
+        this.balance = EMPTY_BALANCE;
     }
 
     /**

@@ -8,8 +8,19 @@ package banking;
  */
 
 public class Profile implements Comparable<Profile>{
+    /**
+     * First name of the account holder.
+     */
     private String firstName;
+
+    /**
+     * Last name of the account holder.
+     */
     private String lastName;
+
+    /**
+     * Date of birth of the account holder.
+     */
     private Date dateOfBirth;
 
     /**

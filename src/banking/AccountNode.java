@@ -7,8 +7,15 @@ package banking;
  */
 
 public class AccountNode {
-    private AccountNode next; //pointer to the next AccountNode in the archive
-    private final Account Account;  //Account object with account number, profile of holder, and balance
+    /**
+     * pointer to the next AccountNode in the archive
+     */
+    private AccountNode next;
+
+    /**
+     * Account object with account number, profile of holder, and balance
+     */
+    private final Account Account;
 
     /**
      * Creates an AccountNode object.

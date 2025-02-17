@@ -8,15 +8,45 @@ package banking;
  */
 
 public enum Branch {
+    /**
+     * Representation of the Edison Branch - 08817, 100, Middlesex.
+     */
     EDISON("08817", "100", "Middlesex"),
+
+    /**
+     * Representation of the Bridgewater Branch - 08807, 200, Somerset.
+     */
     BRIDGEWATER("08807", "200", "Somerset"),
+
+    /**
+     * Representation of the Princeton Branch - 08542, 300, Mercer.
+     */
     PRINCETON("08542", "300", "Mercer"),
+
+    /**
+     * Representation of the Piscataway Branch - 08854, 400, Middlesex.
+     */
     PISCATAWAY("08854", "400", "Middlesex"),
+
+    /**
+     * Representation of the Warren Branch - 07057, 500, Somerset.
+     */
     WARREN("07057", "500", "Somerset");
 
-    private final String zip; //5-digit number that represents the ZIP code
-    private final String branchCode; //3-digit number that represents the branch code
-    private final String county; //String that represents the county the branch is located in
+    /**
+     * 5-digit number that represents the ZIP code.
+     */
+    private final String zip;
+
+    /**
+     * 3-digit number that represents the branch code.
+     */
+    private final String branchCode;
+
+    /**
+     * String that represents the county the branch is located in.
+     */
+    private final String county;
 
     /**
      * Creates a Branch object.

@@ -11,8 +11,14 @@ import java.util.Scanner;
  */
 
 public class TransactionManager {
-    private static final AccountDatabase accountDatabase = new AccountDatabase(); //holds all the Accounts
+    /**
+     * holds all the accounts
+     */
+    private static final AccountDatabase accountDatabase = new AccountDatabase();
 
+    /**
+     * formats values of money
+     */
     private static final DecimalFormat df = new DecimalFormat("#,##0.00");
 
     /**
@@ -100,33 +106,6 @@ public class TransactionManager {
     private static Account createAccount(String firstName, String lastName, Date dateOfBirth, Branch branch, AccountType acctType) {
         Profile holder = createProfile(firstName, lastName, dateOfBirth);
         return new Account(branch, acctType, holder);
-    }
-
-    /**
-     * Initiates reading of inputs from the command line.
-     * Ceases reading of inputs once a "Q" is read.
-     * Example of a single line of input:
-     * The user enters:
-     *    O <accountType> <branch> <firstName> <lastName> <dob> <initialDeposit>
-     * For example:
-     *    O savings bridgewater John Doe 2/19/2000 500
-     */
-    public static void run() {
-        System.out.println("Transaction Manager is running.");
-
-        Scanner scanner = new Scanner(System.in);
-        while (true) { // loop only ends when a "Q" is read
-            String command = scanner.nextLine();
-            String[] commandArray = command.split("\\s+");
-            if (command.trim().isEmpty()) {
-                continue;
-            }
-            if(commandArray[0].equals("Q")) {
-                System.out.println("Transaction Manager is terminated.");
-                return;
-            }
-            processCommand(commandArray);
-        }
     }
 
     /**
@@ -405,6 +384,33 @@ public class TransactionManager {
             accountDatabase.withdraw(accountNumber, withdrawalAmount);
         } catch (NumberFormatException e) {
             System.out.println("For input string: \"" + commandArray[2] + "\" - not a valid amount.");
+        }
+    }
+
+    /**
+     * Initiates reading of inputs from the command line.
+     * Ceases reading of inputs once a "Q" is read.
+     * Example of a single line of input:
+     * The user enters:
+     *    O <accountType> <branch> <firstName> <lastName> <dob> <initialDeposit>
+     * For example:
+     *    O savings bridgewater John Doe 2/19/2000 500
+     */
+    public static void run() {
+        System.out.println("Transaction Manager is running.");
+
+        Scanner scanner = new Scanner(System.in);
+        while (true) { // loop only ends when a "Q" is read
+            String command = scanner.nextLine();
+            String[] commandArray = command.split("\\s+");
+            if (command.trim().isEmpty()) {
+                continue;
+            }
+            if(commandArray[0].equals("Q")) {
+                System.out.println("Transaction Manager is terminated.");
+                return;
+            }
+            processCommand(commandArray);
         }
     }
 }

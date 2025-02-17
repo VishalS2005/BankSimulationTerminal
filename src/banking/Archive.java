@@ -7,7 +7,10 @@ package banking;
  */
 
 public class Archive {
-    private AccountNode first; //'first' represents the head node of the linked list of Account objects
+    /**
+     * 'first' represents the head node of the linked list of Account objects
+     */
+    private AccountNode first;
 
     /**
      * Creates a new Archive that holds all closed Accounts

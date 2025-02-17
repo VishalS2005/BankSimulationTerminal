@@ -8,11 +8,25 @@ package banking;
  */
 
 public enum AccountType {
+    /**
+     * Checking account - 01.
+     */
     CHECKING("01"),
+
+    /**
+     * Savings account - 02.
+     */
     SAVINGS("02"),
+
+    /**
+     * Money market account - 03.
+     */
     MONEY_MARKET("03");
 
-    private final String code; //2-digit code that represents the type of account
+    /**
+     * 2-digit code that represents the type of account
+     */
+    private final String code;
 
     /**
      * Creates an AccountType object.

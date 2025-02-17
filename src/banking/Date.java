@@ -13,18 +13,64 @@ import java.util.Calendar;
  */
 
 public class Date implements Comparable<Date> {
+    /**
+     * Year of the date.
+     */
     private int year;
+
+    /**
+     * Month of the date.
+     */
     private int month;
+
+    /**
+     * Day of the date.
+     */
     private int day;
 
-    public static final int MONTH_OFFSET = 1;  // Calendar months are 0-based
-    public static final int MINIMUM_AGE_YEARS = 18; // To check if the person is at least 18 years old
+    /**
+     * Calendar months are 0-based, so an offset of 1 is needed.
+     */
+    public static final int MONTH_OFFSET = 1;
+
+    /**
+     * Minimum age in years to check if the person is at least 18 years old.
+     */
+    public static final int MINIMUM_AGE_YEARS = 18;
+
+    /**
+     * Represents a period of 4 years.
+     */
     public static final int QUADRENNIAL = 4;
+
+    /**
+     * Represents a period of 100 years.
+     */
     public static final int CENTENNIAL = 100;
+
+    /**
+     * Represents a period of 400 years.
+     */
     public static final int QUARTERCENTENNIAL = 400;
+
+    /**
+     * Number of days in a long month (31 days).
+     */
     public static final int DAYS_IN_LONG_MONTH = 31;
+
+    /**
+     * Number of days in a short month (30 days).
+     */
     public static final int DAYS_IN_SHORT_MONTH = 30;
+
+    /**
+     * Number of days in February during a non-leap year (28 days).
+     */
     public static final int DAYS_IN_FEBRUARY_NORMAL = 28;
+
+    /**
+     * Number of days in February during a leap year (29 days).
+     */
     public static final int DAYS_IN_FEBRUARY_LEAP = 29;
 
     /**

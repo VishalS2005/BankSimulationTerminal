@@ -10,13 +10,64 @@ package banking;
  */
 
 public class AccountDatabase {
-    private Account [] accounts; //array-based implementation of a linear data structure to hold the list of account objects
-    private int size; //represents the amount of accounts
-    private final Archive archive; //a linked list of closed account
+    /**
+     * array-based implementation of a linear data structure to hold the list of account objects
+     */
+    private Account [] accounts;
 
+    /**
+     * represents the amount of accounts
+     */
+    private int size;
+
+    /**
+     * a linked list of closed account
+     */
+    private final Archive archive;
+
+    /**
+     * The starting size of the AccountDatabase
+     */
     private static final int STARTING_SIZE = 0;
+
+    /**
+     * The integer -1 is returned if an Account is not found
+     */
     private static final int NOT_FOUND = -1;
+
+    /**
+     * The amount that the AccountDatabase will grow by
+     */
     private static final int GROW_SIZE = 4;
+
+    /**
+     * Resizes the original database by increasing the size of the array that holds the Account objects by 4.
+     * Creates a temporary array with the new length and replaces the old array.
+     */
+    private void grow() {
+        int newLength = this.accounts.length + GROW_SIZE; //the new length can hold 4 more accounts than the old length
+        Account[] newAccounts = new Account[newLength];
+        for(int i = 0; i < this.size; i++) {
+            newAccounts[i] = this.accounts[i];
+        }
+        this.accounts = newAccounts;
+    }
+
+    /**
+     * Checks if Account is contained in the AccountDatabase and returns index of location in database.
+     *
+     * @param account that is being searched for
+     * @return index of the account in the account database when found,
+     * -1 otherwise
+     */
+    private int find(Account account) {
+        for(int i = 0; i < this.size; i++) {
+            if(this.accounts[i].equals(account)) {
+                return i;
+            }
+        }
+        return NOT_FOUND;
+    }
 
     /**
      * Creates an AccountDatabase object.
@@ -65,19 +116,6 @@ public class AccountDatabase {
             this.accounts[index].setAccountType(AccountType.SAVINGS);
         }
         return true;
-    }
-
-    /**
-     * Resizes the original database by increasing the size of the array that holds the Account objects by 4.
-     * Creates a temporary array with the new length and replaces the old array.
-     */
-    private void grow() {
-        int newLength = this.accounts.length + GROW_SIZE; //the new length can hold 4 more accounts than the old length
-        Account[] newAccounts = new Account[newLength];
-        for(int i = 0; i < this.size; i++) {
-            newAccounts[i] = this.accounts[i];
-        }
-        this.accounts = newAccounts;
     }
 
     /**
@@ -177,22 +215,6 @@ public class AccountDatabase {
      */
     public boolean isEmpty() {
         return this.size == STARTING_SIZE;
-    }
-
-    /**
-     * Checks if Account is contained in the AccountDatabase and returns index of location in database.
-     *
-     * @param account that is being searched for
-     * @return index of the account in the account database when found,
-     * -1 otherwise
-     */
-    private int find(Account account) {
-        for(int i = 0; i < this.size; i++) {
-            if(this.accounts[i].equals(account)) {
-                return i;
-            }
-        }
-        return NOT_FOUND;
     }
 
     /**

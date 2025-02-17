@@ -10,11 +10,29 @@ import java.text.DecimalFormat;
  */
 
 public class Account implements Comparable<Account> {
-    private AccountNumber number; //AccountNumber object with information about 9-digit number that represents bank account
-    private Profile holder; //Profile object with information about account holder
-    private double balance; //amount of money currently in bank account
+    /**
+     * AccountNumber object with information about 9-digit number that represents bank account
+     */
+    private AccountNumber number;
 
-    private static final DecimalFormat df = new DecimalFormat("#,##0.00"); //formatted in a readable manner for money
+    /**
+     * Profile object with information about account holder
+     */
+    private Profile holder;
+
+    /**
+     * amount of money currently in bank account
+     */
+    private double balance;
+
+    /**
+     * formatted in a readable manner for money
+     */
+    private static final DecimalFormat df = new DecimalFormat("#,##0.00");
+
+    /**
+     * represents an empty balance of zero dollars and zero cents
+     */
     private static final int EMPTY_BALANCE = 0;
 
     /**

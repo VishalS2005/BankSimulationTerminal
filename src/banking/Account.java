@@ -9,21 +9,27 @@ import java.text.DecimalFormat;
  * @author Vishal Saravanan, Yining Chen
  */
 
-public class Account implements Comparable<Account> {
+public abstract class Account implements Comparable<Account> {
     /**
-     * AccountNumber object with information about 9-digit number that represents bank account
+     * AccountNumber object with information about 9-digit number that represents bank account.
      */
-    private AccountNumber number;
+    protected AccountNumber number;
 
     /**
-     * Profile object with information about account holder
+     * Profile object with information about account holder.
      */
-    private Profile holder;
+    protected Profile holder;
 
     /**
-     * amount of money currently in bank account
+     * Amount of money currently in bank account.
      */
-    private double balance;
+    protected double balance;
+
+    /**
+     * List of account activities:
+     * Deposit or Withdraw.
+     */
+    protected List<Activity> activities;
 
     /**
      * formatted in a readable manner for money
@@ -56,6 +62,33 @@ public class Account implements Comparable<Account> {
         this.number = number;
         this.holder = null;
     }
+
+    /**
+     * Extracts the statement detailing activities of a bank.
+     */
+    public final void statement() {
+        printActivities();
+        double interest = interest();
+        double fee = fee();
+        printInterestFee(interest, fee);
+        printBalance(interest, fee);
+    }
+
+    /**
+     * Add Account activity:
+     * Deposit or Withdraw.
+     */
+    public void addActivity() {}
+
+    /**
+     * Has the monthly interest of an Account.
+     */
+     public abstract double interest();
+
+    /**
+     * Has the value of the fee on an Account if there is one.
+     */
+     public abstract double fee();
 
     /**
      * Deducts money from the account and updates the balance.

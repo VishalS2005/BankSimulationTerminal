@@ -1,5 +1,12 @@
 package banking;
 
+import util.Date;
+import util.List;
+import util.Sort;
+
+import java.io.File;
+import java.io.IOException;
+
 /**
  * The AccountDatabase class holds the information regarding all the bank accounts.
  * A new account is always added to the end of the array. An instance of this class is a growable list
@@ -9,74 +16,13 @@ package banking;
  * @author Vishal Saravanan, Yining Chen
  */
 
-public class AccountDatabase {
-    /**
-     * array-based implementation of a linear data structure to hold the list of account objects
-     */
-    private Account [] accounts;
+public class AccountDatabase extends List<Account> {
 
-    /**
-     * represents the amount of accounts
-     */
-    private int size;
-
-    /**
-     * a linked list of closed account
-     */
     private final Archive archive;
 
-    /**
-     * The starting size of the AccountDatabase
-     */
-    private static final int STARTING_SIZE = 0;
 
-    /**
-     * The integer -1 is returned if an Account is not found
-     */
-    private static final int NOT_FOUND = -1;
-
-    /**
-     * The amount that the AccountDatabase will grow by
-     */
-    private static final int GROW_SIZE = 4;
-
-    /**
-     * Resizes the original database by increasing the size of the array that holds the Account objects by 4.
-     * Creates a temporary array with the new length and replaces the old array.
-     */
-    private void grow() {
-        int newLength = this.accounts.length + GROW_SIZE; //the new length can hold 4 more accounts than the old length
-        Account[] newAccounts = new Account[newLength];
-        for(int i = 0; i < this.size; i++) {
-            newAccounts[i] = this.accounts[i];
-        }
-        this.accounts = newAccounts;
-    }
-
-    /**
-     * Checks if Account is contained in the AccountDatabase and returns index of location in database.
-     *
-     * @param account that is being searched for
-     * @return index of the account in the account database when found,
-     * -1 otherwise
-     */
-    private int find(Account account) {
-        for(int i = 0; i < this.size; i++) {
-            if(this.accounts[i].equals(account)) {
-                return i;
-            }
-        }
-        return NOT_FOUND;
-    }
-
-    /**
-     * Creates an AccountDatabase object.
-     * An AccountDatabase object will hold an array implementation of the Account objects,
-     * the size of the database itself, and a linked list representation of closed accounts.
-     */
     public AccountDatabase() {
-        this.accounts = new Account[GROW_SIZE];
-        this.size = STARTING_SIZE;
+        super();
         this.archive = new Archive();
     }
 
@@ -89,9 +35,9 @@ public class AccountDatabase {
      * @param amount value of money that will be deposited
      */
     public void deposit(AccountNumber number, double amount) {
-        for (int i = 0; i < this.size; i++) {
-            if (this.accounts[i].getAccountNumber().equals(number)) {
-                this.accounts[i].deposit(amount);
+        for (int i = 0; i < this.size(); i++) {
+            if (this.get(i).getAccountNumber().equals(number)) {
+                this.get(i).deposit(amount);
                 return;
             }
         }
@@ -111,9 +57,9 @@ public class AccountDatabase {
         if(index == -1) {
             return false;
         }
-        this.accounts[index].withdraw(amount);
-        if(this.accounts[index].getBalance() < 2000 && this.accounts[index].getType() == AccountType.MONEY_MARKET) {
-            this.accounts[index].setAccountType(AccountType.SAVINGS);
+        this.get(index).withdraw(amount);
+        if(this.get(index).getBalance() < 2000 && this.get(index).getType() == AccountType.MONEY_MARKET) {
+            this.get(index).setAccountType(AccountType.SAVINGS);
         }
         return true;
     }
@@ -127,7 +73,7 @@ public class AccountDatabase {
      * false otherwise
      */
     public boolean hasSufficientFunds(int index, double amount) {
-        return this.accounts[index].getBalance() >= amount;
+        return this.get(index).getBalance() >= amount;
     }
 
     /**
@@ -140,7 +86,7 @@ public class AccountDatabase {
      * false otherwise
      */
     public boolean willDowngrade(int index, double amount) {
-        return this.accounts[index].getBalance() - amount < 2000 && this.accounts[index].getType() == AccountType.MONEY_MARKET;
+        return this.get(index).getBalance() - amount < 2000 && this.get(index).getType() == AccountType.MONEY_MARKET;
     }
 
     /**
@@ -150,17 +96,7 @@ public class AccountDatabase {
      *
      * @param account being added to AccountDatabase
      */
-    public void add(Account account) {
-        if(this.contains(account)) {
-            return;
-        }
-        if(this.size == this.accounts.length - 1) {
-            grow();
-        }
 
-        this.accounts[this.size] = account;
-        this.size++;
-    }
 
     /**
      * Removes an Account from the AccountDatabase.
@@ -171,17 +107,7 @@ public class AccountDatabase {
      *
      * @param account that is being added to AccountDatabase
      */
-    public void remove(Account account) {
-        int index = find(account.getAccountNumber()); //represents index of account
-        if(index == -1) {
-            return;
-        }
-        this.accounts[index].emptyBalance();
-        this.archive.add(this.accounts[index]);
-        this.accounts[index] = this.accounts[this.size - 1];
-        this.accounts[this.size - 1] = null;
-        this.size--;
-    }
+
 
     /**
      * Removes an Account to the AccountDatabase.
@@ -197,24 +123,14 @@ public class AccountDatabase {
      * @param dateOfBirth of the Account
      */
     public void remove (String firstName, String lastName, Date dateOfBirth) {
-        for(int i = 0; i < this.size; i++) {
-            if (this.accounts[i].getFirstName().equalsIgnoreCase(firstName)
-                    && this.accounts[i].getLastName().equalsIgnoreCase(lastName)
-                    && this.accounts[i].getDateOfBirth().equals(dateOfBirth)) {
-                this.remove(accounts[i]);
+        for(int i = 0; i < this.size(); i++) {
+            if (this.get(i).getFirstName().equalsIgnoreCase(firstName)
+                    && this.get(i).getLastName().equalsIgnoreCase(lastName)
+                    && this.get(i).getDateOfBirth().equals(dateOfBirth)) {
+                this.remove(this.get(i));
                 i--; //check the last element since when removing, last element is switched with current
             }
         }
-    }
-
-    /**
-     * Checks the AccountDatabase to determine if it is empty.
-     *
-     * @return true if the AccountDatabase has no Accounts
-     * false otherwise
-     */
-    public boolean isEmpty() {
-        return this.size == STARTING_SIZE;
     }
 
     /**
@@ -226,25 +142,14 @@ public class AccountDatabase {
      * -1 otherwise
      */
     public int find(AccountNumber accountNumber) {
-        for(int i = 0; i < this.size; i++) {
-            if(this.accounts[i].getAccountNumber().equals(accountNumber)) {
+        for(int i = 0; i < this.size(); i++) {
+            if(this.get(i).getAccountNumber().equals(accountNumber)) {
                 return i;
             }
         }
-        return NOT_FOUND;
+        return -1;
     }
 
-    /**
-     * Checks if Account is contained in the AccountDatabase.
-     * Searches through the AccountDatabase for an Account.
-     *
-     * @param account that is being searched for
-     * @return true if Account is found in AccountDatabase
-     * false otherwise
-     */
-    public boolean contains(Account account) {
-        return this.find(account) != NOT_FOUND;
-    }
 
     /**
      * Checks if Account is contained in the AccountDatabase.
@@ -255,8 +160,8 @@ public class AccountDatabase {
      * false otherwise
      */
     public boolean contains(AccountNumber accountNumber) {
-        for(int i = 0; i < this.size; i++) {
-            if(this.accounts[i].getAccountNumber().equals(accountNumber)) {
+        for(int i = 0; i < this.size(); i++) {
+            if(this.get(i).getAccountNumber().equals(accountNumber)) {
                 return true;
             }
         }
@@ -276,11 +181,11 @@ public class AccountDatabase {
      * false otherwise
      */
     public boolean contains(String firstName, String lastName, Date dateOfBirth, AccountType type) {
-        for(int i = 0; i < this.size; i++) {
-            if(this.accounts[i].getFirstName().equalsIgnoreCase(firstName)
-               && this.accounts[i].getLastName().equalsIgnoreCase(lastName)
-               && this.accounts[i].getAccountNumber().getType().equals(type)
-               && this.accounts[i].getDateOfBirth().equals(dateOfBirth)) {
+        for(int i = 0; i < this.size(); i++) {
+            if(this.get(i).getFirstName().equalsIgnoreCase(firstName)
+               && this.get(i).getLastName().equalsIgnoreCase(lastName)
+               && this.get(i).getAccountNumber().getType().equals(type)
+               && this.get(i).getDateOfBirth().equals(dateOfBirth)) {
                 return true;
             }
         }
@@ -298,10 +203,10 @@ public class AccountDatabase {
      * false otherwise
      */
     public boolean contains(String firstName, String lastName, Date dateOfBirth) {
-        for(int i = 0; i < this.size; i++) {
-            if(this.accounts[i].getFirstName().equalsIgnoreCase(firstName) &&
-                    this.accounts[i].getLastName().equalsIgnoreCase(lastName) &&
-                    this.accounts[i].getDateOfBirth().equals(dateOfBirth)) {
+        for(int i = 0; i < this.size(); i++) {
+            if(this.get(i).getFirstName().equalsIgnoreCase(firstName) &&
+                    this.get(i).getLastName().equalsIgnoreCase(lastName) &&
+                    this.get(i).getDateOfBirth().equals(dateOfBirth)) {
                 return true;
             }
         }
@@ -312,8 +217,8 @@ public class AccountDatabase {
      * Prints all the Accounts in the AccountDatabase from the beginning of AccountDatabase to the end.
      */
     public void print() {
-        for(int i = 0; i < this.size; i++) {
-            System.out.println(this.accounts[i].toString());
+        for(int i = 0; i < this.size(); i++) {
+            System.out.println(this.get(i).toString());
         }
         System.out.println("*end of list.\n");
     }
@@ -325,18 +230,10 @@ public class AccountDatabase {
      * To print, iterate through AccountDatabase and print County followed by City.
      */
     public void printByBranch() {
-        for (int i = 0; i < this.size - 1; i++) {
-            for (int j = 0; j < this.size - i - 1; j++) {
-                if ((this.accounts[j].compareByBranch(this.accounts[j + 1])) > 0) {
-                    Account temp = this.accounts[j];
-                    this.accounts[j] = this.accounts[j + 1];
-                    this.accounts[j + 1] = temp;
-                }
-            }
-        }
+        Sort.account(this, 'B');
         String currentCounty = null;
-        for (int i = 0; i < this.size; i++) {
-            Account account = this.accounts[i];
+        for (int i = 0; i < this.size(); i++) {
+            Account account = this.get(i);
             String county = account.getAccountNumber().getBranch().getCounty();
             if (currentCounty == null || !currentCounty.equals(county)) { // Print county header when encountering a new county
                 System.out.println("County: " + county);
@@ -354,15 +251,7 @@ public class AccountDatabase {
      * Calls the print() method.
      */
     public void printByHolder() {
-        for (int i = 0; i < this.size - 1; i++) {
-            for (int j = 0; j < this.size - i - 1; j++) {
-                if ((this.accounts[j].compareTo(this.accounts[j + 1])) > 0) {
-                    Account temp = this.accounts[j];
-                    this.accounts[j] = this.accounts[j + 1];
-                    this.accounts[j + 1] = temp;
-                }
-            }
-        }
+        Sort.account(this, 'H');
         this.print();
     }
 
@@ -374,20 +263,11 @@ public class AccountDatabase {
      * Prints sorted by AccountType.
      */
     public void printByType() {
-        for (int i = 0; i < this.size - 1; i++) {
-            for (int j = 0; j < this.size - i - 1; j++) {
-                int typeComparison = this.accounts[j].compareByAccountType(this.accounts[j + 1]);
-                if (typeComparison > 0 || ( typeComparison == 0
-                    && (this.accounts[j].getAccountNumber().compareTo(this.accounts[j + 1].getAccountNumber()) > 0))) {
-                    Account temp = this.accounts[j];
-                    this.accounts[j] = this.accounts[j + 1];
-                    this.accounts[j + 1] = temp;
-                }
-            }
-        }
+        Sort.account(this, 'T');
+
         AccountType currentType = null;
-        for (int i = 0; i < this.size; i++) {
-            Account account = this.accounts[i];
+        for (int i = 0; i < this.size(); i++) {
+            Account account = this.get(i);
             AccountType accountType = account.getAccountNumber().getType();
             if (currentType == null || !currentType.equals(accountType)) { // Print type header when encountering a new type
                 System.out.println("Account Type: " + accountType);
@@ -403,6 +283,20 @@ public class AccountDatabase {
      */
     public void printArchive() {
         this.archive.print();
+    }
+
+    public void printStatements() {
+
+    } //print account statements
+
+
+    public void loadAccounts(File file) throws IOException {
+
+    }
+
+
+    public void processActivities(File file) throws IOException {
+
     }
 
 }

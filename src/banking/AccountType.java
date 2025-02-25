@@ -21,7 +21,11 @@ public enum AccountType {
     /**
      * Money market account - 03.
      */
-    MONEY_MARKET("03");
+    MONEY_MARKET("03"),
+
+    COLLEGE_CHECKING("04"),
+
+    CD("05");
 
     /**
      * 2-digit code that represents the type of account

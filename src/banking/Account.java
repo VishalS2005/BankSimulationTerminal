@@ -1,5 +1,8 @@
 package banking;
 
+import util.Date;
+import util.List;
+
 import java.text.DecimalFormat;
 
 /**
@@ -72,6 +75,18 @@ public abstract class Account implements Comparable<Account> {
         double fee = fee();
         printInterestFee(interest, fee);
         printBalance(interest, fee);
+    }
+
+    private void printActivities() {
+
+    }
+
+    private void printInterestFee(double interest, double fee) {
+
+    }
+
+    private void printBalance(double interest, double fee) {
+
     }
 
     /**

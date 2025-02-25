@@ -1,5 +1,7 @@
 package banking;
 
+import util.Date;
+
 /**
  * Extends the savings class
  *
@@ -8,4 +10,26 @@ package banking;
 public class CertificateDeposit extends Savings{
     private int term;
     private Date open;
+
+    public CertificateDeposit(Branch branch, AccountType type, Profile holder, int term, Date open) {
+        super(branch, type, holder);
+        this.term = term;
+        this.open = open;
+    }
+
+    @Override
+    public double interest() {
+        return switch (term) {
+            case 3 -> 0.03;
+            case 6 -> 0.0325;
+            case 9 -> 0.035;
+            case 12 -> 0.04;
+            default -> 0;
+        };
+    }
+
+    @Override
+    public double fee() {
+        return 0;
+    }
 }

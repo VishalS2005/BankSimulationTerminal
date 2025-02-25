@@ -1,5 +1,7 @@
 package banking;
 
+import util.Date;
+
 /**
  * AccountNode class used for the Archive to store closed Accounts in a linked list implementation.
  *
@@ -16,6 +18,8 @@ public class AccountNode {
      * Account object with account number, profile of holder, and balance
      */
     private final Account Account;
+
+    private Date close;
 
     /**
      * Creates an AccountNode object.

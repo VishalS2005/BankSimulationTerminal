@@ -1,5 +1,7 @@
 package banking;
 
+import util.Date;
+
 import java.text.DecimalFormat;
 import java.util.Scanner;
 
@@ -93,19 +95,19 @@ public class TransactionManager {
         return new Date(month, day, year);
     }
 
-    /**
-     * Creates an Account object based on the parameters.
-     *
-     * @param firstName String representation of first name of Account holder
-     * @param lastName String representation of last name of Account holder
-     * @param dateOfBirth Date object that represents date of birth of Account holder
-     * @param branch Branch object that represents which branch the account is at
-     * @param acctType AccountType object that represents what kind of Account it is
-     * @return Account that is in the database
-     */
-    private static Account createAccount(String firstName, String lastName, Date dateOfBirth, Branch branch, AccountType acctType) {
+
+    private static Account createAccount(String[] commandArray, String firstName, String lastName, Date dateOfBirth, Branch branch) {
         Profile holder = createProfile(firstName, lastName, dateOfBirth);
-        return new Account(branch, acctType, holder);
+        String accountType = commandArray[1];
+
+        return switch (accountType) {
+            case "checking" -> new Checking(branch, AccountType.CHECKING, holder);
+            case "savings" -> new Savings(branch, AccountType.SAVINGS, holder);
+            case "moneymarket" -> new MoneyMarket(branch, AccountType.MONEY_MARKET, holder);
+            case "college" -> new CollegeChecking(branch, AccountType.COLLEGE_CHECKING, holder, Campus.fromCode(commandArray[7]));
+            case "certificate" -> new CertificateDeposit(branch, AccountType.CD, holder, Integer.parseInt(commandArray[7]), createDate(commandArray[7]));
+            default -> throw new IllegalStateException("Unexpected value: " + accountType);
+        };
     }
 
     /**
@@ -162,8 +164,7 @@ public class TransactionManager {
     private static void printAccounts(String command) {
         switch (command) {
             case "P":
-                System.out.println("\n*List of accounts in the account database.");
-                accountDatabase.print();
+                System.out.println("P command is deprecated!");
                 break;
             case "PA":
                 accountDatabase.printArchive();
@@ -244,7 +245,7 @@ public class TransactionManager {
             return;
         }
 
-        Account account = createAccount(firstName, lastName, dob, branch, acctType);
+        Account account = createAccount(commandArray, firstName, lastName, dob, branch);
         account.deposit(balance);
         accountDatabase.add(account); //adds the Account to the database
         System.out.println(account.getAccountNumber().getType() +  " account " + account.getAccountNumber() + " has been opened.");
@@ -311,7 +312,6 @@ public class TransactionManager {
                 System.out.println(accountNumber + " account does not exist.");
                 return;
             }
-            accountDatabase.remove(new Account(accountNumber));
             System.out.println(accountNumber +  " is closed and moved to archive; balance set to 0.");
         } else { //First Name, Last Name, and Date of Birth input
             String firstName = commandArray[1];

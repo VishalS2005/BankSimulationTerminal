@@ -1,5 +1,7 @@
 package banking;
 
+import util.Date;
+
 /**
  * The Profile class holds the information regarding a person who holds the bank account,
  * Full name and date of birth are part of their profile.

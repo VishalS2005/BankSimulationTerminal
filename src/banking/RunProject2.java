@@ -1,12 +1,12 @@
 package banking;
 
 /**
- * RunProject1 is a class that calls the TransactionManager which will manage transactions.
+ * RunProject2 is a class that calls the TransactionManager which will manage transactions.
  * Inputs will be read and corresponding outputs will be printed after the call to run TransactionManager.
  *
  * @author Vishal Saravanan, Yining Chen
  */
-public class RunProject1 {
+public class RunProject2 {
 
     /**
      * Executes the Transaction Manager.

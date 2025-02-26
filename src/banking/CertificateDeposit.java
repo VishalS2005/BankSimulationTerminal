@@ -32,4 +32,14 @@ public class CertificateDeposit extends Savings{
     public double fee() {
         return 0;
     }
+
+    @Override
+    public String toString() {
+        // Calculate maturity date by adding the term (in months) to the open date.
+        return super.toString()
+                + " Term[" + term + "]"
+                + " Date opened[" + open + "]"
+                + " Maturity date[" + open + "]";
+    }
+
 }

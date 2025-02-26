@@ -376,6 +376,10 @@ public class TransactionManager {
                 return;
             }
             AccountNumber accountNumber = new AccountNumber(commandArray[1]);
+            if(!accountDatabase.contains(accountNumber)) {
+               System.out.println(accountNumber + " does not exist.");
+               return;
+            }
             accountDatabase.deposit(accountNumber, depositAmount);
             System.out.println("$" + df.format(depositAmount) +  " deposited to " + accountNumber);
         } catch (NumberFormatException e) {
@@ -409,12 +413,13 @@ public class TransactionManager {
                 System.out.println(accountNumber + " does not exist.");
                 return;
             }
+
+            if(accountDatabase.belowTwoThousand(index, withdrawalAmount)) {
+                System.out.print(accountNumber + " balance below $2,000 - ");
+            }
             if(!accountDatabase.hasSufficientFunds(index, withdrawalAmount)) {
                 System.out.println(accountNumber + " - insufficient funds.");
                 return;
-            }
-            if(accountDatabase.willDowngrade(index, withdrawalAmount)) {
-                System.out.print(accountNumber + " is downgraded to SAVINGS - ");
             }
             System.out.println("$" + df.format(withdrawalAmount) +  " withdrawn from " + accountNumber);
             accountDatabase.withdraw(accountNumber, withdrawalAmount);

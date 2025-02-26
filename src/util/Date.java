@@ -146,6 +146,7 @@ public class Date implements Comparable<Date> {
         today.add(Calendar.YEAR, -MAXIMUM_AGE_YEARS);
         return !birthDate.before(today);
     }
+
     /**
      * Checks if the birthdate comes after today's date.
      *

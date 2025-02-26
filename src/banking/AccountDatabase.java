@@ -58,12 +58,16 @@ public class AccountDatabase extends List<Account> {
         if(index == -1) {
             return false;
         }
-        this.get(index).withdraw(amount);
-        if(this.get(index).getBalance() < 2000 && this.get(index).getType() == AccountType.MONEY_MARKET) {
-            this.get(index).setAccountType(AccountType.SAVINGS);
-        }
+        Account account = this.get(index);
+
+        // For MoneyMarket accounts, let the overridden withdraw handle fees.
+        account.withdraw(amount);
+
+        // For non-MoneyMarket accounts, you can include any other generic post-withdrawal processing if needed.
+
         return true;
     }
+
 
     /**
      * Checks if the Account has at least a certain amount of money.
@@ -86,7 +90,7 @@ public class AccountDatabase extends List<Account> {
      * @return true if the amount can be withdrawn
      * false otherwise
      */
-    public boolean willDowngrade(int index, double amount) {
+    public boolean belowTwoThousand(int index, double amount) {
         return this.get(index).getBalance() - amount < 2000 && this.get(index).getType() == AccountType.MONEY_MARKET;
     }
 

@@ -149,6 +149,10 @@ public abstract class Account implements Comparable<Account> {
         return this.balance;
     }
 
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
     /**
      * Returns a 2-digit AccountType object representation of the AccountType.
      * The three types are: Checking(01), Savings(02), and Money_Market(03).

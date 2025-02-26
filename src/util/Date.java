@@ -38,6 +38,8 @@ public class Date implements Comparable<Date> {
      */
     public static final int MINIMUM_AGE_YEARS = 18;
 
+    public static final int MAXIMUM_AGE_YEARS = 24;
+
     /**
      * Represents a period of 4 years.
      */
@@ -137,6 +139,13 @@ public class Date implements Comparable<Date> {
         return !birthDate.after(today);
     }
 
+    public boolean isOverTwentyFour() {
+        Calendar today = Calendar.getInstance();
+        Calendar birthDate = Calendar.getInstance();
+        birthDate.set(this.year, this.month - MONTH_OFFSET, this.day); //must subtract 1 because month is 0-based
+        today.add(Calendar.YEAR, -MAXIMUM_AGE_YEARS);
+        return !birthDate.before(today);
+    }
     /**
      * Checks if the birthdate comes after today's date.
      *

@@ -321,12 +321,15 @@ public class AccountDatabase extends List<Account> {
             Branch branch = TransactionManager.createBranch(parts[3]);
             char type = parts[0].charAt(0);
             double amount = Double.parseDouble(parts[4]);
-            Activity activity = new Activity(date, branch, type, amount, false);
-            int index = find(new AccountNumber(parts[1]));
+            Activity activity = new Activity(date, branch, type, amount, true);
+            AccountNumber accountNumber = new AccountNumber(parts[1]);
+            int index = find(accountNumber);
             if(index == -1) {
                 continue;
             }
             this.get(index).addActivity(activity);
+
+            System.out.println(accountNumber + "::" + activity);
         }
 
     }

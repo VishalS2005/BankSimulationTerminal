@@ -158,6 +158,7 @@ public class TransactionManager {
     private static void processActivities() throws IOException {
         System.out.println("Processing \"activities.txt\"...");
         accountDatabase.processActivities(new File ("activities.txt"));
+        System.out.println("Account activities in \"activities.txt\" processed.");
     }
 
     /**
@@ -219,21 +220,28 @@ public class TransactionManager {
      * Checks for valid inputs including a valid AccountType, Branch, Date, and balance.
      * Checks for duplicate account, minimum balance, and money market specifications.
      * Adds the opened account to the database.
-     *
-     * @param commandArray Holds the input that has been extracted and put into a String array
-     */
+     * * @param commandArray Holds the input that has been extracted and put into a String array */
     private static void openAccount(String[] commandArray) {
         AccountType acctType = createAccountType(commandArray[1]); //first input is the AccountType
         if(acctType == null) {
             return;
         }
+
+        if ((acctType == AccountType.COLLEGE_CHECKING && commandArray.length != 8) ||
+                (acctType == AccountType.CD && commandArray.length != 9) ||
+                (acctType != AccountType.COLLEGE_CHECKING && acctType != AccountType.CD && commandArray.length != 7)) {
+
+            System.out.println("Missing data tokens for opening an account.");
+            return;
+        }
+
         Branch branch = createBranch(commandArray[2]); //second input is the Branch
         if(branch == null) {
             return;
         }
 
         Date dob = createDate(commandArray[5]); //fifth input is the Date of Birth of the holder
-        if (!checkDateOfBirth(dob)) {
+        if (!checkDateOfBirth(acctType, dob)) {
             return;
         }
 
@@ -247,13 +255,22 @@ public class TransactionManager {
             return;
         }
 
-        if(accountDatabase.contains(firstName, lastName, dob, acctType)) { //checking for a duplicate account
-            System.out.println(firstName + " " + lastName +   " already has a " + commandArray[1] + " account.");
+        if(acctType != AccountType.CD && accountDatabase.contains(firstName, lastName, dob, acctType)) { //checking for a duplicate account
+            System.out.println(firstName + " " + lastName +   " already has a " + acctType + " account.");
             return;
         }
 
         if(!checkBalance(balance, acctType)) {
             return;
+        }
+
+        if (acctType == AccountType.CD) {
+            int value = Integer.parseInt(commandArray[7]);
+
+            if (value != 3 && value != 6 && value != 9 && value != 12) {
+                System.out.println(commandArray[7] + " is not a valid term.");
+                return;
+            }
         }
 
         Account account = createAccount(commandArray, firstName, lastName, dob, branch);
@@ -272,7 +289,7 @@ public class TransactionManager {
      * @return true if valid date of birth
      * false otherwise
      */
-    private static boolean checkDateOfBirth(Date dob) {
+    private static boolean checkDateOfBirth(AccountType accountType, Date dob) {
         if (!dob.isValid()) {
             System.out.println("DOB invalid: " + dob + " not a valid calendar date!");
             return false;
@@ -281,6 +298,9 @@ public class TransactionManager {
             return false;
         } else if(!dob.isEighteen()) {
             System.out.println("Not eligible to open: " +  dob + " under 18.");
+            return false;
+        } else if(accountType == AccountType.COLLEGE_CHECKING && !dob.isOverTwentyFour())   {
+            System.out.println("Not eligible to open: " + dob + " over 24.");
             return false;
         }
         return true;
@@ -302,6 +322,9 @@ public class TransactionManager {
             return false;
         } else if(balance < 2000 && acctType.equals(AccountType.MONEY_MARKET)) { //Money Market account must have at least $2000
             System.out.println("Minimum of $2,000 to open a Money Market account.");
+            return false;
+        } else if(balance < 1000 && acctType.equals(AccountType.CD)) {
+            System.out.println("Minimum of $1,000 to open a Certificate Deposit account.");
             return false;
         }
         return true;
@@ -357,6 +380,8 @@ public class TransactionManager {
             System.out.println("$" + df.format(depositAmount) +  " deposited to " + accountNumber);
         } catch (NumberFormatException e) {
             System.out.println("For input string: \"" + commandArray[2] + "\" - not a valid amount.");
+        } catch(ArrayIndexOutOfBoundsException e) {
+            System.out.println("Missing data tokens for the deposit.");
         }
     }
 
@@ -395,6 +420,8 @@ public class TransactionManager {
             accountDatabase.withdraw(accountNumber, withdrawalAmount);
         } catch (NumberFormatException e) {
             System.out.println("For input string: \"" + commandArray[2] + "\" - not a valid amount.");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Missing data tokens for the withdrawal.");
         }
     }
 

@@ -2,6 +2,8 @@ package banking;
 
 import util.Date;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 
@@ -31,23 +33,18 @@ public class TransactionManager {
      * @return AccountType of the Account
      */
     private static AccountType createAccountType(String type) {
-        AccountType acctType = null;
         String typeToken = type.toLowerCase(); //AccountType is case-insensitive
-        switch (typeToken) {
-            case "checking":
-                acctType = AccountType.CHECKING;
-                break;
-            case "savings":
-                acctType = AccountType.SAVINGS;
-                break;
-            case "moneymarket":
-                acctType = AccountType.MONEY_MARKET;
-                break;
-            default:  {
+        return switch (typeToken) {
+            case "checking" -> AccountType.CHECKING;
+            case "savings" -> AccountType.SAVINGS;
+            case "moneymarket" -> AccountType.MONEY_MARKET;
+            case "college" -> AccountType.COLLEGE_CHECKING;
+            case "certificate" -> AccountType.CD;
+            default ->  {
                 System.out.println(typeToken + " - invalid account type.");
+               yield null;
             }
-        }
-        return acctType;
+        };
     }
 
     /**
@@ -57,7 +54,7 @@ public class TransactionManager {
      * @param branchName String representation of the Branch where the Account was opened
      * @return Branch of the Account
      */
-    private static Branch createBranch(String branchName) {
+    public static Branch createBranch(String branchName) {
         Branch branch = null;
         try {
             branch = Branch.valueOf(branchName.toUpperCase());
@@ -87,7 +84,7 @@ public class TransactionManager {
      * @param date String representation of the date
      * @return Date object that represents the date of birth
      */
-    private static Date createDate(String date) {
+    public static Date createDate(String date) {
         String[] dateParts = date.split("/");
         int month = Integer.parseInt(dateParts[0]);
         int day = Integer.parseInt(dateParts[1]);
@@ -96,20 +93,35 @@ public class TransactionManager {
     }
 
 
-    private static Account createAccount(String[] commandArray, String firstName, String lastName, Date dateOfBirth, Branch branch) {
-        Profile holder = createProfile(firstName, lastName, dateOfBirth);
+    public static Account createAccount(String[] commandArray, String firstName, String lastName, Date dateOfBirth, Branch branch) {
         String accountType = commandArray[1];
+        return getAccount(commandArray, firstName, lastName, dateOfBirth, branch, accountType);
+    }
 
+    private static Account getAccount(String[] commandArray, String firstName, String lastName, Date dateOfBirth, Branch branch, String accountType) {
+        Profile holder = createProfile(firstName, lastName, dateOfBirth);
+        accountType = accountType.toLowerCase();
         return switch (accountType) {
             case "checking" -> new Checking(branch, AccountType.CHECKING, holder);
             case "savings" -> new Savings(branch, AccountType.SAVINGS, holder);
             case "moneymarket" -> new MoneyMarket(branch, AccountType.MONEY_MARKET, holder);
-            case "college" -> new CollegeChecking(branch, AccountType.COLLEGE_CHECKING, holder, Campus.fromCode(commandArray[7]));
-            case "certificate" -> new CertificateDeposit(branch, AccountType.CD, holder, Integer.parseInt(commandArray[7]), createDate(commandArray[7]));
+            case "college" -> new CollegeChecking(branch, AccountType.COLLEGE_CHECKING, holder, Campus.fromCode(commandArray[commandArray.length - 1]));
+            case "certificate" -> new CertificateDeposit(branch, AccountType.CD, holder, Integer.parseInt(commandArray[commandArray.length - 2]), createDate(commandArray[commandArray.length - 1]));
             default -> throw new IllegalStateException("Unexpected value: " + accountType);
         };
     }
 
+    public static Account createAccount(String[] commandArray) {
+        String accountType = commandArray[0];
+        Branch branch = createBranch(commandArray[1]); //second input is the Branch
+        String firstName = commandArray[2]; //third input is the first name of the holder
+        String lastName = commandArray[3]; //fourth input is the last name of the holder
+        Date dateOfBirth = createDate(commandArray[4]); //fifth input is the Date of Birth of the holder
+        double amount = Double.parseDouble(commandArray[5]);
+        Account account = getAccount(commandArray, firstName, lastName, dateOfBirth, branch, accountType);
+        account.deposit(amount);
+        return account;
+    }
     /**
      * Chooses which action to complete depending on a single input line that has been read.
      * VALID COMMANDS: O, C, D, W, P, PA, PB, PH, PT
@@ -126,21 +138,14 @@ public class TransactionManager {
      *
      * @param commandArray Holds the input that has been extracted and put into a String array
      */
-    private static void processCommand(String[] commandArray) {
+    private static void processCommand(String[] commandArray) throws IOException {
         if (isValidCommand(commandArray[0])) {
             switch (commandArray[0]) {
-                case "O":
-                    openAccount(commandArray);
-                    return;
-                case "C":
-                    closeAccount(commandArray);
-                    return;
-                case "D":
-                    depositMoney(commandArray);
-                    return;
-                case "W":
-                    withdrawMoney(commandArray);
-                    return;
+                case "O" -> openAccount(commandArray);
+                case "C" -> closeAccount(commandArray);
+                case "D" -> depositMoney(commandArray);
+                case "W" -> withdrawMoney(commandArray);
+                case "A" -> processActivities();
             }
             if (accountDatabase.isEmpty()) {
                 System.out.println("Account database is empty!");
@@ -148,6 +153,11 @@ public class TransactionManager {
                 printAccounts(commandArray[0]);
             }
         }
+    }
+
+    private static void processActivities() throws IOException {
+        System.out.println("Processing \"activities.txt\"...");
+        accountDatabase.processActivities(new File ("activities.txt"));
     }
 
     /**
@@ -163,9 +173,6 @@ public class TransactionManager {
      */
     private static void printAccounts(String command) {
         switch (command) {
-            case "P":
-                System.out.println("P command is deprecated!");
-                break;
             case "PA":
                 accountDatabase.printArchive();
                 break;
@@ -195,7 +202,11 @@ public class TransactionManager {
      */
     private static boolean isValidCommand(String command) {
         return switch (command) {
-            case "O", "C", "D", "W", "P", "PA", "PB", "PH", "PT" -> true;
+            case "O", "C", "D", "W", "PA", "PB", "PH", "PT", "PS", "A" -> true;
+            case "P" -> {
+                System.out.println("P command is deprecated!");
+                yield false;
+            }
             default -> {
                 System.out.println("Invalid command!");
                 yield false;
@@ -396,7 +407,9 @@ public class TransactionManager {
      * For example:
      *    O savings bridgewater John Doe 2/19/2000 500
      */
-    public static void run() {
+    public static void run() throws IOException {
+        accountDatabase.loadAccounts(new File("accounts.txt"));
+        System.out.println("Accounts in \"accounts.txt\" loaded to the database.");
         System.out.println("Transaction Manager is running.");
 
         Scanner scanner = new Scanner(System.in);

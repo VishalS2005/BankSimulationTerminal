@@ -6,6 +6,7 @@ import util.Sort;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * The AccountDatabase class holds the information regarding all the bank accounts.
@@ -291,11 +292,42 @@ public class AccountDatabase extends List<Account> {
 
 
     public void loadAccounts(File file) throws IOException {
+        Scanner scanner = new Scanner(file);
+
+        while(scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            if(line.trim().isEmpty()) {
+                continue;
+            }
+            String[] parts = line.split(",");
+            Account account = TransactionManager.createAccount(parts);
+            this.add(account);
+        }
 
     }
 
 
     public void processActivities(File file) throws IOException {
+
+        Scanner scanner = new Scanner(file);
+
+        while(scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            if(line.trim().isEmpty()) {
+                continue;
+            }
+            String[] parts = line.split(",");
+            Date date = TransactionManager.createDate(parts[2]);
+            Branch branch = TransactionManager.createBranch(parts[3]);
+            char type = parts[0].charAt(0);
+            double amount = Double.parseDouble(parts[4]);
+            Activity activity = new Activity(date, branch, type, amount, false);
+            int index = find(new AccountNumber(parts[1]));
+            if(index == -1) {
+                continue;
+            }
+            this.get(index).addActivity(activity);
+        }
 
     }
 

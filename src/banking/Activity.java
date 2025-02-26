@@ -14,6 +14,14 @@ public class Activity implements Comparable<Activity> {
 
     private boolean atm; //true if this is made at an ATM (from the text file)
 
+    public Activity(Date date, Branch location, char type, double amount, boolean atm) {
+        this.date = date;
+        this.location = location;
+        this.type = type;
+        this.amount = amount;
+        this.atm = atm;
+    }
+
     @Override
     public int compareTo(Activity o) {
         return date.compareTo(o.date);

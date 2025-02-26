@@ -54,6 +54,7 @@ public abstract class Account implements Comparable<Account> {
     public Account(Branch branch, AccountType type, Profile holder) {
         this.number = new AccountNumber(branch, type);
         this.holder = holder;
+        this.activities = new List<>();
     }
 
     /**
@@ -156,6 +157,10 @@ public abstract class Account implements Comparable<Account> {
      */
     public AccountType getType() {
         return this.number.getType();
+    }
+
+    public void addActivity(Activity activity) {
+        activities.add(activity);
     }
 
     /**

@@ -12,7 +12,7 @@ public class MoneyMarket extends Savings {
 
     @Override
     public double interest() {
-        return 0.035;
+        return isLoyal ? 0.035 : 0.0335;
     }
 
     /**
@@ -27,20 +27,21 @@ public class MoneyMarket extends Savings {
         // Increment the withdrawal counter for this statement cycle.
         withdrawal++;
 
-        // Calculate fee for extra withdrawals.
-        double extraFee = (withdrawal > 3) ? 10 : 0;
-
-        // Total amount to withdraw includes extra fee (if any).
-        double totalWithdrawal = amount + extraFee;
-
-        // Perform the withdrawal using the Savings (or Account) method.
-        // (Assuming Savings.withdraw handles sufficient funds checking.)
-        super.withdraw(totalWithdrawal);
+//        // Calculate fee for extra withdrawals.
+//        double extraFee = (withdrawal > 3) ? 10 : 0;
+//
+//        // Total amount to withdraw includes extra fee (if any).
+//        double totalWithdrawal = amount + extraFee;
+//
+//        // Perform the withdrawal using the Savings (or Account) method.
+//        // (Assuming Savings.withdraw handles sufficient funds checking.)
+//        super.withdraw(totalWithdrawal);
+        super.withdraw(amount);
 
         // After withdrawal, if balance falls below $2000, charge $25 fee.
         if (this.getBalance() < 2000) {
             // Deduct $25 fee (this may need to check for sufficient funds in your business logic).
-            super.withdraw(25);
+//            super.withdraw(25);
         }
 
         if (this.getBalance() < 5000) {

@@ -346,23 +346,49 @@ public class TransactionManager {
      * @param commandArray Holds the input that has been extracted and put into a String array
      */
     private static void closeAccount(String[] commandArray) {
-        if(commandArray.length == 2) { //AccountNumber input
-            AccountNumber accountNumber = new AccountNumber(commandArray[1]);
+        Date closeDate = createDate(commandArray[1]);
+        if(commandArray.length == 3) { //AccountNumber input
+            AccountNumber accountNumber = new AccountNumber(commandArray[2]);
             if(!accountDatabase.contains(accountNumber)) {
                 System.out.println(accountNumber + " account does not exist.");
                 return;
             }
-            System.out.println(accountNumber +  " is closed and moved to archive; balance set to 0.");
-        } else { //First Name, Last Name, and Date of Birth input
-            String firstName = commandArray[1];
-            String lastName = commandArray[2];
-            Date dateOfBirth = createDate(commandArray[3]);
-            if(!accountDatabase.contains(firstName, lastName, dateOfBirth)) {
+            System.out.println("Closing account " + accountNumber);
+            int index = accountDatabase.find(accountNumber);
+            accountDatabase.closeAccount(accountDatabase.get(index));
+            System.out.print("--");
+            printInterest(accountDatabase.get(index), closeDate);
+        } else if(commandArray.length == 5) { //First Name, Last Name, and Date of Birth input
+            String firstName = commandArray[2];
+            String lastName = commandArray[3];
+            Date dateOfBirth = createDate(commandArray[4]);
+
+            int index = accountDatabase.find(firstName, lastName, dateOfBirth);
+            if(index == -1) {
                 System.out.println(firstName + " " + lastName + " " + dateOfBirth +  " does not have any accounts in the database.");
-                return;
             }
-            accountDatabase.remove(firstName, lastName, dateOfBirth);
-            System.out.println("All accounts for " + firstName + " " + lastName + " " + dateOfBirth + " are closed and moved to archive; balance set to 0.");
+            else {
+                System.out.println("Closing accounts for " + firstName + " " + lastName + " " + dateOfBirth);
+                while(index != -1) {
+                    accountDatabase.closeAccount(accountDatabase.get(index));
+                    System.out.print("--" + accountDatabase.get(index).getAccountNumber() + " ");
+                    printInterest(accountDatabase.get(index), closeDate);
+                    index = accountDatabase.find(firstName, lastName, dateOfBirth);
+                }
+                System.out.println("All accounts for " + firstName + " " + lastName + " " + dateOfBirth + " are closed and moved to archive.");
+            }
+        } else {
+            System.out.println("Missing data for closing an account.");
+        }
+
+    }
+
+    private static void printInterest(Account account, Date closeDate) {
+        System.out.print("interest earned: $");
+        if(account.getType() == AccountType.CD) {
+            System.out.println(df.format(account.getBalance() * account.interest() / 365 * closeDate.daysAfter(((CertificateDeposit)account).getOpen())));
+        } else {
+            System.out.println(df.format(account.getBalance() * account.interest() / 365 * closeDate.getDay()));
         }
     }
 

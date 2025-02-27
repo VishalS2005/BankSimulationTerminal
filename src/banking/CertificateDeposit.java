@@ -17,6 +17,10 @@ public class CertificateDeposit extends Savings{
         this.open = open;
     }
 
+    public Date getOpen() {
+        return open;
+    }
+
     @Override
     public double interest() {
         return switch (term) {

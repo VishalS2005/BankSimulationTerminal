@@ -60,10 +60,8 @@ public class AccountDatabase extends List<Account> {
         }
         Account account = this.get(index);
 
-        // For MoneyMarket accounts, let the overridden withdraw handle fees.
         account.withdraw(amount);
 
-        // For non-MoneyMarket accounts, you can include any other generic post-withdrawal processing if needed.
 
         return true;
     }
@@ -94,25 +92,16 @@ public class AccountDatabase extends List<Account> {
         return this.get(index).getBalance() - amount < 2000 && this.get(index).getType() == AccountType.MONEY_MARKET;
     }
 
-    /**
-     * Adds an Account to the AccountDatabase.
-     * Checks for duplicate accounts and returns if there is one found.
-     * Checks size and resizes as needed to make space for the new Account.
-     *
-     * @param account being added to AccountDatabase
-     */
 
+    public void closeAccount(AccountNumber accountNumber) {
+        Account account = this.get(find(accountNumber));
+        closeAccount(account);
+    }
 
-    /**
-     * Removes an Account from the AccountDatabase.
-     * Checks if the account to be removed is in the AccountDatabase and returns if it is not.
-     * Adds removed Account to the archive before deleting the Account.
-     * Replaces Account being deleted with the last Account.
-     * Updates the size of the AccountDatabase.
-     *
-     * @param account that is being added to AccountDatabase
-     */
-
+    public void closeAccount(Account account) {
+        archive.add(account);
+        this.remove(account);
+    }
 
     /**
      * Removes an Account to the AccountDatabase.
@@ -127,7 +116,7 @@ public class AccountDatabase extends List<Account> {
      * @param lastName of the Account
      * @param dateOfBirth of the Account
      */
-    public void remove (String firstName, String lastName, Date dateOfBirth) {
+    public void closeAccount(String firstName, String lastName, Date dateOfBirth) {
         for(int i = 0; i < this.size(); i++) {
             if (this.get(i).getFirstName().equalsIgnoreCase(firstName)
                     && this.get(i).getLastName().equalsIgnoreCase(lastName)
@@ -136,6 +125,17 @@ public class AccountDatabase extends List<Account> {
                 i--; //check the last element since when removing, last element is switched with current
             }
         }
+    }
+
+    public int find(String firstName, String lastName, Date dateOfBirth) {
+        for(int i = 0; i < this.size(); i++) {
+            if (this.get(i).getFirstName().equalsIgnoreCase(firstName)
+                    && this.get(i).getLastName().equalsIgnoreCase(lastName)
+                    && this.get(i).getDateOfBirth().equals(dateOfBirth)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**
@@ -257,10 +257,7 @@ public class AccountDatabase extends List<Account> {
      */
     public void printByHolder() {
         Sort.account(this, 'H');
-        for(int i = 0; i < this.size(); i++) {
-            System.out.println(this.get(i).toString());
-        }
-        System.out.println("*end of list.\n");
+        this.print();
     }
 
     /**

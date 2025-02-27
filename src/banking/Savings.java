@@ -16,16 +16,14 @@ public class Savings extends Account{
     }
 
     public double interest() {
-        return 0.025;
+        return isLoyal ? 0.0275: 0.025 ;
     }
 
     public double fee() {
         return 25;
     }
 
-    public boolean getIsLoyal() {
-        return isLoyal;
-    }
+
 
     public void setIsLoyal(boolean isLoyal) {
         this.isLoyal = isLoyal;

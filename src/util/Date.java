@@ -88,6 +88,18 @@ public class Date implements Comparable<Date> {
         this.year = year;
     }
 
+    public Date() {
+        Calendar today = Calendar.getInstance();
+        this.year = today.get(Calendar.YEAR);
+        // Calendar months are 0-based, so add MONTH_OFFSET (which is 1) to adjust.
+        this.month = today.get(Calendar.MONTH) + MONTH_OFFSET;
+        this.day = today.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public int getDay() {
+        return day;
+    }
+
     /**
      * Checks if the date provided by the user is on the calendar.
      * Checks the month, the days in the month, and if it is a leap year.
@@ -192,6 +204,21 @@ public class Date implements Comparable<Date> {
         }
         return year % CENTENNIAL != 0 || year % QUARTERCENTENNIAL == 0;
     }
+
+    public int daysAfter(Date other) {
+        Calendar calThis = Calendar.getInstance();
+        calThis.set(this.year, this.month - MONTH_OFFSET, this.day);
+
+        Calendar calOther = Calendar.getInstance();
+        calOther.set(other.year, other.month - MONTH_OFFSET, other.day);
+        int days = 0;
+        while (calOther.before(calThis)) {
+            calOther.add(Calendar.DAY_OF_MONTH, 1);
+            days++;
+        }
+        return days;
+    }
+
 
     /**
      * Compares this Date to another Date.

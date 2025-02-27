@@ -50,9 +50,6 @@ public class List<E> implements Iterable<E> {
     }
 
     public void add(E e) {
-        if(this.contains(e)) {
-            return;
-        }
         if(this.size == this.objects.length - 1) {
             grow();
         }

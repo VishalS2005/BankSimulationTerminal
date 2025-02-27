@@ -23,4 +23,9 @@ public class Savings extends Account{
         return 25;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + (isLoyal ? " [LOYAL] " : "");
+    }
+
 }

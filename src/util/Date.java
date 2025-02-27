@@ -147,6 +147,25 @@ public class Date implements Comparable<Date> {
         return !birthDate.before(today);
     }
 
+    public Date addMonths(Date date, int monthsToAdd) {
+        // Create a Calendar instance and set it to the date values.
+        // Note: Calendar months are 0-based, so subtract the MONTH_OFFSET.
+        Calendar cal = Calendar.getInstance();
+        cal.set(date.year, date.month - MONTH_OFFSET, date.day);
+
+        // Add the specified number of months.
+        cal.add(Calendar.MONTH, monthsToAdd);
+
+        // Retrieve the new year, month, and day.
+        int newYear = cal.get(Calendar.YEAR);
+        int newMonth = cal.get(Calendar.MONTH) + MONTH_OFFSET; // Adjust back to 1-based month.
+        int newDay = cal.get(Calendar.DAY_OF_MONTH);
+
+        // Return a new Date object with the updated values.
+        return new Date(newMonth, newDay, newYear);
+    }
+
+
     /**
      * Checks if the birthdate comes after today's date.
      *

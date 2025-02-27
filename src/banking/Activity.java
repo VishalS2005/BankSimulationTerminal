@@ -27,6 +27,10 @@ public class Activity implements Comparable<Activity> {
         this.atm = atm;
     }
 
+    public char getType() {
+        return type;
+    }
+
     @Override
     public int compareTo(Activity o) {
         return date.compareTo(o.date);

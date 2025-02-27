@@ -18,5 +18,10 @@ public class CollegeChecking extends Checking{
     public double fee() {
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + " Campus[" + campus + "]";
+    }
 }
 

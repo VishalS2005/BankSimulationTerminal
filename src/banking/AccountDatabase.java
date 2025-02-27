@@ -257,7 +257,10 @@ public class AccountDatabase extends List<Account> {
      */
     public void printByHolder() {
         Sort.account(this, 'H');
-        this.print();
+        for(int i = 0; i < this.size(); i++) {
+            System.out.println(this.get(i).toString());
+        }
+        System.out.println("*end of list.\n");
     }
 
     /**
@@ -332,6 +335,12 @@ public class AccountDatabase extends List<Account> {
                 continue;
             }
             this.get(index).addActivity(activity);
+            if(type == 'W') {
+                this.get(index).withdraw(amount);
+            }
+            else {
+                this.get(index).deposit(amount);
+            }
 
             System.out.println(accountNumber + "::" + activity);
         }

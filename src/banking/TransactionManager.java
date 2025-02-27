@@ -381,6 +381,7 @@ public class TransactionManager {
                return;
             }
             accountDatabase.deposit(accountNumber, depositAmount);
+            Activity activity = new Activity(null, null, 'D', depositAmount, false);
             System.out.println("$" + df.format(depositAmount) +  " deposited to " + accountNumber);
         } catch (NumberFormatException e) {
             System.out.println("For input string: \"" + commandArray[2] + "\" - not a valid amount.");
@@ -402,27 +403,42 @@ public class TransactionManager {
     private static void withdrawMoney(String[] commandArray) {
         try {
             double withdrawalAmount = Double.parseDouble(commandArray[2]);
-            if(withdrawalAmount <= 0) {
+            if (withdrawalAmount <= 0) {
                 System.out.println(withdrawalAmount + " withdrawal amount cannot be 0 or negative.");
                 return;
             }
             AccountNumber accountNumber = new AccountNumber(commandArray[1]);
-
             int index = accountDatabase.find(accountNumber);
-            if(index == -1) {
+            if (index == -1) {
                 System.out.println(accountNumber + " does not exist.");
                 return;
             }
 
-            if(accountDatabase.belowTwoThousand(index, withdrawalAmount)) {
-                System.out.print(accountNumber + " balance below $2,000 - ");
+            boolean belowThreshold = accountDatabase.belowTwoThousand(index, withdrawalAmount);
+            boolean sufficientFunds = accountDatabase.hasSufficientFunds(index, withdrawalAmount);
+
+            if (belowThreshold) {
+                // When the account balance is below $2,000, include a prefix message.
+                if (sufficientFunds) {
+                    System.out.println(accountNumber + " balance below $2,000 - $"
+                            + df.format(withdrawalAmount) + " withdrawn from " + accountNumber);
+                    accountDatabase.withdraw(accountNumber, withdrawalAmount);
+                    Activity activity = new Activity(null, null, 'W', withdrawalAmount, false );
+                    accountDatabase.get(index).addActivity(activity);
+                } else {
+                    System.out.println(accountNumber + " balance below $2,000 - withdrawing $"
+                            + df.format(withdrawalAmount) + " - insufficient funds.");
+                }
+            } else {
+                // For accounts not below the threshold, no prefix is needed.
+                if (sufficientFunds) {
+                    System.out.println("$" + df.format(withdrawalAmount) + " withdrawn from " + accountNumber);
+                    accountDatabase.withdraw(accountNumber, withdrawalAmount);
+                } else {
+                    System.out.println("$" + df.format(withdrawalAmount) + " - insufficient funds.");
+                }
             }
-            if(!accountDatabase.hasSufficientFunds(index, withdrawalAmount)) {
-                System.out.println(accountNumber + " - insufficient funds.");
-                return;
-            }
-            System.out.println("$" + df.format(withdrawalAmount) +  " withdrawn from " + accountNumber);
-            accountDatabase.withdraw(accountNumber, withdrawalAmount);
+
         } catch (NumberFormatException e) {
             System.out.println("For input string: \"" + commandArray[2] + "\" - not a valid amount.");
         } catch (ArrayIndexOutOfBoundsException e) {

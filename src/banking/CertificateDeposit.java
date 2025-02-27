@@ -39,7 +39,7 @@ public class CertificateDeposit extends Savings{
         return super.toString()
                 + " Term[" + term + "]"
                 + " Date opened[" + open + "]"
-                + " Maturity date[" + open + "]";
+                + " Maturity date[" + open.addMonths(open, term) + "]";
     }
 
 }

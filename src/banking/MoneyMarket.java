@@ -4,7 +4,7 @@ public class MoneyMarket extends Savings {
     /**
      * Number of withdrawals in the current statement cycle.
      */
-    private int withdrawalCount = 0;
+    private int withdrawal = 0;
 
     public MoneyMarket(Branch branch, AccountType type, Profile holder) {
         super(branch, type, holder);
@@ -25,10 +25,10 @@ public class MoneyMarket extends Savings {
     @Override
     public void withdraw(double amount) {
         // Increment the withdrawal counter for this statement cycle.
-        withdrawalCount++;
+        withdrawal++;
 
         // Calculate fee for extra withdrawals.
-        double extraFee = (withdrawalCount > 3) ? 10 : 0;
+        double extraFee = (withdrawal > 3) ? 10 : 0;
 
         // Total amount to withdraw includes extra fee (if any).
         double totalWithdrawal = amount + extraFee;
@@ -42,19 +42,22 @@ public class MoneyMarket extends Savings {
             // Deduct $25 fee (this may need to check for sufficient funds in your business logic).
             super.withdraw(25);
         }
+
+        if (this.getBalance() < 5000) {
+            this.setIsLoyal(false);
+        }
     }
 
-    /**
-     * (Optional) Resets the withdrawal count at the beginning of a new statement cycle.
-     */
-    public void resetWithdrawalCount() {
-        withdrawalCount = 0;
+    @Override
+    public void deposit(double amount) {
+        super.deposit(amount);
+        if (this.getBalance() >= 5000) {
+            this.setIsLoyal(true);
+        }
     }
 
-    /**
-     * (Optional) Getter for the withdrawal count.
-     */
-    public int getWithdrawalCount() {
-        return withdrawalCount;
+    @Override
+    public String toString() {
+        return super.toString() + " Withdrawal[" + withdrawal + "]";
     }
 }

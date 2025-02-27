@@ -103,7 +103,13 @@ public class TransactionManager {
         accountType = accountType.toLowerCase();
         return switch (accountType) {
             case "checking" -> new Checking(branch, AccountType.CHECKING, holder);
-            case "savings" -> new Savings(branch, AccountType.SAVINGS, holder);
+            case "savings" -> {
+                Savings account = new Savings(branch, AccountType.SAVINGS, holder);
+                if(accountDatabase.contains(firstName, lastName, dateOfBirth, AccountType.CHECKING)) {
+                   account.setIsLoyal(true);
+                }
+                yield account;
+            }
             case "moneymarket" -> new MoneyMarket(branch, AccountType.MONEY_MARKET, holder);
             case "college" -> new CollegeChecking(branch, AccountType.COLLEGE_CHECKING, holder, Campus.fromCode(commandArray[commandArray.length - 1]));
             case "certificate" -> new CertificateDeposit(branch, AccountType.CD, holder, Integer.parseInt(commandArray[commandArray.length - 2]), createDate(commandArray[commandArray.length - 1]));
@@ -381,7 +387,6 @@ public class TransactionManager {
                return;
             }
             accountDatabase.deposit(accountNumber, depositAmount);
-            Activity activity = new Activity(null, null, 'D', depositAmount, false);
             System.out.println("$" + df.format(depositAmount) +  " deposited to " + accountNumber);
         } catch (NumberFormatException e) {
             System.out.println("For input string: \"" + commandArray[2] + "\" - not a valid amount.");
@@ -417,14 +422,12 @@ public class TransactionManager {
             boolean belowThreshold = accountDatabase.belowTwoThousand(index, withdrawalAmount);
             boolean sufficientFunds = accountDatabase.hasSufficientFunds(index, withdrawalAmount);
 
-            if (belowThreshold) {
+            if (belowThreshold && accountDatabase.get(index).getType() == AccountType.MONEY_MARKET) {
                 // When the account balance is below $2,000, include a prefix message.
                 if (sufficientFunds) {
                     System.out.println(accountNumber + " balance below $2,000 - $"
                             + df.format(withdrawalAmount) + " withdrawn from " + accountNumber);
                     accountDatabase.withdraw(accountNumber, withdrawalAmount);
-                    Activity activity = new Activity(null, null, 'W', withdrawalAmount, false );
-                    accountDatabase.get(index).addActivity(activity);
                 } else {
                     System.out.println(accountNumber + " balance below $2,000 - withdrawing $"
                             + df.format(withdrawalAmount) + " - insufficient funds.");

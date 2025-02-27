@@ -23,9 +23,17 @@ public class Savings extends Account{
         return 25;
     }
 
+    public boolean getIsLoyal() {
+        return isLoyal;
+    }
+
+    public void setIsLoyal(boolean isLoyal) {
+        this.isLoyal = isLoyal;
+    }
+
     @Override
     public String toString() {
-        return super.toString() + (isLoyal ? " [LOYAL] " : "");
+        return super.toString() + (isLoyal ? " [LOYAL]" : "");
     }
 
 }

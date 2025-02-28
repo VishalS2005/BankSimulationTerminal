@@ -315,7 +315,7 @@ public abstract class Account implements Comparable<Account> {
     public boolean equals(Object obj) {
         if (obj instanceof Account) {
             Account other = (Account) obj;
-            return other.number.equals(this.number) || (other.holder.equals(this.holder) && this.number.getType() == other.number.getType());
+            return other.number.equals(this.number);
         }
         return false;
     }

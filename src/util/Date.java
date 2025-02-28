@@ -232,7 +232,7 @@ public class Date implements Comparable<Date> {
             calOther.add(Calendar.DAY_OF_MONTH, 1);
             days++;
         }
-        return days + 1;
+        return days ;
     }
 
 

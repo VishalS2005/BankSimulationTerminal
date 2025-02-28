@@ -1,5 +1,7 @@
 package banking;
 
+import util.Date;
+
 /**
  * Archive will hold Accounts that have been closed
  *
@@ -11,6 +13,7 @@ public class Archive {
      * 'first' represents the head node of the linked list of Account objects
      */
     private AccountNode first;
+
 
     /**
      * Creates a new Archive that holds all closed Accounts
@@ -25,8 +28,8 @@ public class Archive {
      *
      * @param account object that will be used to create a AccountNode and will be added to the front of the linked list instance variable, first
      */
-    public void add(Account account) {
-        AccountNode newNode = new AccountNode(account);
+    public void add(Account account, Date close) {
+        AccountNode newNode = new AccountNode(account, close);
         if (first != null) {
             newNode.setNext(first);
         }

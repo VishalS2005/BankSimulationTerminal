@@ -6,6 +6,7 @@ import util.Sort;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 /**
@@ -21,6 +22,7 @@ public class AccountDatabase extends List<Account> {
 
     private final Archive archive;
 
+    private static final DecimalFormat df = new DecimalFormat("#,##0.00");
 
     public AccountDatabase() {
         super();
@@ -93,39 +95,19 @@ public class AccountDatabase extends List<Account> {
     }
 
 
-    public void closeAccount(AccountNumber accountNumber) {
-        Account account = this.get(find(accountNumber));
-        closeAccount(account);
-    }
-
-    public void closeAccount(Account account) {
-        archive.add(account);
+    public void closeAccount(Account account, Date closeDate) {
+        if(account.getAccountNumber().getType() == AccountType.CHECKING) {
+            for(int i = 0; i < this.size(); i++) {
+                if(this.get(i).getHolder().equals(account.getHolder()) && this.get(i).getAccountNumber().getType() == AccountType.SAVINGS) {
+                    ((Savings) this.get(i)).setIsLoyal(false);
+                }
+            }
+        }
+        archive.add(account, closeDate);
         this.remove(account);
     }
 
-    /**
-     * Removes an Account to the AccountDatabase.
-     * Checks if the account to be removed is in the AccountDatabase
-     * by checking first name, last name, and date of birth.
-     * Calls the remove method that:
-     *      * Adds removed Account to the archive before deleting the Account
-     *      * Replaces Account being deleted with the last Account
-     *      * Updates the size of the AccountDatabase
-     *
-     * @param firstName of the Account
-     * @param lastName of the Account
-     * @param dateOfBirth of the Account
-     */
-    public void closeAccount(String firstName, String lastName, Date dateOfBirth) {
-        for(int i = 0; i < this.size(); i++) {
-            if (this.get(i).getFirstName().equalsIgnoreCase(firstName)
-                    && this.get(i).getLastName().equalsIgnoreCase(lastName)
-                    && this.get(i).getDateOfBirth().equals(dateOfBirth)) {
-                this.remove(this.get(i));
-                i--; //check the last element since when removing, last element is switched with current
-            }
-        }
-    }
+
 
     public int find(String firstName, String lastName, Date dateOfBirth) {
         for(int i = 0; i < this.size(); i++) {
@@ -300,21 +282,29 @@ public class AccountDatabase extends List<Account> {
     }
 
     public void printStatements() {
-        for(int i = 0; i < this.size(); i++) {
-            System.out.println(i + 1 + "." + this.get(i).getHolder());
+        int holderCount = 0;
+        for (int i = 0; i < this.size(); i++) {
+            // Print header when it's the first account or when the holder changes
+            if (i == 0 || !this.get(i).getHolder().equals(this.get(i - 1).getHolder())) {
+                holderCount++;
+                System.out.println(holderCount + "." + this.get(i).getHolder());
+            }
             System.out.println("\t[Account#] " + this.get(i).getAccountNumber());
-            System.out.println("\t[Activity]");
-            for(Activity activity : this.get(i).getActivities()) {
-                System.out.println("\t\t" + activity);
+            if(!this.get(i).getActivities().isEmpty()) {
+                System.out.println("\t[Activity]");
+                for (Activity activity : this.get(i).getActivities()) {
+                    System.out.println("\t\t" + activity);
+                }
             }
             double fee = this.get(i).getFee();
             double interest = this.get(i).getInterest();
             double balance = this.get(i).getBalance();
-            System.out.println("\t[interest] $" + interest + " [Fee] $" + fee);
-            System.out.println("\t[Balance] " + (balance + interest - fee));
+            System.out.println("\t[interest] $" + df.format(interest) + " [Fee] $" + df.format(fee));
+            System.out.println("\t[Balance] $" + df.format(balance + interest - fee));
+            System.out.println();
         }
         System.out.println("*end of statements.\n");
-    } //print account statements
+    }
 
 
     public void loadAccounts(File file) throws IOException {

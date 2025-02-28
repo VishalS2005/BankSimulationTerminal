@@ -26,8 +26,9 @@ public class AccountNode {
      *
      * @param account represents an Account that was closed
      */
-    public AccountNode(Account account) {
+    public AccountNode(Account account, Date close) {
         this.Account = account;
+        this.close = close;
         this.next = null;
     }
 
@@ -56,6 +57,15 @@ public class AccountNode {
      */
     @Override
     public String toString() {
-        return Account.toString();
+        String returnString = Account.toString() + " Closed[" + close.toString() + "]";
+
+        if(!Account.getActivities().isEmpty()) {
+            returnString += "\n\t[Activity]\n";
+            for(Activity activity : Account.getActivities()) {
+                returnString += ("\t\t" + activity.toString() + "\n");
+            }
+        }
+
+        return returnString;
     }
 }

@@ -10,11 +10,18 @@ public class Checking extends Account{
         super(branch, type, holder, balance);
     }
 
-    public double interest() {
+    @Override
+    public double interestRate() {
         return 0.015;
     }
 
+    @Override
+    public double interest() {
+        return this.interestRate() * balance / 12;
+    }
+
+    @Override
     public double fee() {
-        return this.balance >= 100 ? 15 : 0;
+        return this.balance >= 1000 ? 0 : 15;
     }
 }

@@ -72,6 +72,10 @@ public abstract class Account implements Comparable<Account> {
         return holder;
     }
 
+    public List<Activity> getActivities() {
+        return activities;
+    }
+
     /**
      * Extracts the statement detailing activities of a bank.
      */
@@ -96,12 +100,6 @@ public abstract class Account implements Comparable<Account> {
     }
 
     /**
-     * Add Account activity:
-     * Deposit or Withdraw.
-     */
-    public void addActivity() {}
-
-    /**
      * Has the monthly interest of an Account.
      */
      public abstract double interest();
@@ -111,6 +109,7 @@ public abstract class Account implements Comparable<Account> {
      */
      public abstract double fee();
 
+     public abstract double interestRate();
     /**
      * Deducts money from the account and updates the balance.
      *
@@ -118,7 +117,7 @@ public abstract class Account implements Comparable<Account> {
      */
     public void withdraw(double amount) { //to update the balance
         this.balance -= amount;
-        Activity activity = new Activity(new Date(), null, 'W', amount, false);
+        Activity activity = new Activity(new Date(), this.getAccountNumber().getBranch(), 'W', amount, false);
         this.activities.add(activity);
     }
 
@@ -129,7 +128,7 @@ public abstract class Account implements Comparable<Account> {
      */
     public void deposit(double amount) { //to update the balance
         this.balance += amount;
-        Activity activity = new Activity(new Date(), null, 'D', amount, false);
+        Activity activity = new Activity(new Date(),this.getAccountNumber().getBranch(), 'D', amount, false);
         this.activities.add(activity);
     }
 
@@ -138,6 +137,14 @@ public abstract class Account implements Comparable<Account> {
      */
     public void emptyBalance() {
         this.balance = EMPTY_BALANCE;
+    }
+
+    public double getFee() {
+        return this.fee();
+    }
+
+    public double getInterest() {
+        return this.interest();
     }
 
     /**

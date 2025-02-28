@@ -300,7 +300,20 @@ public class AccountDatabase extends List<Account> {
     }
 
     public void printStatements() {
-
+        for(int i = 0; i < this.size(); i++) {
+            System.out.println(i + 1 + "." + this.get(i).getHolder());
+            System.out.println("\t[Account#] " + this.get(i).getAccountNumber());
+            System.out.println("\t[Activity]");
+            for(Activity activity : this.get(i).getActivities()) {
+                System.out.println("\t\t" + activity);
+            }
+            double fee = this.get(i).getFee();
+            double interest = this.get(i).getInterest();
+            double balance = this.get(i).getBalance();
+            System.out.println("\t[interest] $" + interest + " [Fee] $" + fee);
+            System.out.println("\t[Balance] " + (balance + interest - fee));
+        }
+        System.out.println("*end of statements.\n");
     } //print account statements
 
 

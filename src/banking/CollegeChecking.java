@@ -14,6 +14,7 @@ public class CollegeChecking extends Checking{
         this.campus = campus;
     }
 
+
     @Override
     public double fee() {
         return 0;

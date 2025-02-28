@@ -100,6 +100,14 @@ public class Date implements Comparable<Date> {
         return day;
     }
 
+    public int getMonth() {
+        return month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
     /**
      * Checks if the date provided by the user is on the calendar.
      * Checks the month, the days in the month, and if it is a leap year.
@@ -159,11 +167,11 @@ public class Date implements Comparable<Date> {
         return !birthDate.before(today);
     }
 
-    public Date addMonths(Date date, int monthsToAdd) {
+    public Date addMonths(int monthsToAdd) {
         // Create a Calendar instance and set it to the date values.
         // Note: Calendar months are 0-based, so subtract the MONTH_OFFSET.
         Calendar cal = Calendar.getInstance();
-        cal.set(date.year, date.month - MONTH_OFFSET, date.day);
+        cal.set(this.year, this.month - MONTH_OFFSET, this.day);
 
         // Add the specified number of months.
         cal.add(Calendar.MONTH, monthsToAdd);
@@ -175,6 +183,14 @@ public class Date implements Comparable<Date> {
 
         // Return a new Date object with the updated values.
         return new Date(newMonth, newDay, newYear);
+    }
+
+    public boolean isAfter(Date other) {
+        Calendar otherDate = Calendar.getInstance();
+        otherDate.set(other.getYear(), other.getMonth() - MONTH_OFFSET, other.getDay());
+        Calendar thisDate = Calendar.getInstance();
+        thisDate.set(this.year, this.month - MONTH_OFFSET, this.day);
+        return thisDate.after(otherDate);
     }
 
 
@@ -216,7 +232,7 @@ public class Date implements Comparable<Date> {
             calOther.add(Calendar.DAY_OF_MONTH, 1);
             days++;
         }
-        return days;
+        return days + 1;
     }
 
 

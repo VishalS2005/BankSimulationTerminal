@@ -16,19 +16,23 @@ public class Savings extends Account{
         isLoyal = TransactionManager.accountDatabase.contains(holder, AccountType.CHECKING);
     }
 
-
-    public double interest() {
-        return isLoyal ? 0.0275: 0.025 ;
-    }
-
-    public double fee() {
-        return balance >= 500 ? 0 : 25;
-    }
-
-
-
     public void setIsLoyal(boolean isLoyal) {
         this.isLoyal = isLoyal;
+    }
+
+    @Override
+    public double interestRate() {
+        return isLoyal ? 0.0275 : 0.025;
+    }
+
+    @Override
+    public double interest() {
+        return balance * this.interestRate() / 12;
+    }
+
+    @Override
+    public double fee() {
+        return balance >= 500 ? 0 : 25;
     }
 
     @Override

@@ -42,7 +42,7 @@ public class Activity implements Comparable<Activity> {
     @Override
     public String toString() {
         String transactionType = (type == 'D') ? "deposit" : "withdrawal";
-        return date + "::" + location + (atm ? "[ATM]::" : "" ) + transactionType + "::$" + df.format(amount);
+        return date + "::" + location + (atm ? "[ATM]" : "" ) + "::" + transactionType + "::$" + df.format(amount);
 
     }
 }

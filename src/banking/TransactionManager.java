@@ -172,21 +172,23 @@ public class TransactionManager {
      */
     private static void printAccounts(String command) {
         switch (command) {
-            case "PA":
-                accountDatabase.printArchive();
-                break;
-            case "PB":
+            case "PA" -> accountDatabase.printArchive();
+            case "PB" -> {
                 System.out.println("\n*List of accounts ordered by branch location (county, city).");
                 accountDatabase.printByBranch();
-                break;
-            case "PH":
+            }
+            case "PH" -> {
                 System.out.println("\n*List of accounts ordered by account holder and number.");
                 accountDatabase.printByHolder();
-                break;
-            case "PT":
+            }
+            case "PT" -> {
                 System.out.println("\n*List of accounts ordered by account type and number.");
                 accountDatabase.printByType();
-                break;
+            }
+            case "PS" -> {
+                System.out.println("*Account statements by account holder.");
+                accountDatabase.printStatements();
+            }
         }
     }
 
@@ -375,11 +377,24 @@ public class TransactionManager {
     }
 
     private static void printInterest(Account account, Date closeDate) {
+        double interestRate;
         System.out.print("interest earned: $");
         if(account.getType() == AccountType.CD) {
-            System.out.println(df.format(account.getBalance() * account.interest() / 365 * closeDate.daysAfter(((CertificateDeposit)account).getOpen())));
+            Date open =((CertificateDeposit)account).getOpen();
+            int term = ((CertificateDeposit)account).getTerm();
+            if(closeDate.isAfter(open.addMonths(term))) {
+                interestRate = account.interest();
+                System.out.println(df.format(account.getBalance() * interestRate/ 365 * closeDate.daysAfter(((CertificateDeposit)account).getOpen())));
+            } else {
+               interestRate = ((CertificateDeposit)account).interestRate(closeDate);
+               double interest = account.getBalance() * interestRate/ 365 * closeDate.daysAfter(((CertificateDeposit)account).getOpen());
+               System.out.println(df.format(interest));
+               System.out.println("  [penalty] $" + df.format(0.1 * interest));
+            }
+
         } else {
-            System.out.println(df.format(account.getBalance() * account.interest() / 365 * closeDate.getDay()));
+            interestRate = account.interest();
+            System.out.println(df.format(account.getBalance() * interestRate / 365 * closeDate.getDay()));
         }
     }
 

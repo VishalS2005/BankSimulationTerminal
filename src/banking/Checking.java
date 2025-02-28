@@ -6,8 +6,8 @@ package banking;
  * @author Vishal Saravanan, Yining Chen
  */
 public class Checking extends Account{
-    public Checking(Branch branch, AccountType type, Profile holder) {
-        super(branch, type, holder);
+    public Checking(Branch branch, AccountType type, Profile holder, double balance) {
+        super(branch, type, holder, balance);
     }
 
     public double interest() {
@@ -15,8 +15,6 @@ public class Checking extends Account{
     }
 
     public double fee() {
-        return 15;
+        return this.balance >= 100 ? 15 : 0;
     }
-
-
 }

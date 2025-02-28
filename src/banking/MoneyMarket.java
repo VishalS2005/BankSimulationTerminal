@@ -6,13 +6,21 @@ public class MoneyMarket extends Savings {
      */
     private int withdrawal = 0;
 
-    public MoneyMarket(Branch branch, AccountType type, Profile holder) {
-        super(branch, type, holder);
+    public MoneyMarket(Branch branch, AccountType type, Profile holder, double balance) {
+        super(branch, type, holder, balance);
+        if(balance >= 5000) {
+            this.isLoyal = true;
+        }
     }
 
     @Override
     public double interest() {
         return isLoyal ? 0.035 : 0.0335;
+    }
+
+    @Override
+    public double fee() {
+        return this.balance >= 2000 ? 0 : 25;
     }
 
     /**

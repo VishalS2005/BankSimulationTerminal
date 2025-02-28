@@ -9,8 +9,8 @@ public class CollegeChecking extends Checking{
 
     private Campus campus;
 
-    public CollegeChecking(Branch branch, AccountType type, Profile holder, Campus campus) {
-        super(branch, type, holder);
+    public CollegeChecking(Branch branch, AccountType type, Profile holder, Campus campus, double balance) {
+        super(branch, type, holder, balance);
         this.campus = campus;
     }
 

@@ -51,10 +51,11 @@ public abstract class Account implements Comparable<Account> {
      * @param type 2-digit integer representation of the type of Account
      * @param holder Profile object that represents the full name and date of birth of an Account holder
      */
-    public Account(Branch branch, AccountType type, Profile holder) {
+    public Account(Branch branch, AccountType type, Profile holder, double balance) {
         this.number = new AccountNumber(branch, type);
         this.holder = holder;
         this.activities = new List<>();
+        this.balance = balance;
     }
 
     /**
@@ -65,6 +66,10 @@ public abstract class Account implements Comparable<Account> {
     public Account(AccountNumber number) {
         this.number = number;
         this.holder = null;
+    }
+
+    public Profile getHolder() {
+        return holder;
     }
 
     /**

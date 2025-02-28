@@ -11,10 +11,11 @@ public class CertificateDeposit extends Savings{
     private int term;
     private Date open;
 
-    public CertificateDeposit(Branch branch, AccountType type, Profile holder, int term, Date open) {
-        super(branch, type, holder);
+    public CertificateDeposit(Branch branch, AccountType type, Profile holder, int term, Date open, double balance) {
+        super(branch, type, holder, balance);
         this.term = term;
         this.open = open;
+        this.isLoyal = false;
     }
 
     public Date getOpen() {

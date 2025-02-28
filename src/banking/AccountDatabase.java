@@ -197,6 +197,15 @@ public class AccountDatabase extends List<Account> {
         return false;
     }
 
+    public boolean contains(Profile holder, AccountType type) {
+        for(int i = 0; i < this.size(); i++) {
+            if(this.get(i).getAccountNumber().getType().equals(type) && this.get(i).getHolder().equals(holder)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Checks if Account is contained in the AccountDatabase.
      * Searches through the AccountDatabase for an Account based on first name, last name, and dateOfBirth.

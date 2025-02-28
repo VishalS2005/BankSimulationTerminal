@@ -5,56 +5,34 @@ import banking.AccountDatabase;
 
 public class Sort {
     public static void account(AccountDatabase list, char key) {
-        switch (key) {
-            case 'B':
-                sortByBranch(list);
-                break;
-            case 'H':
-                sortByHolder(list);
-                break;
-            case 'T':
-                sortByType(list);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid sort key");
-        }
-    }
-
-    private static void sortByBranch(AccountDatabase list) {
         for (int i = 0; i < list.size() - 1; i++) {
-            for (int j = 0; j < list.size() - i - 1; j++) {
-                if ((list.get(j).compareByBranch(list.get(j + 1))) > 0) {
-                    Account temp = list.get(j);
-                    list.set(j, list.get(j + 1));
-                    list.set(j + 1, temp);
+            int minIndex = i;
+            for (int j = i + 1; j < list.size(); j++) {
+                if (compareAccounts(list.get(j), list.get(minIndex), key) < 0) {
+                    minIndex = j;
                 }
+            }
+            if (minIndex != i) {
+                Account temp = list.get(i);
+                list.set(i, list.get(minIndex));
+                list.set(minIndex, temp);
             }
         }
     }
 
-    private static void sortByHolder(AccountDatabase list) {
-        for (int i = 0; i < list.size() - 1; i++) {
-            for (int j = 0; j < list.size() - i - 1; j++) {
-                if ((list.get(j).compareTo(list.get(j + 1))) > 0) {
-                    Account temp = list.get(j);
-                    list.set(j, list.get(j + 1));
-                    list.set(j + 1, temp);
-                }
+    private static int compareAccounts(Account a1, Account a2, char key) {
+        if (key == 'B') {
+            return a1.compareByBranch(a2);
+        } else if (key == 'H') {
+            return a1.compareTo(a2);
+        } else if (key == 'T') {
+            int typeComparison = a1.compareByAccountType(a2);
+            if (typeComparison == 0) {
+                return a1.getAccountNumber().compareTo(a2.getAccountNumber());
             }
-        }
-    }
-
-    private static void sortByType(AccountDatabase list) {
-        for (int i = 0; i < list.size() - 1; i++) {
-            for (int j = 0; j < list.size() - i - 1; j++) {
-                int typeComparison = list.get(j).compareByAccountType(list.get(j + 1));
-                if (typeComparison > 0 || ( typeComparison == 0
-                        && (list.get(j).getAccountNumber().compareTo(list.get(j + 1).getAccountNumber()) > 0))) {
-                    Account temp = list.get(j);
-                    list.set(j, list.get(j + 1));
-                    list.set(j + 1, temp);
-                }
-            }
+            return typeComparison;
+        } else {
+            throw new IllegalArgumentException("Invalid sort key: " + key);
         }
     }
 }

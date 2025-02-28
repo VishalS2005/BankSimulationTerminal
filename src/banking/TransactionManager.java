@@ -18,7 +18,7 @@ public class TransactionManager {
     /**
      * holds all the accounts
      */
-    private static final AccountDatabase accountDatabase = new AccountDatabase();
+    public static final AccountDatabase accountDatabase = new AccountDatabase();
 
     /**
      * formats values of money
@@ -93,26 +93,20 @@ public class TransactionManager {
     }
 
 
-    public static Account createAccount(String[] commandArray, String firstName, String lastName, Date dateOfBirth, Branch branch) {
+    public static Account createAccount(String[] commandArray, String firstName, String lastName, Date dateOfBirth, Branch branch, double balance) {
         String accountType = commandArray[1];
-        return getAccount(commandArray, firstName, lastName, dateOfBirth, branch, accountType);
+        return getAccount(commandArray, firstName, lastName, dateOfBirth, branch, accountType, balance);
     }
 
-    private static Account getAccount(String[] commandArray, String firstName, String lastName, Date dateOfBirth, Branch branch, String accountType) {
+    private static Account getAccount(String[] commandArray, String firstName, String lastName, Date dateOfBirth, Branch branch, String accountType, double balance) {
         Profile holder = createProfile(firstName, lastName, dateOfBirth);
         accountType = accountType.toLowerCase();
         return switch (accountType) {
-            case "checking" -> new Checking(branch, AccountType.CHECKING, holder);
-            case "savings" -> {
-                Savings account = new Savings(branch, AccountType.SAVINGS, holder);
-                if(accountDatabase.contains(firstName, lastName, dateOfBirth, AccountType.CHECKING)) {
-                   account.setIsLoyal(true);
-                }
-                yield account;
-            }
-            case "moneymarket" -> new MoneyMarket(branch, AccountType.MONEY_MARKET, holder);
-            case "college" -> new CollegeChecking(branch, AccountType.COLLEGE_CHECKING, holder, Campus.fromCode(commandArray[commandArray.length - 1]));
-            case "certificate" -> new CertificateDeposit(branch, AccountType.CD, holder, Integer.parseInt(commandArray[commandArray.length - 2]), createDate(commandArray[commandArray.length - 1]));
+            case "checking" -> new Checking(branch, AccountType.CHECKING, holder, balance);
+            case "savings" -> new Savings(branch, AccountType.SAVINGS, holder, balance);
+            case "moneymarket" -> new MoneyMarket(branch, AccountType.MONEY_MARKET, holder, balance);
+            case "college" -> new CollegeChecking(branch, AccountType.COLLEGE_CHECKING, holder, Campus.fromCode(commandArray[commandArray.length - 1]), balance);
+            case "certificate" -> new CertificateDeposit(branch, AccountType.CD, holder, Integer.parseInt(commandArray[commandArray.length - 2]), createDate(commandArray[commandArray.length - 1]), balance);
             default -> throw new IllegalStateException("Unexpected value: " + accountType);
         };
     }
@@ -124,9 +118,7 @@ public class TransactionManager {
         String lastName = commandArray[3]; //fourth input is the last name of the holder
         Date dateOfBirth = createDate(commandArray[4]); //fifth input is the Date of Birth of the holder
         double amount = Double.parseDouble(commandArray[5]);
-        Account account = getAccount(commandArray, firstName, lastName, dateOfBirth, branch, accountType);
-        account.deposit(amount);
-        return account;
+        return getAccount(commandArray, firstName, lastName, dateOfBirth, branch, accountType, amount);
     }
     /**
      * Chooses which action to complete depending on a single input line that has been read.
@@ -279,8 +271,7 @@ public class TransactionManager {
             }
         }
 
-        Account account = createAccount(commandArray, firstName, lastName, dob, branch);
-        account.deposit(balance);
+        Account account = createAccount(commandArray, firstName, lastName, dob, branch, balance);
         accountDatabase.add(account); //adds the Account to the database
         System.out.println(account.getAccountNumber().getType() +  " account " + account.getAccountNumber() + " has been opened.");
     }
@@ -355,9 +346,9 @@ public class TransactionManager {
             }
             System.out.println("Closing account " + accountNumber);
             int index = accountDatabase.find(accountNumber);
-            accountDatabase.closeAccount(accountDatabase.get(index));
             System.out.print("--");
             printInterest(accountDatabase.get(index), closeDate);
+            accountDatabase.closeAccount(accountDatabase.get(index));
         } else if(commandArray.length == 5) { //First Name, Last Name, and Date of Birth input
             String firstName = commandArray[2];
             String lastName = commandArray[3];
@@ -370,9 +361,9 @@ public class TransactionManager {
             else {
                 System.out.println("Closing accounts for " + firstName + " " + lastName + " " + dateOfBirth);
                 while(index != -1) {
-                    accountDatabase.closeAccount(accountDatabase.get(index));
                     System.out.print("--" + accountDatabase.get(index).getAccountNumber() + " ");
                     printInterest(accountDatabase.get(index), closeDate);
+                    accountDatabase.closeAccount(accountDatabase.get(index));
                     index = accountDatabase.find(firstName, lastName, dateOfBirth);
                 }
                 System.out.println("All accounts for " + firstName + " " + lastName + " " + dateOfBirth + " are closed and moved to archive.");

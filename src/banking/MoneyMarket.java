@@ -1,5 +1,7 @@
 package banking;
 
+import util.Date;
+
 public class MoneyMarket extends Savings {
     /**
      * Number of withdrawals in the current statement cycle.
@@ -25,7 +27,10 @@ public class MoneyMarket extends Savings {
 
     @Override
     public double fee() {
-        return this.balance >= 2000 ? 0 : 25 + this.withdrawal > 3 ? 10 : 0;
+        double fee = 0;
+        fee += this.balance >= 2000 ? 0 : 25;
+        fee += this.withdrawal > 3 ? 10 : 0;
+        return fee;
     }
 
     @Override
@@ -36,6 +41,12 @@ public class MoneyMarket extends Savings {
         if (this.getBalance() < 5000) {
             this.setIsLoyal(false);
         }
+    }
+
+    @Override
+    public void withdraw(Date date, Branch branch, double amount) { //to update the balance
+        super.withdraw(date, branch, amount);
+        withdrawal++;
     }
 
     @Override

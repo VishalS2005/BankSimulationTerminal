@@ -393,7 +393,7 @@ public class TransactionManager {
                 interestRate = cd.interestRate(closeDate);
                 interest = account.getBalance() * interestRate / 365 * daysHeld;
                 System.out.println(df.format(interest));
-                System.out.println(" [penalty] $" + df.format(0.1 * interest));
+                System.out.println("  [penalty] $" + df.format(0.1 * interest));
             }
         } else {
             interestRate = account.interestRate();
@@ -508,7 +508,7 @@ public class TransactionManager {
                 continue;
             }
             if(commandArray[0].equals("Q")) {
-                System.out.println("Transaction Manager is terminated.");
+                System.out.println("Transaction Manager is terminated. ");
                 return;
             }
             processCommand(commandArray);

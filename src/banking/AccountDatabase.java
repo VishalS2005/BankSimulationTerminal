@@ -284,23 +284,12 @@ public class AccountDatabase extends List<Account> {
     public void printStatements() {
         int holderCount = 0;
         for (int i = 0; i < this.size(); i++) {
-            // Print header when it's the first account or when the holder changes
             if (i == 0 || !this.get(i).getHolder().equals(this.get(i - 1).getHolder())) {
                 holderCount++;
                 System.out.println(holderCount + "." + this.get(i).getHolder());
             }
             System.out.println("\t[Account#] " + this.get(i).getAccountNumber());
-            if(!this.get(i).getActivities().isEmpty()) {
-                System.out.println("\t[Activity]");
-                for (Activity activity : this.get(i).getActivities()) {
-                    System.out.println("\t\t" + activity);
-                }
-            }
-            double fee = this.get(i).getFee();
-            double interest = this.get(i).getInterest();
-            double balance = this.get(i).getBalance();
-            System.out.println("\t[interest] $" + df.format(interest) + " [Fee] $" + df.format(fee));
-            System.out.println("\t[Balance] $" + df.format(balance + interest - fee));
+            this.get(i).statement();
             System.out.println();
         }
         System.out.println("*end of statements.\n");
@@ -343,12 +332,11 @@ public class AccountDatabase extends List<Account> {
             if(index == -1) {
                 continue;
             }
-            this.get(index).addActivity(activity);
             if(type == 'W') {
-                this.get(index).withdraw(amount);
+                this.get(index).withdraw(date, branch, amount);
             }
             else {
-                this.get(index).deposit(amount);
+                this.get(index).deposit(date, branch, amount);
             }
 
             System.out.println(accountNumber + "::" + activity);

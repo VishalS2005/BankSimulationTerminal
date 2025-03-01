@@ -60,9 +60,9 @@ public class AccountNode {
         String returnString = Account.toString() + " Closed[" + close.toString() + "]";
 
         if(!Account.getActivities().isEmpty()) {
-            returnString += "\n\t[Activity]\n";
+            returnString += "\n\t[Activity]";
             for(Activity activity : Account.getActivities()) {
-                returnString += ("\t\t" + activity.toString() + "\n");
+                returnString += ("\n\t\t" + activity.toString());
             }
         }
 

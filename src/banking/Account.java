@@ -88,15 +88,21 @@ public abstract class Account implements Comparable<Account> {
     }
 
     private void printActivities() {
+        if(!this.activities.isEmpty()) {
+            System.out.println("\t[Activity]");
+        }
+        for (Activity activity : this.activities) {
+            System.out.println("\t\t" + activity);
+        }
 
     }
 
     private void printInterestFee(double interest, double fee) {
-
+        System.out.println("\t[interest] $" + df.format(interest) + " [Fee] $" + df.format(fee));
     }
 
     private void printBalance(double interest, double fee) {
-
+        System.out.println("\t[Balance] $" + df.format(balance + interest - fee));
     }
 
     /**
@@ -121,6 +127,12 @@ public abstract class Account implements Comparable<Account> {
         this.activities.add(activity);
     }
 
+    public void withdraw(Date date, Branch branch, double amount) { //to update the balance
+        this.balance -= amount;
+        Activity activity = new Activity(date, branch, 'W', amount, true);
+        this.activities.add(activity);
+    }
+
     /**
      * Adds money to the account and updates the balance.
      *
@@ -129,6 +141,12 @@ public abstract class Account implements Comparable<Account> {
     public void deposit(double amount) { //to update the balance
         this.balance += amount;
         Activity activity = new Activity(new Date(),this.getAccountNumber().getBranch(), 'D', amount, false);
+        this.activities.add(activity);
+    }
+
+    public void deposit(Date date, Branch branch, double amount) { //to update the balance
+        this.balance += amount;
+        Activity activity = new Activity(date, branch, 'D', amount, true);
         this.activities.add(activity);
     }
 

@@ -383,7 +383,7 @@ public class TransactionManager {
         if (account.getType() == AccountType.CD) {
             CertificateDeposit cd = (CertificateDeposit) account;
             Date openDate = cd.getOpen();
-            int daysHeld = closeDate.daysAfter(openDate) + 1;
+            int daysHeld = closeDate.daysFrom(openDate);
             double interest;
             if (closeDate.isAfter(openDate.addMonths(cd.getTerm()))) {
                 interestRate = account.interestRate();

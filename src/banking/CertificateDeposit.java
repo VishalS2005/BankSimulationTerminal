@@ -27,7 +27,7 @@ public class CertificateDeposit extends Savings{
     }
 
     public double interestRate(Date closeDate) {
-        int number = closeDate.daysAfter(open);
+        int number = closeDate.daysFrom(open);
         if(number/30 <= 6) {
             return 0.03;
         }

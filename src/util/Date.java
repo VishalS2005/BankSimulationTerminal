@@ -221,7 +221,7 @@ public class Date implements Comparable<Date> {
         return year % CENTENNIAL != 0 || year % QUARTERCENTENNIAL == 0;
     }
 
-    public int daysAfter(Date other) {
+    public int daysFrom(Date other) {
         Calendar calThis = Calendar.getInstance();
         calThis.set(this.year, this.month - MONTH_OFFSET, this.day);
 
@@ -232,7 +232,7 @@ public class Date implements Comparable<Date> {
             calOther.add(Calendar.DAY_OF_MONTH, 1);
             days++;
         }
-        return days ;
+        return days + MONTH_OFFSET;
     }
 
 

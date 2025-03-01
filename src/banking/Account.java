@@ -150,20 +150,7 @@ public abstract class Account implements Comparable<Account> {
         this.activities.add(activity);
     }
 
-    /**
-     * Sets the account's balance to 0.
-     */
-    public void emptyBalance() {
-        this.balance = EMPTY_BALANCE;
-    }
 
-    public double getFee() {
-        return this.fee();
-    }
-
-    public double getInterest() {
-        return this.interest();
-    }
 
     /**
      * Returns the AccountNumber object associated with this Account.
@@ -197,9 +184,7 @@ public abstract class Account implements Comparable<Account> {
         return this.number.getType();
     }
 
-    public void addActivity(Activity activity) {
-        activities.add(activity);
-    }
+
 
     /**
      * Returns a string that represents the first name in an Account.
@@ -228,15 +213,7 @@ public abstract class Account implements Comparable<Account> {
         return this.holder.getDateOfBirth();
     }
 
-    /**
-     * Changes the 2-digit AccountType object representation of the AccountType to parameter input 'type'.
-     * The three types are: Checking(01), Savings(02), and Money_Market(03).
-     *
-     * @param type 2-digit AccountType object representation of account type
-     */
-    public void setAccountType(AccountType type) {
-        this.number.setType(type);
-    }
+
 
     /**
      * Compares two accounts by the AccountType parameter.

@@ -15,7 +15,7 @@ public class RunProject2 {
      *
      * @param args String representation of command line inputs
      */
-    public static void main(String [] args) throws IOException {
+    public static void main(String[] args) throws IOException {
         new TransactionManager().run();
     }
 }

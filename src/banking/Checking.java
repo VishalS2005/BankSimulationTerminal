@@ -5,7 +5,7 @@ package banking;
  *
  * @author Vishal Saravanan, Yining Chen
  */
-public class Checking extends Account{
+public class Checking extends Account {
 
     /**
      * A constant representing the annual interest rate applicable to the Checking account type.
@@ -27,9 +27,9 @@ public class Checking extends Account{
      * Constructs a new Checking account with the specified branch, account type, account holder,
      * and initial balance.
      *
-     * @param branch The branch location where the account is held.
-     * @param type The type of account being created (e.g., Checking).
-     * @param holder The profile of the account holder.
+     * @param branch  The branch location where the account is held.
+     * @param type    The type of account being created (e.g., Checking).
+     * @param holder  The profile of the account holder.
      * @param balance The initial balance of the account.
      */
     public Checking(Branch branch, AccountType type, Profile holder, double balance) {

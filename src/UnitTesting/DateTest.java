@@ -11,7 +11,7 @@ public class DateTest {
      * Tests the case where the number of days in February is 29 in a non-leap year.
      */
     @Test
-    public void testDate_FebNonLeapYear () {
+    public void testDate_FebNonLeapYear() {
         Date date = new Date(2, 29, 2023);
         assertFalse(date.isValid());
     }
@@ -61,7 +61,7 @@ public class DateTest {
      * Tests the case where the number of days in February during a leap year is 29.
      */
     @Test
-    public void testDate_FebLeapYear () {
+    public void testDate_FebLeapYear() {
         Date date = new Date(2, 29, 2024);
         assertTrue(date.isValid());
     }

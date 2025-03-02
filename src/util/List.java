@@ -4,21 +4,17 @@ import java.util.Iterator;
 
 
 public class List<E> implements Iterable<E> {
-    private E[] objects;
-
-    private int size;
-
     private static final int GROW_SIZE = 4;
-
     /**
      * The starting size of the AccountDatabase
      */
     private static final int STARTING_SIZE = 0;
-
     /**
      * The integer -1 is returned if an Account is not found
      */
     private static final int NOT_FOUND = -1;
+    private E[] objects;
+    private int size;
 
     public List() {
         this.objects = (E[]) new Object[GROW_SIZE];
@@ -26,8 +22,8 @@ public class List<E> implements Iterable<E> {
     }
 
     private int find(E e) {
-        for(int i = 0; i < this.size; i++) {
-            if(this.objects[i].equals(e)) {
+        for (int i = 0; i < this.size; i++) {
+            if (this.objects[i].equals(e)) {
                 return i;
             }
         }
@@ -38,7 +34,7 @@ public class List<E> implements Iterable<E> {
     private void grow() {
         int newLength = this.objects.length + GROW_SIZE; //the new length can hold 4 more accounts than the old length
         E[] newObjects = (E[]) new Object[newLength];
-        for(int i = 0; i < this.size; i++) {
+        for (int i = 0; i < this.size; i++) {
             newObjects[i] = this.objects[i];
         }
         this.objects = newObjects;
@@ -50,7 +46,7 @@ public class List<E> implements Iterable<E> {
     }
 
     public void add(E e) {
-        if(this.size == this.objects.length - 1) {
+        if (this.size == this.objects.length - 1) {
             grow();
         }
 
@@ -59,10 +55,9 @@ public class List<E> implements Iterable<E> {
     }
 
 
-
     public void remove(E e) {
         int index = find(e); //represents index of account
-        if(index == -1) {
+        if (index == -1) {
             return;
         }
         this.objects[index] = this.objects[this.size - 1];

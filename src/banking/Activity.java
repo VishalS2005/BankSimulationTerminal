@@ -7,28 +7,28 @@ import java.text.DecimalFormat;
 public class Activity implements Comparable<Activity> {
 
     /**
+     * Formatting numbers for easy readability.
+     */
+    private static final DecimalFormat df = new DecimalFormat("#,##0.00");
+    /**
      * Represents the date of the activity.
      */
     private Date date;
-
     /**
      * Represents the location of the activity.
      */
     private Branch location;
-
     /**
      * Represents the type of activity performed.
      * The type is denoted by a single character: 'D' for deposit or 'W' for withdrawal.
      */
     private char type;
-
     /**
      * Represents the monetary value associated with the activity.
      * This variable stores the amount involved in the activity, which can represent either
      * a deposit or a withdrawal, depending on the type of activity.
      */
     private double amount;
-
     /**
      * Indicates whether the activity was performed at an ATM.
      * This variable is set to true if the activity was conducted through an ATM, as specified in the input text file.
@@ -36,18 +36,13 @@ public class Activity implements Comparable<Activity> {
     private boolean atm;
 
     /**
-     * Formatting numbers for easy readability.
-     */
-    private static final DecimalFormat df = new DecimalFormat("#,##0.00");
-
-    /**
      * Constructs an Activity object with the specified parameters.
      *
-     * @param date the date of the activity
+     * @param date     the date of the activity
      * @param location the branch location where the activity took place
-     * @param type the type of activity, represented as a character ('D' for deposit, 'W' for withdrawal)
-     * @param amount the monetary amount involved in the activity
-     * @param atm a boolean indicating whether the activity was performed at an ATM
+     * @param type     the type of activity, represented as a character ('D' for deposit, 'W' for withdrawal)
+     * @param amount   the monetary amount involved in the activity
+     * @param atm      a boolean indicating whether the activity was performed at an ATM
      */
     public Activity(Date date, Branch location, char type, double amount, boolean atm) {
         this.date = date;
@@ -62,7 +57,7 @@ public class Activity implements Comparable<Activity> {
      *
      * @param o the Activity object to be compared
      * @return a negative integer, zero, or a positive integer as this Activity's date is earlier than,
-     *         equal to, or later than the specified Activity's date
+     * equal to, or later than the specified Activity's date
      */
     @Override
     public int compareTo(Activity o) {
@@ -79,7 +74,7 @@ public class Activity implements Comparable<Activity> {
     @Override
     public String toString() {
         String transactionType = (type == 'D') ? "deposit" : "withdrawal";
-        return date + "::" + location + (atm ? "[ATM]" : "" ) + "::" + transactionType + "::$" + df.format(amount);
+        return date + "::" + location + (atm ? "[ATM]" : "") + "::" + transactionType + "::$" + df.format(amount);
 
     }
 }

@@ -9,7 +9,7 @@ import java.util.Calendar;
  * February has 28 days in a non-leap year, and 29 days in a leap year;
  * Quadrennial is 4 years, centennial is 100 years, and quarter centennial is 400 years.
  *
- @author Vishal Saravanan, Yining Chen
+ * @author Vishal Saravanan, Yining Chen
  */
 
 public class Date implements Comparable<Date> {
@@ -78,11 +78,11 @@ public class Date implements Comparable<Date> {
     /**
      * Creates a Date object.
      *
-     * @param year time period in #### format
+     * @param year  time period in #### format
      * @param month time period in ## format
-     * @param day time period in ## format
+     * @param day   time period in ## format
      */
-    public Date (int month, int day, int year) {
+    public Date(int month, int day, int year) {
         this.month = month;
         this.day = day;
         this.year = year;
@@ -116,19 +116,17 @@ public class Date implements Comparable<Date> {
      * false otherwise
      */
     public boolean isValid() {
-        if(this.month < Calendar.JANUARY + MONTH_OFFSET || this.month > Calendar.DECEMBER + MONTH_OFFSET) {
+        if (this.month < Calendar.JANUARY + MONTH_OFFSET || this.month > Calendar.DECEMBER + MONTH_OFFSET) {
             return false;
         }
         int maxDays; //most amount of days in each month
-        if(this.month == Calendar.FEBRUARY + MONTH_OFFSET) {
-            if(isLeapYear()) {
+        if (this.month == Calendar.FEBRUARY + MONTH_OFFSET) {
+            if (isLeapYear()) {
                 maxDays = DAYS_IN_FEBRUARY_LEAP;
-            }
-            else {
+            } else {
                 maxDays = DAYS_IN_FEBRUARY_NORMAL;
             }
-        }
-        else if(this.month == Calendar.JANUARY + MONTH_OFFSET
+        } else if (this.month == Calendar.JANUARY + MONTH_OFFSET
                 || this.month == Calendar.MARCH + MONTH_OFFSET
                 || this.month == Calendar.MAY + MONTH_OFFSET
                 || this.month == Calendar.JULY + MONTH_OFFSET
@@ -136,8 +134,7 @@ public class Date implements Comparable<Date> {
                 || this.month == Calendar.OCTOBER + MONTH_OFFSET
                 || this.month == Calendar.DECEMBER + MONTH_OFFSET) {
             maxDays = DAYS_IN_LONG_MONTH;
-        }
-        else {
+        } else {
             maxDays = DAYS_IN_SHORT_MONTH;
         }
         return this.day >= 1 && this.day <= maxDays;
@@ -215,7 +212,7 @@ public class Date implements Comparable<Date> {
      * false otherwise
      */
     public boolean isLeapYear() {
-        if(year % QUADRENNIAL != 0) {
+        if (year % QUADRENNIAL != 0) {
             return false;
         }
         return year % CENTENNIAL != 0 || year % QUARTERCENTENNIAL == 0;
@@ -245,7 +242,6 @@ public class Date implements Comparable<Date> {
     }
 
 
-
     /**
      * Compares this Date to another Date.
      *
@@ -256,17 +252,17 @@ public class Date implements Comparable<Date> {
      */
     @Override
     public int compareTo(Date other) {
-        if(this.year < other.year) {
+        if (this.year < other.year) {
             return -1;
         } else if (this.year > other.year) {
             return 1;
-        } else if(this.month < other.month) {
+        } else if (this.month < other.month) {
             return -1;
-        } else if(this.month > other.month) {
+        } else if (this.month > other.month) {
             return 1;
         } else if (this.day < other.day) {
             return -1;
-        } else if(this.day > other.day) {
+        } else if (this.day > other.day) {
             return 1;
         }
         return 0;
@@ -303,7 +299,7 @@ public class Date implements Comparable<Date> {
      * Validates the user input against predefined rules.
      * Test Bed: This method utilizes a test bed as described in the attached write-up.
      *
-     *  @param args an array of command-line arguments passed to the program
+     * @param args an array of command-line arguments passed to the program
      */
     public static void main(String[] args) {
         testDate_FebNonLeapYear();
@@ -318,7 +314,7 @@ public class Date implements Comparable<Date> {
      * Test case #1
      * Tests the case where the number of days in February is 29 in a non-leap year.
      */
-    private static void testDate_FebNonLeapYear () {
+    private static void testDate_FebNonLeapYear() {
         Date date = new Date(2, 29, 2023);  //1. select test date
         boolean expectedOutput = false;                      //2. define expected output
         boolean actualOutput = date.isValid();               //3. test the isValid method
@@ -330,7 +326,7 @@ public class Date implements Comparable<Date> {
      * Test case #2
      * Tests the case where the amount of days in August does not fall within the valid range of [1,31].
      */
-    private static void testDate_DayOutOfRangePositive(){
+    private static void testDate_DayOutOfRangePositive() {
         Date date = new Date(8, 32, 2021);  //1. select test date
         boolean expectedOutput = false;                      //2. define expected output
         boolean actualOutput = date.isValid();               //3. test the isValid method
@@ -366,7 +362,7 @@ public class Date implements Comparable<Date> {
      * Test case #5
      * Tests the case where the amount of days in September does not fall within the valid range of [1,31].
      */
-    private static void testDate_RandomDate(){
+    private static void testDate_RandomDate() {
         Date date = new Date(8, 23, 2008);   //1. select test date
         boolean expectedOutput = true;                       //2. define expected output
         boolean actualOutput = date.isValid();               //3. test the isValid method
@@ -378,7 +374,7 @@ public class Date implements Comparable<Date> {
      * Test case #6
      * Tests the case where the number of days in February during a leap year is 29.
      */
-    private static void testDate_FebLeapYear () {
+    private static void testDate_FebLeapYear() {
         Date date = new Date(2, 29, 2024);   //1. select test date
         boolean expectedOutput = true;                       //2. define expected output
         boolean actualOutput = date.isValid();               //3. test the isValid method
@@ -390,15 +386,15 @@ public class Date implements Comparable<Date> {
      * Helper method to test the isValid method of the Date class.
      * Prints the inputs/outputs and FAIL if they don't match and PASS otherwise.
      *
-     * @param date Date being tested for validity
+     * @param date           Date being tested for validity
      * @param expectedOutput boolean value we expect from checking if Date is valid
-     * @param actualOutput boolean value as a result of checking if Date is valid
+     * @param actualOutput   boolean value as a result of checking if Date is valid
      */
-    private static void testDateResult (Date date, boolean expectedOutput, boolean actualOutput) {
+    private static void testDateResult(Date date, boolean expectedOutput, boolean actualOutput) {
         System.out.println("Test input: " + date);
         System.out.println("Expected output: " + expectedOutput);
         System.out.println("Actual output: " + actualOutput);
-        if(expectedOutput != actualOutput) {
+        if (expectedOutput != actualOutput) {
             System.out.println(" (FAIL) \n");
         } else {
             System.out.println(" (PASS) \n");

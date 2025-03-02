@@ -54,7 +54,7 @@ public abstract class Account implements Comparable<Account> {
      * Creates an Account object.
      *
      * @param branch 3-digit integer representation of a Branch
-     * @param type 2-digit integer representation of the type of Account
+     * @param type   2-digit integer representation of the type of Account
      * @param holder Profile object that represents the full name and date of birth of an Account holder
      */
     public Account(Branch branch, AccountType type, Profile holder, double balance) {
@@ -129,7 +129,7 @@ public abstract class Account implements Comparable<Account> {
      * Deducts the specified amount from the account balance and records the transaction
      * as an activity in the account's activity log.
      *
-     * @param date the date when the withdrawal takes place
+     * @param date   the date when the withdrawal takes place
      * @param branch the branch where the withdrawal occurs
      * @param amount the amount to be withdrawn from the account balance
      */
@@ -146,7 +146,7 @@ public abstract class Account implements Comparable<Account> {
      */
     public void deposit(double amount) { //to update the balance
         this.balance += amount;
-        Activity activity = new Activity(new Date(),this.getAccountNumber().getBranch(), 'D', amount, false);
+        Activity activity = new Activity(new Date(), this.getAccountNumber().getBranch(), 'D', amount, false);
         addActivity(activity);
     }
 
@@ -265,7 +265,7 @@ public abstract class Account implements Comparable<Account> {
      * Prints the list of activities associated with this account.
      */
     private void printActivities() {
-        if(!this.activities.isEmpty()) {
+        if (!this.activities.isEmpty()) {
             System.out.println("\t[Activity]");
         }
         for (Activity activity : this.activities) {
@@ -277,7 +277,7 @@ public abstract class Account implements Comparable<Account> {
      * Prints the interest and fee amounts for the account in a formatted manner.
      *
      * @param interest the interest amount to be displayed
-     * @param fee the fee amount to be displayed
+     * @param fee      the fee amount to be displayed
      */
     private void printInterestFee(double interest, double fee) {
         System.out.println("\t[interest] $" + df.format(interest) + " [Fee] $" + df.format(fee));
@@ -287,7 +287,7 @@ public abstract class Account implements Comparable<Account> {
      * Prints the account balance after adding the given interest and deducting the given fee.
      *
      * @param interest the interest amount to be added to the balance
-     * @param fee the fee amount to be deducted from the balance
+     * @param fee      the fee amount to be deducted from the balance
      */
     private void printBalance(double interest, double fee) {
         System.out.println("\t[Balance] $" + df.format(balance + interest - fee));
@@ -296,7 +296,6 @@ public abstract class Account implements Comparable<Account> {
     /**
      * Compares the name and date of birth of two accounts.
      * First checks the first name, last name, and date of birth and returns if not equal to 'other'.
-     *
      *
      * @param other AccountNumber being compared with
      * @return 0 if AccountNumber are equal,

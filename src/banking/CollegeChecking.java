@@ -5,7 +5,7 @@ package banking;
  *
  * @author Vishal Saravanan, Yining Chen
  */
-public class CollegeChecking extends Checking{
+public class CollegeChecking extends Checking {
 
     /**
      * Represents the associated campus for the CollegeChecking account.
@@ -18,10 +18,10 @@ public class CollegeChecking extends Checking{
      * account holder's profile, associated campus, and initial balance.
      * This constructor initializes the campus specific to the CollegeChecking account.
      *
-     * @param branch the branch where the account is created
-     * @param type the type of the account, represented as an AccountType enum
-     * @param holder the profile of the account holder
-     * @param campus the campus associated with the account, represented as a Campus enum
+     * @param branch  the branch where the account is created
+     * @param type    the type of the account, represented as an AccountType enum
+     * @param holder  the profile of the account holder
+     * @param campus  the campus associated with the account, represented as a Campus enum
      * @param balance the initial balance of the account
      */
     public CollegeChecking(Branch branch, AccountType type, Profile holder, Campus campus, double balance) {

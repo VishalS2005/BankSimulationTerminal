@@ -61,7 +61,7 @@ public class AccountDatabase extends List<Account> {
      */
     public boolean withdraw(AccountNumber number, double amount) {
         int index = find(number);
-        if(index == -1) {
+        if (index == -1) {
             return false;
         }
         Account account = this.get(index);
@@ -74,13 +74,13 @@ public class AccountDatabase extends List<Account> {
     /**
      * Closes the specified account and removes it from the AccountDatabase.
      *
-     * @param account the Account object to be closed
+     * @param account   the Account object to be closed
      * @param closeDate the Date on which the account is closed
      */
     public void closeAccount(Account account, Date closeDate) {
-        if(account.getAccountNumber().getType() == AccountType.CHECKING) {
-            for(int i = 0; i < this.size(); i++) {
-                if(this.get(i).getHolder().equals(account.getHolder()) && this.get(i).getAccountNumber().getType() == AccountType.SAVINGS) {
+        if (account.getAccountNumber().getType() == AccountType.CHECKING) {
+            for (int i = 0; i < this.size(); i++) {
+                if (this.get(i).getHolder().equals(account.getHolder()) && this.get(i).getAccountNumber().getType() == AccountType.SAVINGS) {
                     ((Savings) this.get(i)).setIsLoyal(false);
                 }
             }
@@ -93,14 +93,14 @@ public class AccountDatabase extends List<Account> {
      * Finds the index of an account in the AccountDatabase based on the holder's first name,
      * last name, and date of birth. The search is case-insensitive for the names.
      *
-     * @param firstName the first name of the account holder to search for
-     * @param lastName the last name of the account holder to search for
+     * @param firstName   the first name of the account holder to search for
+     * @param lastName    the last name of the account holder to search for
      * @param dateOfBirth the date of birth of the account holder to search for
      * @return the index of the account if found in the AccountDatabase,
-     *         -1 if the account is not found
+     * -1 if the account is not found
      */
     public int find(String firstName, String lastName, Date dateOfBirth) {
-        for(int i = 0; i < this.size(); i++) {
+        for (int i = 0; i < this.size(); i++) {
             if (this.get(i).getFirstName().equalsIgnoreCase(firstName)
                     && this.get(i).getLastName().equalsIgnoreCase(lastName)
                     && this.get(i).getDateOfBirth().equals(dateOfBirth)) {
@@ -119,8 +119,8 @@ public class AccountDatabase extends List<Account> {
      * -1 otherwise
      */
     public int find(AccountNumber accountNumber) {
-        for(int i = 0; i < this.size(); i++) {
-            if(this.get(i).getAccountNumber().equals(accountNumber)) {
+        for (int i = 0; i < this.size(); i++) {
+            if (this.get(i).getAccountNumber().equals(accountNumber)) {
                 return i;
             }
         }
@@ -136,8 +136,8 @@ public class AccountDatabase extends List<Account> {
      * false otherwise
      */
     public boolean contains(AccountNumber accountNumber) {
-        for(int i = 0; i < this.size(); i++) {
-            if(this.get(i).getAccountNumber().equals(accountNumber)) {
+        for (int i = 0; i < this.size(); i++) {
+            if (this.get(i).getAccountNumber().equals(accountNumber)) {
                 return true;
             }
         }
@@ -149,10 +149,10 @@ public class AccountDatabase extends List<Account> {
      * Searches through the AccountDatabase for an Account based on first name,
      * last name, dateOfBirth, and account type.
      *
-     * @param firstName String that is being searched for, comparison is case-insensitive
-     * @param lastName String that is being searched for, comparison is case-insensitive
+     * @param firstName   String that is being searched for, comparison is case-insensitive
+     * @param lastName    String that is being searched for, comparison is case-insensitive
      * @param dateOfBirth object that is being searched for
-     * @param type AccountType object that is being searched for
+     * @param type        AccountType object that is being searched for
      * @return true if Account is found in AccountDatabase
      * false otherwise
      */
@@ -166,13 +166,13 @@ public class AccountDatabase extends List<Account> {
      * Iterates through the list of accounts stored in the database.
      *
      * @param holder Profile object representing the account holder to search for
-     * @param type AccountType object representing the type of account to search for
+     * @param type   AccountType object representing the type of account to search for
      * @return true if an account with the specified holder and type is found in the database,
-     *         false otherwise
+     * false otherwise
      */
     public boolean contains(Profile holder, AccountType type) {
-        for(int i = 0; i < this.size(); i++) {
-            if(this.get(i).getAccountNumber().getType().equals(type) && this.get(i).getHolder().equals(holder)) {
+        for (int i = 0; i < this.size(); i++) {
+            if (this.get(i).getAccountNumber().getType().equals(type) && this.get(i).getHolder().equals(holder)) {
                 return true;
             }
         }
@@ -183,7 +183,7 @@ public class AccountDatabase extends List<Account> {
      * Prints all the Accounts in the AccountDatabase from the beginning of AccountDatabase to the end.
      */
     public void print() {
-        for(int i = 0; i < this.size(); i++) {
+        for (int i = 0; i < this.size(); i++) {
             System.out.println(this.get(i).toString());
         }
         System.out.println("*end of list.\n");
@@ -254,7 +254,7 @@ public class AccountDatabase extends List<Account> {
     /**
      * Prints the statements of all accounts in the AccountDatabase in a formatted manner.
      * The method iterates through all accounts in the Account
-     * */
+     */
     public void printStatements() {
         int holderCount = 0;
         for (int i = 0; i < this.size(); i++) {
@@ -279,9 +279,9 @@ public class AccountDatabase extends List<Account> {
     public void loadAccounts(File file) throws IOException {
         Scanner scanner = new Scanner(file);
 
-        while(scanner.hasNextLine()) {
+        while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            if(line.trim().isEmpty()) {
+            if (line.trim().isEmpty()) {
                 continue;
             }
             String[] parts = line.split(",");
@@ -301,9 +301,9 @@ public class AccountDatabase extends List<Account> {
      */
     public void processActivities(File file) throws IOException {
         Scanner scanner = new Scanner(file);
-        while(scanner.hasNextLine()) {
+        while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            if(line.trim().isEmpty()) {
+            if (line.trim().isEmpty()) {
                 continue;
             }
             String[] parts = line.split(",");
@@ -314,13 +314,12 @@ public class AccountDatabase extends List<Account> {
             Activity activity = new Activity(date, branch, type, amount, true);
             AccountNumber accountNumber = new AccountNumber(parts[1]);
             int index = find(accountNumber);
-            if(index == -1) {
+            if (index == -1) {
                 continue;
             }
-            if(type == 'W') {
+            if (type == 'W') {
                 this.get(index).withdraw(date, branch, amount);
-            }
-            else {
+            } else {
                 this.get(index).deposit(date, branch, amount);
             }
             System.out.println(accountNumber + "::" + activity);

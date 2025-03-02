@@ -51,9 +51,9 @@ public enum Branch {
     /**
      * Creates a Branch object.
      *
-     * @param zip 5-digit ZIP code that represents location
+     * @param zip        5-digit ZIP code that represents location
      * @param branchCode 3-digit representation of the Branch
-     * @param county String representation of the county
+     * @param county     String representation of the county
      */
     Branch(String zip, String branchCode, String county) {
         this.zip = zip;

@@ -4,65 +4,58 @@ import util.Date;
 
 public class MoneyMarket extends Savings {
     /**
-     * Number of withdrawals in the current statement cycle.
-     */
-    private int withdrawal = 0;
-
-    /**
      * Represents the maximum number of allowed withdrawals in a statement cycle
      * without incurring additional fees for a Money Market account.
      */
     private static final double WITHDRAWAL_THRESHOLD = 3;
-
     /**
      * Represents the fixed fee applied to withdrawals that exceed the allowed threshold
      * in a Money Market account's statement cycle.
      */
     private static final double WITHDRAWAL_FEE = 10;
-
     /**
      * Represents the fixed account maintenance fee applied to a Money Market account.
      */
     private static final double ACCOUNT_FEE = 25;
-
     /**
      * Represents the minimum balance required in a Money Market account
      * to achieve loyalty status. Loyalty status can influence aspects
      * such as interest rates and account benefits.
      */
     private static final double LOYALTY_THRESHOLD = 5000;
-
     /**
      * Represents the minimum account balance required to avoid incurring an
      * account maintenance fee in a Money Market account.
      */
     private static final double FEE_THRESHOLD = 2000;
-
     /**
      * Represents the annual interest rate applied to a Money Market account
      * when the account holder qualifies for loyalty status.
      */
     private static final double LOYAL_INTEREST_RATE = 0.0375;
-
     /**
      * Represents the annual interest rate applied to a Money Market account when
      * the account holder does not meet the criteria for loyalty status.
      * It is a lower interest rate compared to the one provided for loyal accounts.
      */
     private static final double NOT_LOYAL_INTEREST_RATE = 0.035;
+    /**
+     * Number of withdrawals in the current statement cycle.
+     */
+    private int withdrawal = 0;
 
     /**
      * Constructs a MoneyMarket account with the specified branch, account type, holder details, and initial balance.
      * If the initial balance is greater than or equal to the loyalty threshold, the account is marked as loyal.
      *
-     * @param branch the branch where the account is opened
-     * @param type the type of the account
-     * @param holder the profile of the account holder
+     * @param branch  the branch where the account is opened
+     * @param type    the type of the account
+     * @param holder  the profile of the account holder
      * @param balance the initial balance of the account
      */
     public MoneyMarket(Branch branch, AccountType type, Profile holder, double balance) {
         super(branch, type, holder, balance);
-        if(balance >= LOYALTY_THRESHOLD) {
+        if (balance >= LOYALTY_THRESHOLD) {
             this.isLoyal = true;
         }
     }
@@ -70,7 +63,8 @@ public class MoneyMarket extends Savings {
     /**
      * Calculates the interest rate for the MoneyMarket account based on loyalty status.
      *
-     * @return the interest rate applicable for the account. If the account is marked*/
+     * @return the interest rate applicable for the account. If the account is marked
+     */
     @Override
     public double interestRate() {
         return isLoyal ? LOYAL_INTEREST_RATE : NOT_LOYAL_INTEREST_RATE;
@@ -87,7 +81,7 @@ public class MoneyMarket extends Savings {
      */
     @Override
     public double fee() {
-        return (this.balance >= FEE_THRESHOLD ? NO_FEE : ACCOUNT_FEE) + (this.withdrawal > WITHDRAWAL_THRESHOLD ? WITHDRAWAL_FEE: NO_FEE);
+        return (this.balance >= FEE_THRESHOLD ? NO_FEE : ACCOUNT_FEE) + (this.withdrawal > WITHDRAWAL_THRESHOLD ? WITHDRAWAL_FEE : NO_FEE);
     }
 
     /**

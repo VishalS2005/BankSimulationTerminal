@@ -13,7 +13,7 @@ import java.util.Scanner;
  * Transaction Manager class that reads in transactions from the command line.
  * Depending on the action, completes transaction or does not execute it.
  *
- @author Vishal Saravanan, Yining Chen
+ * @author Vishal Saravanan, Yining Chen
  */
 
 public class TransactionManager {
@@ -52,25 +52,32 @@ public class TransactionManager {
     private static final double TEN_PERCENT = 0.1;
 
     /**
-     * Creates an AccountType object using a provided String representation of the three types of Accounts.
-     * Types of accounts: Checking(01), Savings(02), Money Market(03).
-     *
-     * @param type String representation of the type of Account
-     * @return AccountType of the Account
+     * Initiates reading of inputs from the command line.
+     * Ceases reading of inputs once a "Q" is read.
+     * Example of a single line of input:
+     * The user enters:
+     * O <accountType> <branch> <firstName> <lastName> <dob> <initialDeposit>
+     * For example:
+     * O savings bridgewater John Doe 2/19/2000 500
      */
-    private static AccountType createAccountType(String type) {
-        String typeToken = type.toLowerCase(); //AccountType is case-insensitive
-        return switch (typeToken) {
-            case "checking" -> AccountType.CHECKING;
-            case "savings" -> AccountType.SAVINGS;
-            case "moneymarket" -> AccountType.MONEY_MARKET;
-            case "college" -> AccountType.COLLEGE_CHECKING;
-            case "certificate" -> AccountType.CD;
-            default ->  {
-                System.out.println(typeToken + " - invalid account type.");
-                yield null;
+    public static void run() throws IOException {
+        accountDatabase.loadAccounts(new File("accounts.txt"));
+        System.out.println("Accounts in \"accounts.txt\" loaded to the database.");
+        System.out.println("Transaction Manager is running.");
+
+        Scanner scanner = new Scanner(System.in);
+        while (true) { // loop only ends when a "Q" is read
+            String command = scanner.nextLine();
+            String[] commandArray = command.split("\\s+");
+            if (command.trim().isEmpty()) {
+                continue;
             }
-        };
+            if (commandArray[0].equals("Q")) {
+                System.out.println("Transaction Manager is terminated. ");
+                return;
+            }
+            processCommand(commandArray);
+        }
     }
 
     /**
@@ -88,19 +95,6 @@ public class TransactionManager {
             System.out.println(branchName + " - invalid branch.");
         }
         return branch;
-    }
-
-    /**
-     * Creates a Profile object based on first name, last name, and dateOfBirth.
-     * Creates a new Profile object.
-     *
-     * @param firstName String representation of first name of Account holder
-     * @param lastName String representation of last name of Account holder
-     * @param dateOfBirth Date object that represents date of birth of Account holder
-     * @return Profile for the Account
-     */
-    private static Profile createProfile(String firstName, String lastName, Date dateOfBirth) {
-        return new Profile(firstName, lastName, dateOfBirth);
     }
 
     /**
@@ -123,45 +117,16 @@ public class TransactionManager {
      * Delegates to the getAccount method to initialize and return the appropriate Account instance.
      *
      * @param commandArray an array of Strings containing command details, where the account type is specified as the second element
-     * @param firstName the first name of the account holder
-     * @param lastName the last name of the account holder
-     * @param dateOfBirth a Date object representing the birthdate of the account holder
-     * @param branch the Branch object representing the bank branch where the account is opened
-     * @param balance the initial balance for the account
+     * @param firstName    the first name of the account holder
+     * @param lastName     the last name of the account holder
+     * @param dateOfBirth  a Date object representing the birthdate of the account holder
+     * @param branch       the Branch object representing the bank branch where the account is opened
+     * @param balance      the initial balance for the account
      * @return the created Account object
      */
     public static Account createAccount(String[] commandArray, String firstName, String lastName, Date dateOfBirth, Branch branch, double balance) {
         String accountType = commandArray[1];
         return getAccount(commandArray, firstName, lastName, dateOfBirth, branch, accountType, balance);
-    }
-
-    /**
-     * Creates and returns an Account object based on the provided parameters.
-     * Determines the account type, creates a profile for the holder, and initializes
-     * the appropriate Account subtype with the provided details.
-     *
-     * @param commandArray an array of Strings containing command details, where some commands are used
-     *                     to specify additional account attributes such as campus code or term length
-     * @param firstName the first name of the account holder
-     * @param lastName the last name of the account holder
-     * @param dateOfBirth a Date object representing the birthdate of the account holder
-     * @param branch the Branch object representing the bank branch where the account is opened
-     * @param accountType a String representation of the type of account to create
-     * @param balance the initial balance to set for the account
-     * @return the created Account object, initialized based on the provided parameters
-     * @throws IllegalStateException if the provided accountType is not a valid account type
-     */
-    private static Account getAccount(String[] commandArray, String firstName, String lastName, Date dateOfBirth, Branch branch, String accountType, double balance) {
-        Profile holder = createProfile(firstName, lastName, dateOfBirth);
-        accountType = accountType.toLowerCase();
-        return switch (accountType) {
-            case "checking" -> new Checking(branch, AccountType.CHECKING, holder, balance);
-            case "savings" -> new Savings(branch, AccountType.SAVINGS, holder, balance);
-            case "moneymarket" -> new MoneyMarket(branch, AccountType.MONEY_MARKET, holder, balance);
-            case "college" -> new CollegeChecking(branch, AccountType.COLLEGE_CHECKING, holder, Campus.fromCode(commandArray[commandArray.length - 1]), balance);
-            case "certificate" -> new CertificateDeposit(branch, AccountType.CD, holder, Integer.parseInt(commandArray[commandArray.length - 2]), createDate(commandArray[commandArray.length - 1]), balance);
-            default -> throw new IllegalStateException("Unexpected value: " + accountType);
-        };
     }
 
     /**
@@ -187,41 +152,8 @@ public class TransactionManager {
     }
 
     /**
-     * Chooses which action to complete depending on a single input line that has been read.
-     * VALID COMMANDS: O, C, D, W, P, PA, PB, PH, PT
-     * Otherwise, will identify that the command was invalid.
-     * O --> opens a new Account, if not already there
-     * C --> closes an Account, if in the database
-     * D --> deposits money into an Account, if in the database
-     * W --> withdraws money from an Account, if in the database and money available
-     * P --> prints the AccountDatabase
-     * PA --> prints the Archive
-     * PB --> prints ordered by Branch (county, then city)
-     * PH --> prints by holder then AccountNumber
-     * PT --> prints by AccountType then AccountNumber
-     *
-     * @param commandArray Holds the input that has been extracted and put into a String array
-     */
-    private static void processCommand(String[] commandArray) throws IOException {
-        if (isValidCommand(commandArray[0])) {
-            switch (commandArray[0]) {
-                case "O" -> openAccount(commandArray);
-                case "C" -> closeAccount(commandArray);
-                case "D" -> depositMoney(commandArray);
-                case "W" -> withdrawMoney(commandArray);
-                case "A" -> processActivities();
-            }
-            if (accountDatabase.isEmpty()) {
-                System.out.println("Account database is empty!");
-            } else {
-                printAccounts(commandArray[0]);
-            }
-        }
-    }
-
-    /**
      * Processes account activities from the file "activities.txt".
-     *
+     * <p>
      * This method reads the account activity data contained in the "activities.txt"
      * file and processes it using the accountDatabase's processActivities method.
      * It outputs log messages to the console indicating the start and completion
@@ -231,7 +163,7 @@ public class TransactionManager {
      */
     private static void processActivities() throws IOException {
         System.out.println("Processing \"activities.txt\"...");
-        accountDatabase.processActivities(new File ("activities.txt"));
+        accountDatabase.processActivities(new File("activities.txt"));
         System.out.println("Account activities in \"activities.txt\" processed.");
     }
 
@@ -296,11 +228,12 @@ public class TransactionManager {
      * Checks for valid inputs including a valid AccountType, Branch, Date, and balance.
      * Checks for duplicate account, minimum balance, and money market specifications.
      * Adds the opened account to the database.
+     *
      * @param commandArray Holds the input that has been extracted and put into a String array
      */
     private static void openAccount(String[] commandArray) {
         AccountType acctType = createAccountType(commandArray[1]); //first input is the AccountType
-        if(acctType == null) {
+        if (acctType == null) {
             return;
         }
 
@@ -313,7 +246,7 @@ public class TransactionManager {
         }
 
         Branch branch = createBranch(commandArray[2]); //second input is the Branch
-        if(branch == null) {
+        if (branch == null) {
             return;
         }
 
@@ -332,12 +265,12 @@ public class TransactionManager {
             return;
         }
 
-        if(acctType != AccountType.CD && accountDatabase.contains(firstName, lastName, dob, acctType)) { //checking for a duplicate account
-            System.out.println(firstName + " " + lastName +   " already has a " + acctType + " account.");
+        if (acctType != AccountType.CD && accountDatabase.contains(firstName, lastName, dob, acctType)) { //checking for a duplicate account
+            System.out.println(firstName + " " + lastName + " already has a " + acctType + " account.");
             return;
         }
 
-        if(!checkBalance(balance, acctType)) {
+        if (!checkBalance(balance, acctType)) {
             return;
         }
 
@@ -352,7 +285,7 @@ public class TransactionManager {
 
         Account account = createAccount(commandArray, firstName, lastName, dob, branch, balance);
         accountDatabase.add(account); //adds the Account to the database
-        System.out.println(account.getAccountNumber().getType() +  " account " + account.getAccountNumber() + " has been opened.");
+        System.out.println(account.getAccountNumber().getType() + " account " + account.getAccountNumber() + " has been opened.");
     }
 
     /**
@@ -372,10 +305,10 @@ public class TransactionManager {
         } else if (dob.isAfterToday()) {
             System.out.println("DOB invalid: " + dob + " cannot be today or a future day.");
             return false;
-        } else if(!dob.isEighteen()) {
-            System.out.println("Not eligible to open: " +  dob + " under 18.");
+        } else if (!dob.isEighteen()) {
+            System.out.println("Not eligible to open: " + dob + " under 18.");
             return false;
-        } else if(accountType == AccountType.COLLEGE_CHECKING && !dob.isOverTwentyFour())   {
+        } else if (accountType == AccountType.COLLEGE_CHECKING && !dob.isOverTwentyFour()) {
             System.out.println("Not eligible to open: " + dob + " over 24.");
             return false;
         }
@@ -387,19 +320,19 @@ public class TransactionManager {
      * A starting balance of 0 or less is invalid.
      * A Money Market Account with less than 2000 is invalid.
      *
-     * @param balance value of money stored in Account being opened
+     * @param balance  value of money stored in Account being opened
      * @param acctType type of Account being opened
      * @return true if balance is a valid amount
      * false otherwise
      */
     private static boolean checkBalance(double balance, AccountType acctType) {
-        if(balance <= 0) { //balance must be more than 0
+        if (balance <= 0) { //balance must be more than 0
             System.out.println("Initial deposit cannot be 0 or negative.");
             return false;
-        } else if(balance < MONEY_MARKET_MINIMUM && acctType.equals(AccountType.MONEY_MARKET)) { //Money Market account must have at least $2000
+        } else if (balance < MONEY_MARKET_MINIMUM && acctType.equals(AccountType.MONEY_MARKET)) { //Money Market account must have at least $2000
             System.out.println("Minimum of $2,000 to open a Money Market account.");
             return false;
-        } else if(balance < CD_MINIMUM && acctType.equals(AccountType.CD)) {
+        } else if (balance < CD_MINIMUM && acctType.equals(AccountType.CD)) {
             System.out.println("Minimum of $1,000 to open a Certificate Deposit account.");
             return false;
         }
@@ -417,9 +350,9 @@ public class TransactionManager {
      */
     private static void closeAccount(String[] commandArray) {
         Date closeDate = createDate(commandArray[1]);
-        if(commandArray.length == 3) {
+        if (commandArray.length == 3) {
             closeSingleAccount(new AccountNumber(commandArray[2]), closeDate);
-        } else if(commandArray.length == 5) {
+        } else if (commandArray.length == 5) {
             String firstName = commandArray[2];
             String lastName = commandArray[3];
             Date dateOfBirth = createDate(commandArray[4]);
@@ -433,10 +366,10 @@ public class TransactionManager {
      * Closes a single account with the given account number and close date.
      *
      * @param accountNumber the account number of the account to be closed
-     * @param closeDate the date on which the account is being closed
+     * @param closeDate     the date on which the account is being closed
      */
     private static void closeSingleAccount(AccountNumber accountNumber, Date closeDate) {
-        if(!accountDatabase.contains(accountNumber)) {
+        if (!accountDatabase.contains(accountNumber)) {
             System.out.println(accountNumber + " account does not exist.");
             return;
         }
@@ -450,26 +383,25 @@ public class TransactionManager {
     /**
      * Closes all accounts associated with a specified account holder and logs the closure process.
      *
-     * @param firstName the first name of the account holder whose accounts are to be closed
-     * @param lastName the last name of the account holder whose accounts are to be closed
+     * @param firstName   the first name of the account holder whose accounts are to be closed
+     * @param lastName    the last name of the account holder whose accounts are to be closed
      * @param dateOfBirth the date of birth of the account holder
-     * @param closeDate the date on which the accounts are being closed
+     * @param closeDate   the date on which the accounts are being closed
      */
     private static void closeMultipleAccounts(String firstName, String lastName, Date dateOfBirth, Date closeDate) {
         Profile holder = new Profile(firstName, lastName, dateOfBirth);
 
         List<Account> accounts = findAllAccounts(holder);
-        if(accounts.isEmpty()) {
-            System.out.println(firstName + " " + lastName + " " + dateOfBirth +  " does not have any accounts in the database.");
-        }
-        else {
+        if (accounts.isEmpty()) {
+            System.out.println(firstName + " " + lastName + " " + dateOfBirth + " does not have any accounts in the database.");
+        } else {
             System.out.println("Closing accounts for " + firstName + " " + lastName + " " + dateOfBirth);
-            for(Account account : accounts) {
+            for (Account account : accounts) {
                 System.out.print("--" + account.getAccountNumber() + " ");
                 printInterest(account, closeDate);
             }
             int index = accountDatabase.find(firstName, lastName, dateOfBirth);
-            while(index != -1) {
+            while (index != -1) {
                 accountDatabase.closeAccount(accountDatabase.get(index), closeDate);
                 index = accountDatabase.find(firstName, lastName, dateOfBirth);
             }
@@ -485,8 +417,8 @@ public class TransactionManager {
      */
     private static List<Account> findAllAccounts(Profile holder) {
         List<Account> accounts = new List<>();
-        for(int i = 0; i < accountDatabase.size(); i++) {
-            if(accountDatabase.get(i).getHolder().equals(holder)) {
+        for (int i = 0; i < accountDatabase.size(); i++) {
+            if (accountDatabase.get(i).getHolder().equals(holder)) {
                 accounts.add(accountDatabase.get(i));
             }
         }
@@ -497,7 +429,7 @@ public class TransactionManager {
      * Prints the interest earned on the given account based on its type, interest rate, balance,
      * and the provided close date. It handles penalties for certificates of deposit if closed early.
      *
-     * @param account The account for which the interest is to be calculated and printed.
+     * @param account   The account for which the interest is to be calculated and printed.
      * @param closeDate The date on which the account is being evaluated or closed.
      */
     private static void printInterest(Account account, Date closeDate) {
@@ -537,20 +469,20 @@ public class TransactionManager {
     private static void depositMoney(String[] commandArray) {
         try {
             double depositAmount = Double.parseDouble(commandArray[2]);
-            if(depositAmount <= 0) {
+            if (depositAmount <= 0) {
                 System.out.println(depositAmount + " - deposit amount cannot be 0 or negative.");
                 return;
             }
             AccountNumber accountNumber = new AccountNumber(commandArray[1]);
-            if(!accountDatabase.contains(accountNumber)) {
+            if (!accountDatabase.contains(accountNumber)) {
                 System.out.println(accountNumber + " does not exist.");
                 return;
             }
             accountDatabase.deposit(accountNumber, depositAmount);
-            System.out.println("$" + df.format(depositAmount) +  " deposited to " + accountNumber);
+            System.out.println("$" + df.format(depositAmount) + " deposited to " + accountNumber);
         } catch (NumberFormatException e) {
             System.out.println("For input string: \"" + commandArray[2] + "\" - not a valid amount.");
-        } catch(ArrayIndexOutOfBoundsException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Missing data tokens for the deposit.");
         }
     }
@@ -605,31 +537,104 @@ public class TransactionManager {
     }
 
     /**
-     * Initiates reading of inputs from the command line.
-     * Ceases reading of inputs once a "Q" is read.
-     * Example of a single line of input:
-     * The user enters:
-     *    O <accountType> <branch> <firstName> <lastName> <dob> <initialDeposit>
-     * For example:
-     *    O savings bridgewater John Doe 2/19/2000 500
+     * Creates an AccountType object using a provided String representation of the three types of Accounts.
+     * Types of accounts: Checking(01), Savings(02), Money Market(03).
+     *
+     * @param type String representation of the type of Account
+     * @return AccountType of the Account
      */
-    public static void run() throws IOException {
-        accountDatabase.loadAccounts(new File("accounts.txt"));
-        System.out.println("Accounts in \"accounts.txt\" loaded to the database.");
-        System.out.println("Transaction Manager is running.");
+    private static AccountType createAccountType(String type) {
+        String typeToken = type.toLowerCase(); //AccountType is case-insensitive
+        return switch (typeToken) {
+            case "checking" -> AccountType.CHECKING;
+            case "savings" -> AccountType.SAVINGS;
+            case "moneymarket" -> AccountType.MONEY_MARKET;
+            case "college" -> AccountType.COLLEGE_CHECKING;
+            case "certificate" -> AccountType.CD;
+            default -> {
+                System.out.println(typeToken + " - invalid account type.");
+                yield null;
+            }
+        };
+    }
 
-        Scanner scanner = new Scanner(System.in);
-        while (true) { // loop only ends when a "Q" is read
-            String command = scanner.nextLine();
-            String[] commandArray = command.split("\\s+");
-            if (command.trim().isEmpty()) {
-                continue;
+    /**
+     * Creates a Profile object based on first name, last name, and dateOfBirth.
+     * Creates a new Profile object.
+     *
+     * @param firstName   String representation of first name of Account holder
+     * @param lastName    String representation of last name of Account holder
+     * @param dateOfBirth Date object that represents date of birth of Account holder
+     * @return Profile for the Account
+     */
+    private static Profile createProfile(String firstName, String lastName, Date dateOfBirth) {
+        return new Profile(firstName, lastName, dateOfBirth);
+    }
+
+    /**
+     * Creates and returns an Account object based on the provided parameters.
+     * Determines the account type, creates a profile for the holder, and initializes
+     * the appropriate Account subtype with the provided details.
+     *
+     * @param commandArray an array of Strings containing command details, where some commands are used
+     *                     to specify additional account attributes such as campus code or term length
+     * @param firstName    the first name of the account holder
+     * @param lastName     the last name of the account holder
+     * @param dateOfBirth  a Date object representing the birthdate of the account holder
+     * @param branch       the Branch object representing the bank branch where the account is opened
+     * @param accountType  a String representation of the type of account to create
+     * @param balance      the initial balance to set for the account
+     * @return the created Account object, initialized based on the provided parameters
+     * @throws IllegalStateException if the provided accountType is not a valid account type
+     */
+    private static Account getAccount(String[] commandArray, String firstName, String lastName, Date dateOfBirth, Branch branch, String accountType, double balance) {
+        Profile holder = createProfile(firstName, lastName, dateOfBirth);
+        accountType = accountType.toLowerCase();
+        return switch (accountType) {
+            case "checking" -> new Checking(branch, AccountType.CHECKING, holder, balance);
+            case "savings" -> new Savings(branch, AccountType.SAVINGS, holder, balance);
+            case "moneymarket" ->
+                    new MoneyMarket(branch, AccountType.MONEY_MARKET, holder, balance);
+            case "college" ->
+                    new CollegeChecking(branch, AccountType.COLLEGE_CHECKING, holder, Campus.fromCode(commandArray[commandArray.length - 1]), balance);
+            case "certificate" ->
+                    new CertificateDeposit(branch, AccountType.CD, holder, Integer.parseInt(commandArray[commandArray.length - 2]), createDate(commandArray[commandArray.length - 1]), balance);
+            default -> throw new IllegalStateException("Unexpected value: " + accountType);
+        };
+    }
+
+    /**
+     * Chooses which action to complete depending on a single input line that has been read.
+     * VALID COMMANDS: O, C, D, W, P, PA, PB, PH, PT
+     * Otherwise, will identify that the command was invalid.
+     * O --> opens a new Account, if not already there
+     * C --> closes an Account, if in the database
+     * D --> deposits money into an Account, if in the database
+     * W --> withdraws money from an Account, if in the database and money available
+     * P --> prints the AccountDatabase
+     * PA --> prints the Archive
+     * PB --> prints ordered by Branch (county, then city)
+     * PH --> prints by holder then AccountNumber
+     * PT --> prints by AccountType then AccountNumber
+     *
+     * @param commandArray Holds the input that has been extracted and put into a String array
+     */
+    private static void processCommand(String[] commandArray) throws IOException {
+        if (isValidCommand(commandArray[0])) {
+            switch (commandArray[0]) {
+                case "O" -> openAccount(commandArray);
+                case "C" -> closeAccount(commandArray);
+                case "D" -> depositMoney(commandArray);
+                case "W" -> withdrawMoney(commandArray);
+                case "A" -> processActivities();
             }
-            if(commandArray[0].equals("Q")) {
-                System.out.println("Transaction Manager is terminated. ");
-                return;
+            if (accountDatabase.isEmpty()) {
+                System.out.println("Account database is empty!");
+            } else {
+                printAccounts(commandArray[0]);
             }
-            processCommand(commandArray);
         }
     }
+
+
 }

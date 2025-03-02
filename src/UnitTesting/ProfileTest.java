@@ -3,6 +3,7 @@ package UnitTesting;
 import banking.Profile;
 import org.junit.Test;
 import util.Date;
+
 import static org.junit.Assert.*;
 
 public class ProfileTest {
@@ -42,9 +43,9 @@ public class ProfileTest {
      */
     @Test
     public void testProfile_DifferentDOBLess() {
-        Date date1 = new Date(1,1,1990);
-        Date date2 = new Date(1,1,2000);
-        Profile profile1 = new Profile("Alice","Smith", date1);
+        Date date1 = new Date(1, 1, 1990);
+        Date date2 = new Date(1, 1, 2000);
+        Profile profile1 = new Profile("Alice", "Smith", date1);
         Profile profile2 = new Profile("Alice", "Smith", date2);
         assertEquals(-1, profile1.compareTo(profile2));
     }
@@ -70,9 +71,9 @@ public class ProfileTest {
      */
     @Test
     public void testProfile_DifferentLastNameGreater() {
-        Date date1 = new Date(1,1,2000);
-        Date date2 = new Date(1,1,2000);
-        Profile profile1 = new Profile("Alice","Smith", date1);
+        Date date1 = new Date(1, 1, 2000);
+        Date date2 = new Date(1, 1, 2000);
+        Profile profile1 = new Profile("Alice", "Smith", date1);
         Profile profile2 = new Profile("Alice", "Brown", date2);
         assertEquals(1, profile1.compareTo(profile2));
     }

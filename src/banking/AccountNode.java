@@ -5,20 +5,18 @@ import util.Date;
 /**
  * AccountNode class used for the Archive to store closed Accounts in a linked list implementation.
  *
- @author Vishal Saravanan, Yining Chen
+ * @author Vishal Saravanan, Yining Chen
  */
 
 public class AccountNode {
     /**
-     * Pointer to the next AccountNode in the Archive.
-     */
-    private AccountNode next;
-
-    /**
      * Account object with account number, profile of holder, and balance
      */
     private final Account Account;
-
+    /**
+     * Pointer to the next AccountNode in the Archive.
+     */
+    private AccountNode next;
     /**
      * The date on which the associated account was closed.
      */
@@ -62,9 +60,9 @@ public class AccountNode {
     public String toString() {
         String returnString = Account.toString() + " Closed[" + close.toString() + "]";
 
-        if(!Account.getActivities().isEmpty()) {
+        if (!Account.getActivities().isEmpty()) {
             returnString += "\n\t[Activity]";
-            for(Activity activity : Account.getActivities()) {
+            for (Activity activity : Account.getActivities()) {
                 returnString += ("\n\t\t" + activity.toString());
             }
         }

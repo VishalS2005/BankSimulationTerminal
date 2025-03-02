@@ -93,36 +93,8 @@ public abstract class Account implements Comparable<Account> {
         printBalance(interest, fee);
     }
 
-    /**
-     * Prints the list of activities associated with this account.
-     */
-    private void printActivities() {
-        if(!this.activities.isEmpty()) {
-            System.out.println("\t[Activity]");
-        }
-        for (Activity activity : this.activities) {
-            System.out.println("\t\t" + activity);
-        }
-    }
-
-    /**
-     * Prints the interest and fee amounts for the account in a formatted manner.
-     *
-     * @param interest the interest amount to be displayed
-     * @param fee the fee amount to be displayed
-     */
-    private void printInterestFee(double interest, double fee) {
-        System.out.println("\t[interest] $" + df.format(interest) + " [Fee] $" + df.format(fee));
-    }
-
-    /**
-     * Prints the account balance after adding the given interest and deducting the given fee.
-     *
-     * @param interest the interest amount to be added to the balance
-     * @param fee the fee amount to be deducted from the balance
-     */
-    private void printBalance(double interest, double fee) {
-        System.out.println("\t[Balance] $" + df.format(balance + interest - fee));
+    public void addActivity(Activity activity) {
+        this.activities.add(activity);
     }
 
     /**
@@ -150,7 +122,7 @@ public abstract class Account implements Comparable<Account> {
     public void withdraw(double amount) { //to update the balance
         this.balance -= amount;
         Activity activity = new Activity(new Date(), this.getAccountNumber().getBranch(), 'W', amount, false);
-        this.activities.add(activity);
+        addActivity(activity);
     }
 
     /**
@@ -164,7 +136,7 @@ public abstract class Account implements Comparable<Account> {
     public void withdraw(Date date, Branch branch, double amount) { //to update the balance
         this.balance -= amount;
         Activity activity = new Activity(date, branch, 'W', amount, true);
-        this.activities.add(activity);
+        addActivity(activity);
     }
 
     /**
@@ -175,7 +147,7 @@ public abstract class Account implements Comparable<Account> {
     public void deposit(double amount) { //to update the balance
         this.balance += amount;
         Activity activity = new Activity(new Date(),this.getAccountNumber().getBranch(), 'D', amount, false);
-        this.activities.add(activity);
+        addActivity(activity);
     }
 
     /**
@@ -189,7 +161,7 @@ public abstract class Account implements Comparable<Account> {
     public void deposit(Date date, Branch branch, double amount) { //to update the balance
         this.balance += amount;
         Activity activity = new Activity(date, branch, 'D', amount, true);
-        this.activities.add(activity);
+        addActivity(activity);
     }
 
     /**
@@ -287,6 +259,38 @@ public abstract class Account implements Comparable<Account> {
         String cityA = this.getAccountNumber().getBranch().name();
         String cityB = other.getAccountNumber().getBranch().name();
         return cityA.compareToIgnoreCase(cityB);
+    }
+
+    /**
+     * Prints the list of activities associated with this account.
+     */
+    private void printActivities() {
+        if(!this.activities.isEmpty()) {
+            System.out.println("\t[Activity]");
+        }
+        for (Activity activity : this.activities) {
+            System.out.println("\t\t" + activity);
+        }
+    }
+
+    /**
+     * Prints the interest and fee amounts for the account in a formatted manner.
+     *
+     * @param interest the interest amount to be displayed
+     * @param fee the fee amount to be displayed
+     */
+    private void printInterestFee(double interest, double fee) {
+        System.out.println("\t[interest] $" + df.format(interest) + " [Fee] $" + df.format(fee));
+    }
+
+    /**
+     * Prints the account balance after adding the given interest and deducting the given fee.
+     *
+     * @param interest the interest amount to be added to the balance
+     * @param fee the fee amount to be deducted from the balance
+     */
+    private void printBalance(double interest, double fee) {
+        System.out.println("\t[Balance] $" + df.format(balance + interest - fee));
     }
 
     /**

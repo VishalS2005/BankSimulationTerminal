@@ -10,7 +10,7 @@ import util.Date;
 
 public class AccountNode {
     /**
-     * pointer to the next AccountNode in the archive
+     * Pointer to the next AccountNode in the Archive.
      */
     private AccountNode next;
 
@@ -19,6 +19,9 @@ public class AccountNode {
      */
     private final Account Account;
 
+    /**
+     * The date on which the associated account was closed.
+     */
     private Date close;
 
     /**

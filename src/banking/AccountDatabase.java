@@ -71,7 +71,6 @@ public class AccountDatabase extends List<Account> {
         return true;
     }
 
-
     /**
      * Checks if the Account has at least a certain amount of money.
      *
@@ -139,7 +138,6 @@ public class AccountDatabase extends List<Account> {
         }
         return -1;
     }
-
 
     /**
      * Checks if Account is contained in the AccountDatabase.
@@ -272,6 +270,10 @@ public class AccountDatabase extends List<Account> {
         this.archive.print();
     }
 
+    /**
+     * Prints the statements of all accounts in the AccountDatabase in a formatted manner.
+     * The method iterates through all accounts in the Account
+     * */
     public void printStatements() {
         int holderCount = 0;
         for (int i = 0; i < this.size(); i++) {
@@ -286,7 +288,13 @@ public class AccountDatabase extends List<Account> {
         System.out.println("*end of statements.\n");
     }
 
-
+    /**
+     * Loads account data from the provided file and adds the corresponding Account objects to the database.
+     * Each line in the file should represent an account in a comma-separated value format.
+     *
+     * @param file the File object containing account information to load
+     * @throws IOException if an I/O error occurs while reading the file
+     */
     public void loadAccounts(File file) throws IOException {
         Scanner scanner = new Scanner(file);
 
@@ -302,7 +310,14 @@ public class AccountDatabase extends List<Account> {
 
     }
 
-
+    /**
+     * Processes activities from a file and applies them to accounts in the AccountDatabase.
+     * The method reads a file containing activity information in a comma-separated
+     * format and performs operations such as deposits or withdrawals on corresponding accounts.
+     *
+     * @param file the File object from which activity data is read
+     * @throws IOException if an I/O error occurs while reading the file
+     */
     public void processActivities(File file) throws IOException {
         Scanner scanner = new Scanner(file);
         while(scanner.hasNextLine()) {

@@ -14,6 +14,22 @@ import java.text.DecimalFormat;
 
 public abstract class Account implements Comparable<Account> {
     /**
+     * Represents the amount of months in one year.
+     */
+    public static final int MONTHS_IN_YEAR = 12;
+
+    /**
+     * A constant representing the absence of any applicable fees for an account.
+     * Used to signify that no fees are applied during certain operations or account types.
+     */
+    public static final double NO_FEE = 0;
+
+    /**
+     * formatted in a readable manner for money
+     */
+    private static final DecimalFormat df = new DecimalFormat("#,##0.00");
+
+    /**
      * AccountNumber object with information about 9-digit number that represents bank account.
      */
     protected AccountNumber number;
@@ -33,22 +49,6 @@ public abstract class Account implements Comparable<Account> {
      * Deposit or Withdraw.
      */
     protected List<Activity> activities;
-
-    /**
-     * formatted in a readable manner for money
-     */
-    private static final DecimalFormat df = new DecimalFormat("#,##0.00");
-
-    /**
-     * Represents the amount of months in one year.
-     */
-    public static final int MONTHS_IN_YEAR = 12;
-
-    /**
-     * A constant representing the absence of any applicable fees for an account.
-     * Used to signify that no fees are applied during certain operations or account types.
-     */
-    public static final double NO_FEE = 0;
 
     /**
      * Creates an Account object.

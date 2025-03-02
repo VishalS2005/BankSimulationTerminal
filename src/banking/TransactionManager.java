@@ -578,7 +578,7 @@ public class TransactionManager {
                 System.out.println(accountNumber + " does not exist.");
                 return;
             }
-            boolean sufficientFunds = accountDatabase.hasSufficientFunds(index, withdrawalAmount);
+            boolean sufficientFunds = accountDatabase.get(index).getBalance() >= withdrawalAmount;
             if (accountDatabase.get(index).getBalance() - withdrawalAmount < MONEY_MARKET_MINIMUM && accountDatabase.get(index).getType() == AccountType.MONEY_MARKET) {
                 if (sufficientFunds) {
                     System.out.println(accountNumber + " balance below $2,000 - $"

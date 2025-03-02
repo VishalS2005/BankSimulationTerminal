@@ -72,18 +72,6 @@ public class AccountDatabase extends List<Account> {
     }
 
     /**
-     * Checks if the Account has at least a certain amount of money.
-     *
-     * @param index of AccountDatabase that represents an Account being checked
-     * @param amount value of money will be checked
-     * @return true if the amount of money in the account is greater than or equal to how much the user is checking for
-     * false otherwise
-     */
-    public boolean hasSufficientFunds(int index, double amount) {
-        return this.get(index).getBalance() >= amount;
-    }
-
-    /**
      * Closes the specified account and removes it from the AccountDatabase.
      *
      * @param account the Account object to be closed

@@ -221,19 +221,29 @@ public class Date implements Comparable<Date> {
         return year % CENTENNIAL != 0 || year % QUARTERCENTENNIAL == 0;
     }
 
+    private static void clearTime(Calendar cal) {
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+    }
+
+
     public int daysFrom(Date other) {
         Calendar calThis = Calendar.getInstance();
-        calThis.set(this.year, this.month - MONTH_OFFSET, this.day);
-
         Calendar calOther = Calendar.getInstance();
+        calThis.set(this.year, this.month - MONTH_OFFSET, this.day);
         calOther.set(other.year, other.month - MONTH_OFFSET, other.day);
-        int days = 0;
+        clearTime(calThis);
+        clearTime(calOther);
+        int days = 1;
         while (calOther.before(calThis)) {
             calOther.add(Calendar.DAY_OF_MONTH, 1);
             days++;
         }
-        return days + MONTH_OFFSET;
+        return days;
     }
+
 
 
     /**

@@ -9,8 +9,8 @@ import util.Date;
 
 public class AccountDatabaseTest {
     AccountDatabase db;
-    Account accountReg;
-    Account accountMoneyMarket;
+    Savings accountReg;
+    MoneyMarket accountMoneyMarket;
 
     @Before
     public void setUp() {

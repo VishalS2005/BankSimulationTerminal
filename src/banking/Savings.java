@@ -58,10 +58,11 @@ public class Savings extends Account{
     /**
      * Checks and returns the given loyalty status.
      *
-     * @param isLoyal a boolean indicating whether the customer is considered loyal
      * @return the provided loyalty status as a boolean
      */
-    public boolean isLoyal(boolean isLoyal) { return isLoyal; }
+    public boolean isLoyal() {
+        return isLoyal;
+    }
 
     /**
      * Determines the interest rate applied to the savings account.

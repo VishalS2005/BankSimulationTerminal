@@ -229,7 +229,8 @@ public class TransactionManager {
      * Checks for valid inputs including a valid AccountType, Branch, Date, and balance.
      * Checks for duplicate account, minimum balance, and money market specifications.
      * Adds the opened account to the database.
-     * * @param commandArray Holds the input that has been extracted and put into a String array */
+     * @param commandArray Holds the input that has been extracted and put into a String array
+     */
     private static void openAccount(String[] commandArray) {
         AccountType acctType = createAccountType(commandArray[1]); //first input is the AccountType
         if(acctType == null) {

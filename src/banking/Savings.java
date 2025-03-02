@@ -28,6 +28,8 @@ public class Savings extends Account{
         this.isLoyal = isLoyal;
     }
 
+    public boolean isLoyal(boolean isLoyal) { return isLoyal; }
+
     @Override
     public double interestRate() {
         return isLoyal ? LOYAL_INTEREST_RATE : NOT_LOYAL_INTEREST_RATE;

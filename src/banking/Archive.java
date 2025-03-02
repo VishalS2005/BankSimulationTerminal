@@ -14,7 +14,6 @@ public class Archive {
      */
     private AccountNode first;
 
-
     /**
      * Creates a new Archive that holds all closed Accounts
      * Linked List data structure representation using AccountNodes are used for the Archive

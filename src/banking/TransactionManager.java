@@ -18,22 +18,39 @@ import java.util.Scanner;
 
 public class TransactionManager {
     /**
-     * holds all the accounts
+     * The Account Database holds all the Accounts.
      */
     public static final AccountDatabase accountDatabase = new AccountDatabase();
 
     /**
-     * formats values of money
+     * Formats numbers for easy readability.
      */
     private static final DecimalFormat df = new DecimalFormat("#,##0.00");
 
+    /**
+     * Represents the minimum initial deposit required to open a Money Market account.
+     * A Money Market account cannot be created if the provided balance is below this threshold.
+     */
     private static final double MONEY_MARKET_MINIMUM = 2000;
 
+    /**
+     * Represents the minimum balance required to open or maintain a Certificate of Deposit (CD) account
+     */
     private static final double CD_MINIMUM = 1000;
 
+    /**
+     * Represents the number of days in a year, typically used for calculations
+     * involving annual durations. This value is based on a standard year with
+     * 365 days.
+     */
     private static final double DAYS_IN_YEAR = 365;
 
+    /**
+     * Represents the decimal value for ten percent, used to calculate a percentage or ratio.
+     * Typically employed in financial calculations or percentage adjustments throughout the system.
+     */
     private static final double TEN_PERCENT = 0.1;
+
     /**
      * Creates an AccountType object using a provided String representation of the three types of Accounts.
      * Types of accounts: Checking(01), Savings(02), Money Market(03).
@@ -101,12 +118,39 @@ public class TransactionManager {
         return new Date(month, day, year);
     }
 
-
+    /**
+     * Creates an Account object based on provided parameters.
+     * Delegates to the getAccount method to initialize and return the appropriate Account instance.
+     *
+     * @param commandArray an array of Strings containing command details, where the account type is specified as the second element
+     * @param firstName the first name of the account holder
+     * @param lastName the last name of the account holder
+     * @param dateOfBirth a Date object representing the birthdate of the account holder
+     * @param branch the Branch object representing the bank branch where the account is opened
+     * @param balance the initial balance for the account
+     * @return the created Account object
+     */
     public static Account createAccount(String[] commandArray, String firstName, String lastName, Date dateOfBirth, Branch branch, double balance) {
         String accountType = commandArray[1];
         return getAccount(commandArray, firstName, lastName, dateOfBirth, branch, accountType, balance);
     }
 
+    /**
+     * Creates and returns an Account object based on the provided parameters.
+     * Determines the account type, creates a profile for the holder, and initializes
+     * the appropriate Account subtype with the provided details.
+     *
+     * @param commandArray an array of Strings containing command details, where some commands are used
+     *                     to specify additional account attributes such as campus code or term length
+     * @param firstName the first name of the account holder
+     * @param lastName the last name of the account holder
+     * @param dateOfBirth a Date object representing the birthdate of the account holder
+     * @param branch the Branch object representing the bank branch where the account is opened
+     * @param accountType a String representation of the type of account to create
+     * @param balance the initial balance to set for the account
+     * @return the created Account object, initialized based on the provided parameters
+     * @throws IllegalStateException if the provided accountType is not a valid account type
+     */
     private static Account getAccount(String[] commandArray, String firstName, String lastName, Date dateOfBirth, Branch branch, String accountType, double balance) {
         Profile holder = createProfile(firstName, lastName, dateOfBirth);
         accountType = accountType.toLowerCase();
@@ -120,6 +164,18 @@ public class TransactionManager {
         };
     }
 
+    /**
+     * Creates a new account using the provided command array.
+     *
+     * @param commandArray an array of strings containing account details in the following order:
+     *                     1. Account type
+     *                     2. Branch identifier
+     *                     3. First name of the account holder
+     *                     4. Last name of the account holder
+     *                     5. Date of birth of the account holder (formatted as a string)
+     *                     6. Initial deposit amount
+     * @return an Account object representing the newly created account
+     */
     public static Account createAccount(String[] commandArray) {
         String accountType = commandArray[0];
         Branch branch = createBranch(commandArray[1]); //second input is the Branch
@@ -129,6 +185,7 @@ public class TransactionManager {
         double amount = Double.parseDouble(commandArray[5]);
         return getAccount(commandArray, firstName, lastName, dateOfBirth, branch, accountType, amount);
     }
+
     /**
      * Chooses which action to complete depending on a single input line that has been read.
      * VALID COMMANDS: O, C, D, W, P, PA, PB, PH, PT
@@ -162,6 +219,16 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * Processes account activities from the file "activities.txt".
+     *
+     * This method reads the account activity data contained in the "activities.txt"
+     * file and processes it using the accountDatabase's processActivities method.
+     * It outputs log messages to the console indicating the start and completion
+     * of activity processing.
+     *
+     * @throws IOException if an I/O error occurs while processing the file.
+     */
     private static void processActivities() throws IOException {
         System.out.println("Processing \"activities.txt\"...");
         accountDatabase.processActivities(new File ("activities.txt"));
@@ -362,6 +429,12 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * Closes a single account with the given account number and close date.
+     *
+     * @param accountNumber the account number of the account to be closed
+     * @param closeDate the date on which the account is being closed
+     */
     private static void closeSingleAccount(AccountNumber accountNumber, Date closeDate) {
         if(!accountDatabase.contains(accountNumber)) {
             System.out.println(accountNumber + " account does not exist.");
@@ -374,6 +447,14 @@ public class TransactionManager {
         accountDatabase.closeAccount(accountDatabase.get(index), closeDate);
     }
 
+    /**
+     * Closes all accounts associated with a specified account holder and logs the closure process.
+     *
+     * @param firstName the first name of the account holder whose accounts are to be closed
+     * @param lastName the last name of the account holder whose accounts are to be closed
+     * @param dateOfBirth the date of birth of the account holder
+     * @param closeDate the date on which the accounts are being closed
+     */
     private static void closeMultipleAccounts(String firstName, String lastName, Date dateOfBirth, Date closeDate) {
         Profile holder = new Profile(firstName, lastName, dateOfBirth);
 
@@ -396,6 +477,12 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * Retrieves a list of all accounts associated with the specified profile holder.
+     *
+     * @param holder the profile holder whose accounts need to be retrieved
+     * @return a list of accounts associated with the provided profile holder
+     */
     private static List<Account> findAllAccounts(Profile holder) {
         List<Account> accounts = new List<>();
         for(int i = 0; i < accountDatabase.size(); i++) {
@@ -406,6 +493,13 @@ public class TransactionManager {
         return accounts;
     }
 
+    /**
+     * Prints the interest earned on the given account based on its type, interest rate, balance,
+     * and the provided close date. It handles penalties for certificates of deposit if closed early.
+     *
+     * @param account The account for which the interest is to be calculated and printed.
+     * @param closeDate The date on which the account is being evaluated or closed.
+     */
     private static void printInterest(Account account, Date closeDate) {
         double interestRate;
         System.out.print("interest earned: $");
@@ -431,7 +525,6 @@ public class TransactionManager {
             System.out.println(df.format(interest));
         }
     }
-
 
     /**
      * Executed to deposit money to an existing Account when the first command is "D".
@@ -510,8 +603,6 @@ public class TransactionManager {
             System.out.println("Missing data tokens for the withdrawal.");
         }
     }
-
-
 
     /**
      * Initiates reading of inputs from the command line.

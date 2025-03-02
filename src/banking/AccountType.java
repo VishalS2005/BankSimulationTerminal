@@ -9,22 +9,28 @@ package banking;
 
 public enum AccountType {
     /**
-     * Checking account - 01.
+     * Checking Account - 01.
      */
     CHECKING("01"),
 
     /**
-     * Savings account - 02.
+     * Savings Account - 02.
      */
     SAVINGS("02"),
 
     /**
-     * Money market account - 03.
+     * Money Market Account - 03.
      */
     MONEY_MARKET("03"),
 
+    /**
+     * College Checking - 04
+     */
     COLLEGE_CHECKING("04"),
 
+    /**
+     * Certificate Deposit - 05
+     */
     CD("05");
 
     /**

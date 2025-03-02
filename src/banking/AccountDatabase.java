@@ -19,8 +19,15 @@ import java.util.Scanner;
 
 public class AccountDatabase extends List<Account> {
 
+    /**
+     * Represents the archive of closed accounts within the AccountDatabase.
+     */
     private final Archive archive;
 
+    /**
+     * Constructs an empty AccountDatabase object.
+     * Initializes a new Archive instance that will store accounts that have been closed.
+     */
     public AccountDatabase() {
         super();
         this.archive = new Archive();
@@ -77,9 +84,12 @@ public class AccountDatabase extends List<Account> {
         return this.get(index).getBalance() >= amount;
     }
 
-
-
-
+    /**
+     * Closes the specified account and removes it from the AccountDatabase.
+     *
+     * @param account the Account object to be closed
+     * @param closeDate the Date on which the account is closed
+     */
     public void closeAccount(Account account, Date closeDate) {
         if(account.getAccountNumber().getType() == AccountType.CHECKING) {
             for(int i = 0; i < this.size(); i++) {
@@ -92,8 +102,16 @@ public class AccountDatabase extends List<Account> {
         this.remove(account);
     }
 
-
-
+    /**
+     * Finds the index of an account in the AccountDatabase based on the holder's first name,
+     * last name, and date of birth. The search is case-insensitive for the names.
+     *
+     * @param firstName the first name of the account holder to search for
+     * @param lastName the last name of the account holder to search for
+     * @param dateOfBirth the date of birth of the account holder to search for
+     * @return the index of the account if found in the AccountDatabase,
+     *         -1 if the account is not found
+     */
     public int find(String firstName, String lastName, Date dateOfBirth) {
         for(int i = 0; i < this.size(); i++) {
             if (this.get(i).getFirstName().equalsIgnoreCase(firstName)
@@ -164,6 +182,15 @@ public class AccountDatabase extends List<Account> {
         return false;
     }
 
+    /**
+     * Checks if an Account with the specified holder and account type exists in the AccountDatabase.
+     * Iterates through the list of accounts stored in the database.
+     *
+     * @param holder Profile object representing the account holder to search for
+     * @param type AccountType object representing the type of account to search for
+     * @return true if an account with the specified holder and type is found in the database,
+     *         false otherwise
+     */
     public boolean contains(Profile holder, AccountType type) {
         for(int i = 0; i < this.size(); i++) {
             if(this.get(i).getAccountNumber().getType().equals(type) && this.get(i).getHolder().equals(holder)) {
@@ -172,8 +199,6 @@ public class AccountDatabase extends List<Account> {
         }
         return false;
     }
-
-
 
     /**
      * Prints all the Accounts in the AccountDatabase from the beginning of AccountDatabase to the end.

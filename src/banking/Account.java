@@ -39,8 +39,15 @@ public abstract class Account implements Comparable<Account> {
      */
     private static final DecimalFormat df = new DecimalFormat("#,##0.00");
 
+    /**
+     * Represents the amount of months in one year.
+     */
     public static final int MONTHS_IN_YEAR = 12;
 
+    /**
+     * A constant representing the absence of any applicable fees for an account.
+     * Used to signify that no fees are applied during certain operations or account types.
+     */
     public static final double NO_FEE = 0;
 
     /**
@@ -67,10 +74,20 @@ public abstract class Account implements Comparable<Account> {
         this.holder = null;
     }
 
+    /**
+     * Retrieves the Profile object representing the account holder.
+     *
+     * @return the Profile object of the account holder
+     */
     public Profile getHolder() {
         return holder;
     }
 
+    /**
+     * Retrieves the list of activities associated with this account.
+     *
+     * @return a List of Activity objects representing the transactions performed on this account
+     */
     public List<Activity> getActivities() {
         return activities;
     }
@@ -86,6 +103,9 @@ public abstract class Account implements Comparable<Account> {
         printBalance(interest, fee);
     }
 
+    /**
+     * Prints the list of activities associated with this account.
+     */
     private void printActivities() {
         if(!this.activities.isEmpty()) {
             System.out.println("\t[Activity]");
@@ -93,13 +113,24 @@ public abstract class Account implements Comparable<Account> {
         for (Activity activity : this.activities) {
             System.out.println("\t\t" + activity);
         }
-
     }
 
+    /**
+     * Prints the interest and fee amounts for the account in a formatted manner.
+     *
+     * @param interest the interest amount to be displayed
+     * @param fee the fee amount to be displayed
+     */
     private void printInterestFee(double interest, double fee) {
         System.out.println("\t[interest] $" + df.format(interest) + " [Fee] $" + df.format(fee));
     }
 
+    /**
+     * Prints the account balance after adding the given interest and deducting the given fee.
+     *
+     * @param interest the interest amount to be added to the balance
+     * @param fee the fee amount to be deducted from the balance
+     */
     private void printBalance(double interest, double fee) {
         System.out.println("\t[Balance] $" + df.format(balance + interest - fee));
     }
@@ -114,7 +145,13 @@ public abstract class Account implements Comparable<Account> {
      */
      public abstract double fee();
 
+    /**
+     * Determines the interest rate applicable to this account.
+     *
+     * @return the interest rate as a double value
+     */
      public abstract double interestRate();
+
     /**
      * Deducts money from the account and updates the balance.
      *
@@ -126,6 +163,14 @@ public abstract class Account implements Comparable<Account> {
         this.activities.add(activity);
     }
 
+    /**
+     * Deducts the specified amount from the account balance and records the transaction
+     * as an activity in the account's activity log.
+     *
+     * @param date the date when the withdrawal takes place
+     * @param branch the branch where the withdrawal occurs
+     * @param amount the amount to be withdrawn from the account balance
+     */
     public void withdraw(Date date, Branch branch, double amount) { //to update the balance
         this.balance -= amount;
         Activity activity = new Activity(date, branch, 'W', amount, true);
@@ -143,13 +188,19 @@ public abstract class Account implements Comparable<Account> {
         this.activities.add(activity);
     }
 
+    /**
+     * Adds money to the account, updates the balance, and records the transaction
+     * as a deposit activity in the account's activity log.
+     *
+     * @param date   the date on which the deposit occurs
+     * @param branch the branch where the deposit is made
+     * @param amount the amount of money to be deposited into the account
+     */
     public void deposit(Date date, Branch branch, double amount) { //to update the balance
         this.balance += amount;
         Activity activity = new Activity(date, branch, 'D', amount, true);
         this.activities.add(activity);
     }
-
-
 
     /**
      * Returns the AccountNumber object associated with this Account.
@@ -169,6 +220,11 @@ public abstract class Account implements Comparable<Account> {
         return this.balance;
     }
 
+    /**
+     * Updates the balance of the account.
+     *
+     * @param balance the new balance to set for the account
+     */
     public void setBalance(double balance) {
         this.balance = balance;
     }
@@ -182,8 +238,6 @@ public abstract class Account implements Comparable<Account> {
     public AccountType getType() {
         return this.number.getType();
     }
-
-
 
     /**
      * Returns a string that represents the first name in an Account.
@@ -211,8 +265,6 @@ public abstract class Account implements Comparable<Account> {
     public Date getDateOfBirth() {
         return this.holder.getDateOfBirth();
     }
-
-
 
     /**
      * Compares two accounts by the AccountType parameter.

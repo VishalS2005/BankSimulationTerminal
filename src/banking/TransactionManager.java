@@ -1,11 +1,13 @@
 package banking;
 
 import util.Date;
+import util.List;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Scanner;
+
 
 /**
  * Transaction Manager class that reads in transactions from the command line.
@@ -25,6 +27,13 @@ public class TransactionManager {
      */
     private static final DecimalFormat df = new DecimalFormat("#,##0.00");
 
+    private static final double MONEY_MARKET_MINIMUM = 2000;
+
+    private static final double CD_MINIMUM = 1000;
+
+    private static final double DAYS_IN_YEAR = 365;
+
+    private static final double TEN_PERCENT = 0.1;
     /**
      * Creates an AccountType object using a provided String representation of the three types of Accounts.
      * Types of accounts: Checking(01), Savings(02), Money Market(03).
@@ -267,7 +276,7 @@ public class TransactionManager {
         if (acctType == AccountType.CD) {
             int value = Integer.parseInt(commandArray[7]);
 
-            if (value != 3 && value != 6 && value != 9 && value != 12) {
+            if (value != CertificateDeposit.THREE_MONTH_TERM && value != CertificateDeposit.SIX_MONTH_TERM && value != CertificateDeposit.NINE_MONTH_TERM && value != CertificateDeposit.TWELVE_MONTH_TERM) {
                 System.out.println(commandArray[7] + " is not a valid term.");
                 return;
             }
@@ -319,10 +328,10 @@ public class TransactionManager {
         if(balance <= 0) { //balance must be more than 0
             System.out.println("Initial deposit cannot be 0 or negative.");
             return false;
-        } else if(balance < 2000 && acctType.equals(AccountType.MONEY_MARKET)) { //Money Market account must have at least $2000
+        } else if(balance < MONEY_MARKET_MINIMUM && acctType.equals(AccountType.MONEY_MARKET)) { //Money Market account must have at least $2000
             System.out.println("Minimum of $2,000 to open a Money Market account.");
             return false;
-        } else if(balance < 1000 && acctType.equals(AccountType.CD)) {
+        } else if(balance < CD_MINIMUM && acctType.equals(AccountType.CD)) {
             System.out.println("Minimum of $1,000 to open a Certificate Deposit account.");
             return false;
         }
@@ -340,40 +349,60 @@ public class TransactionManager {
      */
     private static void closeAccount(String[] commandArray) {
         Date closeDate = createDate(commandArray[1]);
-        if(commandArray.length == 3) { //AccountNumber input
-            AccountNumber accountNumber = new AccountNumber(commandArray[2]);
-            if(!accountDatabase.contains(accountNumber)) {
-                System.out.println(accountNumber + " account does not exist.");
-                return;
-            }
-            System.out.println("Closing account " + accountNumber);
-            int index = accountDatabase.find(accountNumber);
-            System.out.print("--");
-            printInterest(accountDatabase.get(index), closeDate);
-            accountDatabase.closeAccount(accountDatabase.get(index), closeDate);
-        } else if(commandArray.length == 5) { //First Name, Last Name, and Date of Birth input
+        if(commandArray.length == 3) {
+            closeSingleAccount(new AccountNumber(commandArray[2]), closeDate);
+        } else if(commandArray.length == 5) {
             String firstName = commandArray[2];
             String lastName = commandArray[3];
             Date dateOfBirth = createDate(commandArray[4]);
-
-            int index = accountDatabase.find(firstName, lastName, dateOfBirth);
-            if(index == -1) {
-                System.out.println(firstName + " " + lastName + " " + dateOfBirth +  " does not have any accounts in the database.");
-            }
-            else {
-                System.out.println("Closing accounts for " + firstName + " " + lastName + " " + dateOfBirth);
-                while(index != -1) {
-                    System.out.print("--" + accountDatabase.get(index).getAccountNumber() + " ");
-                    printInterest(accountDatabase.get(index), closeDate);
-                    accountDatabase.closeAccount(accountDatabase.get(index), closeDate);
-                    index = accountDatabase.find(firstName, lastName, dateOfBirth);
-                }
-                System.out.println("All accounts for " + firstName + " " + lastName + " " + dateOfBirth + " are closed and moved to archive.");
-            }
+            closeMultipleAccounts(firstName, lastName, dateOfBirth, closeDate);
         } else {
             System.out.println("Missing data for closing an account.");
         }
+    }
 
+    private static void closeSingleAccount(AccountNumber accountNumber, Date closeDate) {
+        if(!accountDatabase.contains(accountNumber)) {
+            System.out.println(accountNumber + " account does not exist.");
+            return;
+        }
+        System.out.println("Closing account " + accountNumber);
+        int index = accountDatabase.find(accountNumber);
+        System.out.print("--");
+        printInterest(accountDatabase.get(index), closeDate);
+        accountDatabase.closeAccount(accountDatabase.get(index), closeDate);
+    }
+
+    private static void closeMultipleAccounts(String firstName, String lastName, Date dateOfBirth, Date closeDate) {
+        Profile holder = new Profile(firstName, lastName, dateOfBirth);
+
+        List<Account> accounts = findAllAccounts(holder);
+        if(accounts.isEmpty()) {
+            System.out.println(firstName + " " + lastName + " " + dateOfBirth +  " does not have any accounts in the database.");
+        }
+        else {
+            System.out.println("Closing accounts for " + firstName + " " + lastName + " " + dateOfBirth);
+            for(Account account : accounts) {
+                System.out.print("--" + account.getAccountNumber() + " ");
+                printInterest(account, closeDate);
+            }
+            int index = accountDatabase.find(firstName, lastName, dateOfBirth);
+            while(index != -1) {
+                accountDatabase.closeAccount(accountDatabase.get(index), closeDate);
+                index = accountDatabase.find(firstName, lastName, dateOfBirth);
+            }
+            System.out.println("All accounts for " + firstName + " " + lastName + " " + dateOfBirth + " are closed and moved to archive.");
+        }
+    }
+
+    private static List<Account> findAllAccounts(Profile holder) {
+        List<Account> accounts = new List<>();
+        for(int i = 0; i < accountDatabase.size(); i++) {
+            if(accountDatabase.get(i).getHolder().equals(holder)) {
+               accounts.add(accountDatabase.get(i));
+            }
+        }
+        return accounts;
     }
 
     private static void printInterest(Account account, Date closeDate) {
@@ -387,17 +416,17 @@ public class TransactionManager {
             double interest;
             if (closeDate.isAfter(openDate.addMonths(cd.getTerm()))) {
                 interestRate = account.interestRate();
-                interest = account.getBalance() * interestRate / 365 * daysHeld;
+                interest = account.getBalance() * interestRate / DAYS_IN_YEAR * daysHeld;
                 System.out.println(df.format(interest));
             } else {
                 interestRate = cd.interestRate(closeDate);
-                interest = account.getBalance() * interestRate / 365 * daysHeld;
+                interest = account.getBalance() * interestRate / DAYS_IN_YEAR * daysHeld;
                 System.out.println(df.format(interest));
-                System.out.println("  [penalty] $" + df.format(0.1 * interest));
+                System.out.println("  [penalty] $" + df.format(TEN_PERCENT * interest));
             }
         } else {
             interestRate = account.interestRate();
-            double interest = account.getBalance() * interestRate / 365 * closeDate.getDay();
+            double interest = account.getBalance() * interestRate / DAYS_IN_YEAR * closeDate.getDay();
             System.out.println(df.format(interest));
         }
     }
@@ -455,12 +484,8 @@ public class TransactionManager {
                 System.out.println(accountNumber + " does not exist.");
                 return;
             }
-
-            boolean belowThreshold = accountDatabase.belowTwoThousand(index, withdrawalAmount);
             boolean sufficientFunds = accountDatabase.hasSufficientFunds(index, withdrawalAmount);
-
-            if (belowThreshold && accountDatabase.get(index).getType() == AccountType.MONEY_MARKET) {
-                // When the account balance is below $2,000, include a prefix message.
+            if (accountDatabase.get(index).getBalance() - withdrawalAmount < MONEY_MARKET_MINIMUM && accountDatabase.get(index).getType() == AccountType.MONEY_MARKET) {
                 if (sufficientFunds) {
                     System.out.println(accountNumber + " balance below $2,000 - $"
                             + df.format(withdrawalAmount) + " withdrawn from " + accountNumber);
@@ -470,7 +495,6 @@ public class TransactionManager {
                             + df.format(withdrawalAmount) + " - insufficient funds.");
                 }
             } else {
-                // For accounts not below the threshold, no prefix is needed.
                 if (sufficientFunds) {
                     System.out.println("$" + df.format(withdrawalAmount) + " withdrawn from " + accountNumber);
                     accountDatabase.withdraw(accountNumber, withdrawalAmount);
@@ -485,6 +509,8 @@ public class TransactionManager {
             System.out.println("Missing data tokens for the withdrawal.");
         }
     }
+
+
 
     /**
      * Initiates reading of inputs from the command line.

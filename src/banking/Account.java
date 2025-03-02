@@ -39,10 +39,9 @@ public abstract class Account implements Comparable<Account> {
      */
     private static final DecimalFormat df = new DecimalFormat("#,##0.00");
 
-    /**
-     * represents an empty balance of zero dollars and zero cents
-     */
-    private static final int EMPTY_BALANCE = 0;
+    public static final int MONTHS_IN_YEAR = 12;
+
+    public static final double NO_FEE = 0;
 
     /**
      * Creates an Account object.
@@ -273,17 +272,14 @@ public abstract class Account implements Comparable<Account> {
         if (cmp != 0) {
             return cmp;
         }
-        // Compare first names, ignoring case
         cmp = this.getFirstName().compareToIgnoreCase(other.getFirstName());
         if (cmp != 0) {
             return cmp;
         }
-        // Compare dates of birth
         cmp = this.getDateOfBirth().compareTo(other.getDateOfBirth());
         if (cmp != 0) {
             return cmp;
         }
-        // Compare account numbers numerically.
         int aNumber = Integer.parseInt(this.getAccountNumber().toString());
         int bNumber = Integer.parseInt(other.getAccountNumber().toString());
         return aNumber - bNumber;

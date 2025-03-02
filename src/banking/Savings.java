@@ -11,6 +11,14 @@ public class Savings extends Account{
      */
     protected boolean isLoyal;
 
+    private static final double LOYAL_INTEREST_RATE = 0.0275;
+
+    private static final double NOT_LOYAL_INTEREST_RATE = 0.025;
+
+    private static final double ACCOUNT_FEE = 25;
+
+    private static final double ACCOUNT_THRESHOLD = 500;
+
     public Savings(Branch branch, AccountType type, Profile holder, double balance) {
         super(branch, type, holder, balance);
         isLoyal = TransactionManager.accountDatabase.contains(holder, AccountType.CHECKING);
@@ -22,17 +30,17 @@ public class Savings extends Account{
 
     @Override
     public double interestRate() {
-        return isLoyal ? 0.0275 : 0.025;
+        return isLoyal ? LOYAL_INTEREST_RATE : NOT_LOYAL_INTEREST_RATE;
     }
 
     @Override
     public double interest() {
-        return balance * this.interestRate() / 12;
+        return balance * this.interestRate() / MONTHS_IN_YEAR;
     }
 
     @Override
     public double fee() {
-        return balance >= 500 ? 0 : 25;
+        return balance >= ACCOUNT_THRESHOLD ? NO_FEE : ACCOUNT_FEE;
     }
 
     @Override

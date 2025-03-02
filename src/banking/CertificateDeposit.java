@@ -2,6 +2,7 @@ package banking;
 
 import util.Date;
 
+
 /**
  * Extends the savings class
  *
@@ -10,6 +11,24 @@ import util.Date;
 public class CertificateDeposit extends Savings{
     private int term;
     private Date open;
+
+    private static final double DAYS_IN_MONTHS = 30.0;
+
+    public static final int THREE_MONTH_TERM = 3;
+
+    private static final double THREE_MONTH_TERM_INTEREST_RATE = 0.03;
+
+    public static final int SIX_MONTH_TERM = 6;
+
+    private static final double SIX_MONTH_TERM_INTEREST_RATE = 0.0325;
+
+    public static final int NINE_MONTH_TERM = 9;
+
+    private static final double NINE_MONTH_TERM_INTEREST_RATE = 0.035;
+
+    public static final int TWELVE_MONTH_TERM = 12;
+
+    private static final double TWELVE_MONTH_TERM_INTEREST_RATE = 0.04;
 
     public CertificateDeposit(Branch branch, AccountType type, Profile holder, int term, Date open, double balance) {
         super(branch, type, holder, balance);
@@ -27,34 +46,35 @@ public class CertificateDeposit extends Savings{
     }
 
     public double interestRate(Date closeDate) {
-        int number = closeDate.daysFrom(open);
-        if(number/30 <= 6) {
-            return 0.03;
+        int daysHeld = closeDate.daysFrom(open);
+        double monthsHeld = daysHeld / DAYS_IN_MONTHS;
+
+        if (monthsHeld <= SIX_MONTH_TERM) {
+            return THREE_MONTH_TERM_INTEREST_RATE;
+        } else if (monthsHeld <= NINE_MONTH_TERM) {
+            return SIX_MONTH_TERM_INTEREST_RATE;
+        } else if (monthsHeld < TWELVE_MONTH_TERM) {
+            return NINE_MONTH_TERM_INTEREST_RATE;
+        } else {
+            return TWELVE_MONTH_TERM_INTEREST_RATE;
         }
-        if(number/30 <= 9) {
-            return 0.0325;
-        }
-        if(number/30 < 12) {
-            return 0.035;
-        }
-        return -1;
-   }
+    }
 
 
     @Override
     public double interestRate() {
         return switch (term) {
-            case 3 -> 0.03;
-            case 6 -> 0.0325;
-            case 9 -> 0.035;
-            case 12 -> 0.04;
-            default -> -1;
+            case THREE_MONTH_TERM -> THREE_MONTH_TERM_INTEREST_RATE;
+            case SIX_MONTH_TERM -> SIX_MONTH_TERM_INTEREST_RATE;
+            case NINE_MONTH_TERM -> NINE_MONTH_TERM_INTEREST_RATE;
+            case TWELVE_MONTH_TERM -> TWELVE_MONTH_TERM_INTEREST_RATE;
+            default -> throw new IllegalArgumentException("Invalid term");
         };
     }
 
     @Override
     public double interest() {
-        return balance * interestRate() / 12;
+        return balance * interestRate() / MONTHS_IN_YEAR;
     }
 
 

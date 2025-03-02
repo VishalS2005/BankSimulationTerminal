@@ -25,10 +25,6 @@ public enum Campus {
         throw new IllegalArgumentException("Invalid campus code: " + code);
     }
 
-    public static String getNameFromCode(String code) {
-        return fromCode(code).getName();
-    }
-
     @Override
     public String toString() {
         return name;

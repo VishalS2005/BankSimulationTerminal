@@ -6,7 +6,6 @@ import util.Sort;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.Scanner;
 
 /**
@@ -21,8 +20,6 @@ import java.util.Scanner;
 public class AccountDatabase extends List<Account> {
 
     private final Archive archive;
-
-    private static final DecimalFormat df = new DecimalFormat("#,##0.00");
 
     public AccountDatabase() {
         super();
@@ -64,7 +61,6 @@ public class AccountDatabase extends List<Account> {
 
         account.withdraw(amount);
 
-
         return true;
     }
 
@@ -81,18 +77,7 @@ public class AccountDatabase extends List<Account> {
         return this.get(index).getBalance() >= amount;
     }
 
-    /**
-     * Checks if the account will downgrade from a Money Market to a savings account after a withdrawal.
-     * If the balance of a Money Market account falls below 2000, it will be downgraded.
-     *
-     * @param index of AccountDatabase that represents an Account being checked
-     * @param amount value of money that will be withdrawn
-     * @return true if the amount can be withdrawn
-     * false otherwise
-     */
-    public boolean belowTwoThousand(int index, double amount) {
-        return this.get(index).getBalance() - amount < 2000 && this.get(index).getType() == AccountType.MONEY_MARKET;
-    }
+
 
 
     public void closeAccount(Account account, Date closeDate) {
@@ -188,26 +173,7 @@ public class AccountDatabase extends List<Account> {
         return false;
     }
 
-    /**
-     * Checks if Account is contained in the AccountDatabase.
-     * Searches through the AccountDatabase for an Account based on first name, last name, and dateOfBirth.
-     *
-     * @param firstName String that is being searched for
-     * @param lastName String that is being searched for
-     * @param dateOfBirth object that is being searched for
-     * @return true if Account is found in AccountDatabase
-     * false otherwise
-     */
-    public boolean contains(String firstName, String lastName, Date dateOfBirth) {
-        for(int i = 0; i < this.size(); i++) {
-            if(this.get(i).getFirstName().equalsIgnoreCase(firstName) &&
-                    this.get(i).getLastName().equalsIgnoreCase(lastName) &&
-                    this.get(i).getDateOfBirth().equals(dateOfBirth)) {
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     /**
      * Prints all the Accounts in the AccountDatabase from the beginning of AccountDatabase to the end.
@@ -313,9 +279,7 @@ public class AccountDatabase extends List<Account> {
 
 
     public void processActivities(File file) throws IOException {
-
         Scanner scanner = new Scanner(file);
-
         while(scanner.hasNextLine()) {
             String line = scanner.nextLine();
             if(line.trim().isEmpty()) {
@@ -338,10 +302,8 @@ public class AccountDatabase extends List<Account> {
             else {
                 this.get(index).deposit(date, branch, amount);
             }
-
             System.out.println(accountNumber + "::" + activity);
         }
-
     }
 
 }

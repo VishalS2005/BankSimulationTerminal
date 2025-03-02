@@ -6,22 +6,29 @@ package banking;
  * @author Vishal Saravanan, Yining Chen
  */
 public class Checking extends Account{
+
+    private static final double INTEREST_RATE = 0.015;
+
+    private static final double FEE_THRESHOLD = 1000;
+
+    private static final double ACCOUNT_FEE = 15;
+
     public Checking(Branch branch, AccountType type, Profile holder, double balance) {
         super(branch, type, holder, balance);
     }
 
     @Override
     public double interestRate() {
-        return 0.015;
+        return INTEREST_RATE;
     }
 
     @Override
     public double interest() {
-        return this.interestRate() * balance / 12;
+        return this.interestRate() * balance / MONTHS_IN_YEAR;
     }
 
     @Override
     public double fee() {
-        return this.balance >= 1000 ? 0 : 15;
+        return this.balance >= FEE_THRESHOLD ? NO_FEE : ACCOUNT_FEE;
     }
 }

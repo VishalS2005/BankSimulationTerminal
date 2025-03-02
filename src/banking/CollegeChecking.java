@@ -17,7 +17,7 @@ public class CollegeChecking extends Checking{
 
     @Override
     public double fee() {
-        return 0;
+        return NO_FEE;
     }
 
     @Override

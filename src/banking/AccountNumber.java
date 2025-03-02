@@ -45,7 +45,7 @@ public class AccountNumber implements Comparable<AccountNumber> {
 
     /**
      * Creates an AccountNumber object.
-     * 
+     *
      * @param branch 3-digit representation of the branch
      * @param type 2-digit reprsentation of the type of account
      */
@@ -74,7 +74,6 @@ public class AccountNumber implements Comparable<AccountNumber> {
                 break;
             }
         }
-        // Find matching account type
         for (AccountType type : AccountType.values()) {
             if (type.getCode().equalsIgnoreCase(typeCode)) {
                 this.type = type;

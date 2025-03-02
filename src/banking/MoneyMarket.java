@@ -8,43 +8,49 @@ public class MoneyMarket extends Savings {
      */
     private int withdrawal = 0;
 
+    private static final double WITHDRAWAL_THRESHOLD = 3;
+
+    private static final double WITHDRAWAL_FEE = 10;
+
+    private static final double ACCOUNT_FEE = 25;
+
+    private static final double LOYALTY_THRESHOLD = 5000;
+
+    private static final double FEE_THRESHOLD = 2000;
+
+    private static final double LOYAL_INTEREST_RATE = 0.0375;
+
+    private static final double NOT_LOYAL_INTEREST_RATE = 0.035;
+
     public MoneyMarket(Branch branch, AccountType type, Profile holder, double balance) {
         super(branch, type, holder, balance);
-        if(balance >= 5000) {
+        if(balance >= LOYALTY_THRESHOLD) {
             this.isLoyal = true;
         }
     }
 
     @Override
     public double interestRate() {
-           return isLoyal ? 0.0375 : 0.035;
-    }
-
-    @Override
-    public double interest() {
-        return balance * this.interestRate() / 12;
+           return isLoyal ? LOYAL_INTEREST_RATE : NOT_LOYAL_INTEREST_RATE;
     }
 
     @Override
     public double fee() {
-        double fee = 0;
-        fee += this.balance >= 2000 ? 0 : 25;
-        fee += this.withdrawal > 3 ? 10 : 0;
-        return fee;
+        return (this.balance >= FEE_THRESHOLD ? NO_FEE : ACCOUNT_FEE) + (this.withdrawal > WITHDRAWAL_THRESHOLD ? WITHDRAWAL_FEE: NO_FEE);
     }
 
     @Override
     public void withdraw(double amount) {
-        withdrawal++;
         super.withdraw(amount);
+        withdrawal++;
 
-        if (this.getBalance() < 5000) {
+        if (this.getBalance() < LOYALTY_THRESHOLD) {
             this.setIsLoyal(false);
         }
     }
 
     @Override
-    public void withdraw(Date date, Branch branch, double amount) { //to update the balance
+    public void withdraw(Date date, Branch branch, double amount) {
         super.withdraw(date, branch, amount);
         withdrawal++;
     }
@@ -52,7 +58,7 @@ public class MoneyMarket extends Savings {
     @Override
     public void deposit(double amount) {
         super.deposit(amount);
-        if (this.getBalance() >= 5000) {
+        if (this.getBalance() >= LOYALTY_THRESHOLD) {
             this.setIsLoyal(true);
         }
     }

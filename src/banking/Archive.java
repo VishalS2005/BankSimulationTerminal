@@ -42,7 +42,7 @@ public class Archive {
      */
     public void print() {
         System.out.println("\n*List of closed accounts in the archive.");
-        AccountNode current = first; //current is the variable used to iterate through the linked list, first
+        AccountNode current = first;
         while(current != null) {
             System.out.println(current);
             current = current.getNext();

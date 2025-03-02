@@ -16,7 +16,7 @@ import util.Date;
 public class AccountDatabaseTest {
     AccountDatabase db;
     Savings accountReg;
-    MoneyMarket accountMoneyMarket;
+    MoneyMarket accountMoneyMarketNonLoyal;
 
     /**
      * Creates AccountDatabase object along with a Savings and MoneyMarket object to populate it
@@ -28,12 +28,12 @@ public class AccountDatabaseTest {
                 AccountType.SAVINGS,
                 new Profile("John", "Doe", new Date(1, 1, 2000)),
                 1000.0);
-        accountMoneyMarket = new MoneyMarket(Branch.EDISON,
+        accountMoneyMarketNonLoyal = new MoneyMarket(Branch.EDISON,
                 AccountType.MONEY_MARKET,
                 new Profile("John", "Doe", new Date(1, 1, 2000)),
                 4900.0);
         db.add(accountReg);
-        db.add(accountMoneyMarket);
+        db.add(accountMoneyMarketNonLoyal);
     }
 
     /**
@@ -52,10 +52,10 @@ public class AccountDatabaseTest {
      */
     @Test
     public void testDeposit_MoneyMarketAccount() {
-        assertEquals(accountMoneyMarket.isLoyal(), false);
-        db.deposit(accountMoneyMarket.getAccountNumber(), 200);
-        assertEquals(accountMoneyMarket.getBalance(), 5100.0, 0.01);
-        assertEquals(accountMoneyMarket.isLoyal(), true);
+        assertEquals(accountMoneyMarketNonLoyal.isLoyal(), false);
+        db.deposit(accountMoneyMarketNonLoyal.getAccountNumber(), 200);
+        assertEquals(accountMoneyMarketNonLoyal.getBalance(), 5100.0, 0.01);
+        assertEquals(accountMoneyMarketNonLoyal.isLoyal(), true);
     }
 
     /**
@@ -86,9 +86,9 @@ public class AccountDatabaseTest {
      */
     @Test
     public void testWithdrawal_MoneyMarketAccount() {
-        assertEquals(accountMoneyMarket.isLoyal(), true);
-        db.withdraw(accountMoneyMarket.getAccountNumber(), 200);
-        assertEquals(accountMoneyMarket.getBalance(), 4900.0, 0.01);
-        assertEquals(accountMoneyMarket.isLoyal(), false);
+        assertEquals(accountMoneyMarketNonLoyal.isLoyal(), true);
+        db.withdraw(accountMoneyMarketNonLoyal.getAccountNumber(), 200);
+        assertEquals(accountMoneyMarketNonLoyal.getBalance(), 4900.0, 0.01);
+        assertEquals(accountMoneyMarketNonLoyal.isLoyal(), false);
     }
 }

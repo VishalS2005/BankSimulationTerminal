@@ -11,7 +11,6 @@ import java.util.Calendar;
  *
  * @author Vishal Saravanan, Yining Chen
  */
-
 public class Date implements Comparable<Date> {
     /**
      * Year of the date.
@@ -38,6 +37,9 @@ public class Date implements Comparable<Date> {
      */
     public static final int MINIMUM_AGE_YEARS = 18;
 
+    /**
+     * Represents the maximum age in years allowed for college checking account.
+     */
     public static final int MAXIMUM_AGE_YEARS = 24;
 
     /**
@@ -88,6 +90,10 @@ public class Date implements Comparable<Date> {
         this.year = year;
     }
 
+    /**
+     * Creates a Date object initialized with the current date.
+     * This constructor retrieves the current date using the `Calendar` class.
+     */
     public Date() {
         Calendar today = Calendar.getInstance();
         this.year = today.get(Calendar.YEAR);
@@ -96,14 +102,29 @@ public class Date implements Comparable<Date> {
         this.day = today.get(Calendar.DAY_OF_MONTH);
     }
 
+    /**
+     * Retrieves the day of the date.
+     *
+     * @return the day as an integer
+     */
     public int getDay() {
         return day;
     }
 
+    /**
+     * Retrieves the month of the date.
+     *
+     * @return the month as an integer
+     */
     public int getMonth() {
         return month;
     }
 
+    /**
+     * Retrieves the year of the date.
+     *
+     * @return the year as an integer
+     */
     public int getYear() {
         return year;
     }
@@ -156,6 +177,11 @@ public class Date implements Comparable<Date> {
         return !birthDate.after(today);
     }
 
+    /**
+     * Checks if the date represents someone who is over 24 years of age.
+     *
+     * @return true if the individual is over 24 years old, false otherwise
+     */
     public boolean isOverTwentyFour() {
         Calendar today = Calendar.getInstance();
         Calendar birthDate = Calendar.getInstance();
@@ -164,6 +190,13 @@ public class Date implements Comparable<Date> {
         return !birthDate.before(today);
     }
 
+    /**
+     * Adds the specified number of months to the current date and returns a new Date object
+     * representing the updated date. The method accounts for month and year rollovers.
+     *
+     * @param monthsToAdd the number of months to add to the current date
+     * @return a new Date object representing the updated date after adding the specified number of months
+     */
     public Date addMonths(int monthsToAdd) {
         // Create a Calendar instance and set it to the date values.
         // Note: Calendar months are 0-based, so subtract the MONTH_OFFSET.
@@ -182,6 +215,12 @@ public class Date implements Comparable<Date> {
         return new Date(newMonth, newDay, newYear);
     }
 
+    /**
+     * Compares this date with another date to determine if this date occurs after the provided date.
+     *
+     * @param other the date to compare with this date
+     * @return true if this date occurs after the provided date, false otherwise
+     */
     public boolean isAfter(Date other) {
         Calendar otherDate = Calendar.getInstance();
         otherDate.set(other.getYear(), other.getMonth() - MONTH_OFFSET, other.getDay());
@@ -189,7 +228,6 @@ public class Date implements Comparable<Date> {
         thisDate.set(this.year, this.month - MONTH_OFFSET, this.day);
         return thisDate.after(otherDate);
     }
-
 
     /**
      * Checks if the birthdate comes after today's date.
@@ -218,6 +256,11 @@ public class Date implements Comparable<Date> {
         return year % CENTENNIAL != 0 || year % QUARTERCENTENNIAL == 0;
     }
 
+    /**
+     * Resets the time fields (hour, minute, second, millisecond) of the given Calendar object to 0.
+     *
+     * @param cal the Calendar object whose time fields are to be cleared
+     */
     private static void clearTime(Calendar cal) {
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
@@ -225,7 +268,12 @@ public class Date implements Comparable<Date> {
         cal.set(Calendar.MILLISECOND, 0);
     }
 
-
+    /**
+     * Calculates the number of days from the given date to the current date.
+     *
+     * @param other the Date object to compare with the current date
+     * @return the number of days from the specified date to the current one
+     */
     public int daysFrom(Date other) {
         Calendar calThis = Calendar.getInstance();
         Calendar calOther = Calendar.getInstance();
@@ -240,7 +288,6 @@ public class Date implements Comparable<Date> {
         }
         return days;
     }
-
 
     /**
      * Compares this Date to another Date.

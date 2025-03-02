@@ -103,15 +103,6 @@ public class AccountNumber implements Comparable<AccountNumber> {
     }
 
     /**
-     * Replaces the current AccountType what the one inputted as a parameter.
-     *
-     * @param type AccountType that we are changing to
-     */
-    public void setType(AccountType type) {
-        this.type = type;
-    }
-
-    /**
      * Compares two Accounts by their AccountNumber.
      *
      * @param other the object to be compared.

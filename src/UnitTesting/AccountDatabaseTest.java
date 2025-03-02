@@ -16,13 +16,13 @@ public class AccountDatabaseTest {
     public void setUp() {
         db = new AccountDatabase();
         accountReg = new Savings(Branch.EDISON,
-                               AccountType.SAVINGS,
-                               new Profile("John", "Doe", new Date(1,1,2000)),
-                        1000.0);
+                AccountType.SAVINGS,
+                new Profile("John", "Doe", new Date(1,1,2000)),
+                1000.0);
         accountMoneyMarket = new MoneyMarket(Branch.EDISON,
-                                            AccountType.MONEY_MARKET,
-                                            new Profile("John", "Doe", new Date(1,1,2000)),
-                                     4900.0);
+                AccountType.MONEY_MARKET,
+                new Profile("John", "Doe", new Date(1,1,2000)),
+                4900.0);
         db.add(accountReg);
         db.add(accountMoneyMarket);
     }

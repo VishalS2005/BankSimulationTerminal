@@ -144,7 +144,7 @@ public class Profile implements Comparable<Profile>{
         int expectedOutput = -1;                                                  //5. define expected output
         int actualOutput = profile1.compareTo(profile2);                          //6. test the compareTo method
         System.out.println("**Test case #1: Different first names same last name and DOB " +
-                           "and profile1 first name < profile2 first name.");
+                "and profile1 first name < profile2 first name.");
         testProfileResult(profile1, profile2, expectedOutput, actualOutput);//7. compare actual with
         // expected output
     }
@@ -162,7 +162,7 @@ public class Profile implements Comparable<Profile>{
         int expectedOutput = -1;                                                  //5. define expected output
         int actualOutput = profile1.compareTo(profile2);                          //6. test the compareTo method
         System.out.println("**Test case #2: Different last names same first name and DOB " +
-                           "and profile1 last name < profile2 last name.");
+                "and profile1 last name < profile2 last name.");
         testProfileResult(profile1, profile2, expectedOutput, actualOutput);//7. compare actual with
         // expected output
     }
@@ -180,7 +180,7 @@ public class Profile implements Comparable<Profile>{
         int expectedOutput = -1;                                                  //5. define expected output
         int actualOutput = profile1.compareTo(profile2);                          //6. test the compareTo method
         System.out.println("**Test case #3: Different DOB same first name and last name " +
-                           "and profile1 DOB < profile2 DOB.");
+                "and profile1 DOB < profile2 DOB.");
         testProfileResult(profile1, profile2, expectedOutput, actualOutput);//7. compare actual with
         // expected output
     }

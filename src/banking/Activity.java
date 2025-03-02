@@ -58,17 +58,6 @@ public class Activity implements Comparable<Activity> {
     }
 
     /**
-     * Retrieves the type of activity performed.
-     * The type is represented as a single character, where 'D' denotes deposit
-     * and 'W' denotes withdrawal.
-     *
-     * @return a character representing the type of activity
-     */
-    public char getType() {
-        return type;
-    }
-
-    /**
      * Compares this Activity object with the specified Activity object for order based on the date field.
      *
      * @param o the Activity object to be compared

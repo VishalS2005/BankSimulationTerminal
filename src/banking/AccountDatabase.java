@@ -157,15 +157,8 @@ public class AccountDatabase extends List<Account> {
      * false otherwise
      */
     public boolean contains(String firstName, String lastName, Date dateOfBirth, AccountType type) {
-        for(int i = 0; i < this.size(); i++) {
-            if(this.get(i).getFirstName().equalsIgnoreCase(firstName)
-               && this.get(i).getLastName().equalsIgnoreCase(lastName)
-               && this.get(i).getAccountNumber().getType().equals(type)
-               && this.get(i).getDateOfBirth().equals(dateOfBirth)) {
-                return true;
-            }
-        }
-        return false;
+        Profile holder = new Profile(firstName, lastName, dateOfBirth);
+        return contains(holder, type);
     }
 
     /**

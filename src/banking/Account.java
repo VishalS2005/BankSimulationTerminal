@@ -65,16 +65,6 @@ public abstract class Account implements Comparable<Account> {
     }
 
     /**
-     * Creates an Account object.
-     *
-     * @param number 9-digit account number
-     */
-    public Account(AccountNumber number) {
-        this.number = number;
-        this.holder = null;
-    }
-
-    /**
      * Retrieves the Profile object representing the account holder.
      *
      * @return the Profile object of the account holder
@@ -138,19 +128,19 @@ public abstract class Account implements Comparable<Account> {
     /**
      * Has the monthly interest of an Account.
      */
-     public abstract double interest();
+    public abstract double interest();
 
     /**
      * Has the value of the fee on an Account if there is one.
      */
-     public abstract double fee();
+    public abstract double fee();
 
     /**
      * Determines the interest rate applicable to this account.
      *
      * @return the interest rate as a double value
      */
-     public abstract double interestRate();
+    public abstract double interestRate();
 
     /**
      * Deducts money from the account and updates the balance.
@@ -218,15 +208,6 @@ public abstract class Account implements Comparable<Account> {
      */
     public double getBalance() {
         return this.balance;
-    }
-
-    /**
-     * Updates the balance of the account.
-     *
-     * @param balance the new balance to set for the account
-     */
-    public void setBalance(double balance) {
-        this.balance = balance;
     }
 
     /**

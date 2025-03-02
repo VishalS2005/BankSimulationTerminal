@@ -68,7 +68,7 @@ public class TransactionManager {
             case "certificate" -> AccountType.CD;
             default ->  {
                 System.out.println(typeToken + " - invalid account type.");
-               yield null;
+                yield null;
             }
         };
     }
@@ -487,7 +487,7 @@ public class TransactionManager {
         List<Account> accounts = new List<>();
         for(int i = 0; i < accountDatabase.size(); i++) {
             if(accountDatabase.get(i).getHolder().equals(holder)) {
-               accounts.add(accountDatabase.get(i));
+                accounts.add(accountDatabase.get(i));
             }
         }
         return accounts;
@@ -543,8 +543,8 @@ public class TransactionManager {
             }
             AccountNumber accountNumber = new AccountNumber(commandArray[1]);
             if(!accountDatabase.contains(accountNumber)) {
-               System.out.println(accountNumber + " does not exist.");
-               return;
+                System.out.println(accountNumber + " does not exist.");
+                return;
             }
             accountDatabase.deposit(accountNumber, depositAmount);
             System.out.println("$" + df.format(depositAmount) +  " deposited to " + accountNumber);

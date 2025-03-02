@@ -31,15 +31,6 @@ public enum Campus {
     }
 
     /**
-     * Returns the name associated with the campus.
-     *
-     * @return the name of the campus as a string
-     */
-    public String getName() {
-        return this.name;
-    }
-
-    /**
      * Converts a string code to its corresponding Campus enum constant.
      *
      * @param code the string code representing the campus

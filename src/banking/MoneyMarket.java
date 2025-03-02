@@ -73,7 +73,7 @@ public class MoneyMarket extends Savings {
      * @return the interest rate applicable for the account. If the account is marked*/
     @Override
     public double interestRate() {
-           return isLoyal ? LOYAL_INTEREST_RATE : NOT_LOYAL_INTEREST_RATE;
+        return isLoyal ? LOYAL_INTEREST_RATE : NOT_LOYAL_INTEREST_RATE;
     }
 
     /**

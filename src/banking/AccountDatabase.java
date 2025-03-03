@@ -66,9 +66,7 @@ public class AccountDatabase extends List<Account> {
         }
         Account account = this.get(index);
 
-        account.withdraw(amount);
-
-        return true;
+        return account.withdraw(amount);
     }
 
     /**

@@ -119,10 +119,14 @@ public abstract class Account implements Comparable<Account> {
      *
      * @param amount quantity of money deducted from the account
      */
-    public void withdraw(double amount) { //to update the balance
+    public boolean withdraw(double amount) { //to update the balance
+        if (this.balance < amount) {
+            return false;
+        }
         this.balance -= amount;
         Activity activity = new Activity(new Date(), this.getAccountNumber().getBranch(), 'W', amount, false);
         addActivity(activity);
+        return true;
     }
 
     /**

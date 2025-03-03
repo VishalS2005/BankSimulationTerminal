@@ -92,13 +92,18 @@ public class MoneyMarket extends Savings {
      * @param amount the amount to be withdrawn from the account
      */
     @Override
-    public void withdraw(double amount) {
-        super.withdraw(amount);
-        withdrawal++;
+    public boolean withdraw(double amount) {
+        boolean success = super.withdraw(amount);
+
+        if (success) {
+            withdrawal++;
+        }
 
         if (this.getBalance() < LOYALTY_THRESHOLD) {
             this.setIsLoyal(false);
         }
+
+        return success;
     }
 
     /**

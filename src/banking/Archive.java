@@ -7,8 +7,8 @@ import util.Date;
  *
  * @author Vishal Saravanan, Yining Chen
  */
-
 public class Archive {
+
     /**
      * 'first' represents the head node of the linked list of Account objects
      */
@@ -26,6 +26,7 @@ public class Archive {
      * Adds an AccountNode object to the front of the linked list instance variable, first.
      *
      * @param account object that will be used to create a AccountNode and will be added to the front of the linked list instance variable, first
+     * @param close Date object that represents the Date at which the Account was closed
      */
     public void add(Account account, Date close) {
         AccountNode newNode = new AccountNode(account, close);

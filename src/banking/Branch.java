@@ -6,8 +6,8 @@ package banking;
  *
  * @author Vishal Saravanan, Yining Chen
  */
-
 public enum Branch {
+
     /**
      * Representation of the Edison Branch - 08817, 100, Middlesex.
      */
@@ -88,5 +88,4 @@ public enum Branch {
     public String toString() {
         return name();
     }
-
 }

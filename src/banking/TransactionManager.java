@@ -8,15 +8,14 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 
-
 /**
  * Transaction Manager class that reads in transactions from the command line.
  * Depending on the action, completes transaction or does not execute it.
  *
  * @author Vishal Saravanan, Yining Chen
  */
-
 public class TransactionManager {
+
     /**
      * The Account Database holds all the Accounts.
      */
@@ -52,13 +51,14 @@ public class TransactionManager {
     private static final double TEN_PERCENT = 0.1;
 
     /**
-     * Initiates reading of inputs from the command line.
-     * Ceases reading of inputs once a "Q" is read.
-     * Example of a single line of input:
-     * The user enters:
-     * O <accountType> <branch> <firstName> <lastName> <dob> <initialDeposit>
-     * For example:
-     * O savings bridgewater John Doe 2/19/2000 500
+     * Executes the transaction manager process.
+     * This method loads account data from an external file, initializes the system,
+     * and begins a command-line interaction for processing transactions.
+     * The system continuously listens for user input and processes commands
+     * until a termination command ("Q") is received. Commands are interpreted and
+     * executed in real-time.
+     *
+     * @throws IOException if there is an issue accessing or reading the account file.
      */
     public static void run() throws IOException {
         accountDatabase.loadAccounts(new File("accounts.txt"));
@@ -233,28 +233,17 @@ public class TransactionManager {
      */
     private static void openAccount(String[] commandArray) {
         AccountType acctType = createAccountType(commandArray[1]); //first input is the AccountType
-        if (acctType == null) {
-            return;
-        }
-
+        if (acctType == null) { return; }
         if ((acctType == AccountType.COLLEGE_CHECKING && commandArray.length != 8) ||
                 (acctType == AccountType.CD && commandArray.length != 9) ||
                 (acctType != AccountType.COLLEGE_CHECKING && acctType != AccountType.CD && commandArray.length != 7)) {
-
             System.out.println("Missing data tokens for opening an account.");
             return;
         }
-
         Branch branch = createBranch(commandArray[2]); //second input is the Branch
-        if (branch == null) {
-            return;
-        }
-
+        if (branch == null) { return; }
         Date dob = createDate(commandArray[5]); //fifth input is the Date of Birth of the holder
-        if (!checkDateOfBirth(acctType, dob)) {
-            return;
-        }
-
+        if (!checkDateOfBirth(acctType, dob)) { return; }
         String firstName = commandArray[3]; //third input is the first name of the holder
         String lastName = commandArray[4]; //fourth input is the last name of the holder
         double balance;
@@ -264,25 +253,18 @@ public class TransactionManager {
             System.out.println("For input string: \"" + commandArray[6] + "\" - not a valid amount.");
             return;
         }
-
         if (acctType != AccountType.CD && accountDatabase.contains(firstName, lastName, dob, acctType)) { //checking for a duplicate account
             System.out.println(firstName + " " + lastName + " already has a " + acctType + " account.");
             return;
         }
-
-        if (!checkBalance(balance, acctType)) {
-            return;
-        }
-
+        if (!checkBalance(balance, acctType)) { return; }
         if (acctType == AccountType.CD) {
             int value = Integer.parseInt(commandArray[7]);
-
             if (value != CertificateDeposit.THREE_MONTH_TERM && value != CertificateDeposit.SIX_MONTH_TERM && value != CertificateDeposit.NINE_MONTH_TERM && value != CertificateDeposit.TWELVE_MONTH_TERM) {
                 System.out.println(commandArray[7] + " is not a valid term.");
                 return;
             }
         }
-
         Account account = createAccount(commandArray, firstName, lastName, dob, branch, balance);
         accountDatabase.add(account); //adds the Account to the database
         System.out.println(account.getAccountNumber().getType() + " account " + account.getAccountNumber() + " has been opened.");
@@ -295,6 +277,7 @@ public class TransactionManager {
      * or if the birthdate provided indicates that the person is 18 years old.
      *
      * @param dob Date object which represents the date of birth
+     * @param accountType AccountType object which represents the type of Account
      * @return true if valid date of birth
      * false otherwise
      */
@@ -343,8 +326,8 @@ public class TransactionManager {
      * Executed to close an exiting Account when the first command is "C".
      * Closes an Account by removing it from the AccountDatabase and adding it to the Archive.
      * Accounts for two different types of formatting in closing an Account:
-     * C <accountNumber>
-     * or C <firstName> <lastName> <dateOfBirth>
+     * C accountNumber
+     * or C firstName, lastName, dateOfBirth
      *
      * @param commandArray Holds the input that has been extracted and put into a String array
      */
@@ -462,7 +445,7 @@ public class TransactionManager {
      * Executed to deposit money to an existing Account when the first command is "D".
      * Checks for a deposit amount less than or equal to 0.
      * Formatting of input:
-     * D <accountNumber> <depositAmount>
+     * D accountNumber, depositAmount
      *
      * @param commandArray Holds the input that has been extracted and put into a String array
      */
@@ -493,7 +476,7 @@ public class TransactionManager {
      * Additionally, checks if the Account has sufficient funds or needs to be downgraded from
      * a money market account to a savings account.
      * Formatting of input:
-     * W <accountNumber>  <withdrawalAmount>
+     * W accountNumber, withdrawalAmount
      *
      * @param commandArray Holds the input that has been extracted and put into a String array
      */
@@ -618,6 +601,7 @@ public class TransactionManager {
      * PT --> prints by AccountType then AccountNumber
      *
      * @param commandArray Holds the input that has been extracted and put into a String array
+     * @throws IOException if an I/O error occurs during command processing
      */
     private static void processCommand(String[] commandArray) throws IOException {
         if (isValidCommand(commandArray[0])) {
@@ -635,6 +619,4 @@ public class TransactionManager {
             }
         }
     }
-
-
 }

@@ -6,23 +6,28 @@ package banking;
  * @author Vishal Saravanan, Yining Chen
  */
 public class Savings extends Account {
+
     /**
      * Represents the interest rate applied to savings accounts for loyal customers.
      */
     private static final double LOYAL_INTEREST_RATE = 0.0275;
+
     /**
      * Represents the interest rate applied to savings accounts for non-loyal customers.
      */
     private static final double NOT_LOYAL_INTEREST_RATE = 0.025;
+
     /**
      * Represents the fixed account fee applied to savings accounts.
      */
     private static final double ACCOUNT_FEE = 25;
+
     /**
      * Represents the minimum account balance threshold required to avoid fees.
      * If the account balance meets or exceeds this value, no fees will be applied.
      */
     private static final double ACCOUNT_THRESHOLD = 500;
+
     /**
      * Loyal customer status that will result in a higher interest rate.
      */

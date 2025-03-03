@@ -14,9 +14,25 @@ import util.Date;
  * @author Vishal Saravanan, Yining Chen
  */
 public class AccountDatabaseTest {
+
+    /**
+     * The AccountDatabase instance used for testing account-related operations.
+     */
     AccountDatabase db;
+
+    /**
+     * Represents a Savings account that can be used in the context of the AccountDatabaseTest.
+     */
     Savings accountReg;
+
+    /**
+     * Represents a non-loyal Money Market account instance used in tests.
+     */
     MoneyMarket accountMoneyMarketNonLoyal;
+
+    /**
+     * Represents a MoneyMarket account with loyalty status for testing purposes within the AccountDatabaseTest class.
+     */
     MoneyMarket accountMoneyMarketLoyal;
 
     /**
@@ -77,7 +93,7 @@ public class AccountDatabaseTest {
 
     /**
      * Test case #4:
-     * Tests the case where $2000 is withdrawn from an Account but there is not enough money in the Account.
+     * Tests the case where $20000 is withdrawn from an Account but there is not enough money in the Account.
      */
     @Test
     public void testWithdrawalInvalid() {

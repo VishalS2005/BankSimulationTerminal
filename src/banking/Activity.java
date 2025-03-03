@@ -4,31 +4,43 @@ import util.Date;
 
 import java.text.DecimalFormat;
 
+/**
+ * Represents a banking activity such as a deposit or withdrawal.
+ * An Activity includes a date, location, type, monetary amount, and an indicator
+ * of whether the activity occurred through an ATM.
+ *
+ * @author Vishal Saravanan, Yining Chen
+ */
 public class Activity implements Comparable<Activity> {
 
     /**
      * Formatting numbers for easy readability.
      */
     private static final DecimalFormat df = new DecimalFormat("#,##0.00");
+
     /**
      * Represents the date of the activity.
      */
     private Date date;
+
     /**
      * Represents the location of the activity.
      */
     private Branch location;
+
     /**
      * Represents the type of activity performed.
      * The type is denoted by a single character: 'D' for deposit or 'W' for withdrawal.
      */
     private char type;
+
     /**
      * Represents the monetary value associated with the activity.
      * This variable stores the amount involved in the activity, which can represent either
      * a deposit or a withdrawal, depending on the type of activity.
      */
     private double amount;
+
     /**
      * Indicates whether the activity was performed at an ATM.
      * This variable is set to true if the activity was conducted through an ATM, as specified in the input text file.

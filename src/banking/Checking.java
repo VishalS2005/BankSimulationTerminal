@@ -1,7 +1,10 @@
 package banking;
 
 /**
- * The Checking class extends the Account class
+ * The Checking class represents a type of bank account with a specific interest rate,
+ * fee structure, and conditions related to balance thresholds.
+ * It extends the Account class and provides implementations for calculating interest
+ * and account fees specific to Checking accounts.
  *
  * @author Vishal Saravanan, Yining Chen
  */

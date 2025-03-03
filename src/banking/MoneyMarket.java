@@ -2,43 +2,59 @@ package banking;
 
 import util.Date;
 
+/**
+ * Represents a Money Market account, which is a specialized type of Savings account
+ * that offers distinct features such as higher interest rates, specific fee structures,
+ * and withdrawal limitations. The MoneyMarket account also includes a loyalty status
+ * based on the account balance, which influences the applicable interest rate.
+ *
+ * @author Vishal Saravanan, Yining Chen
+ */
 public class MoneyMarket extends Savings {
+
     /**
      * Represents the maximum number of allowed withdrawals in a statement cycle
      * without incurring additional fees for a Money Market account.
      */
     private static final double WITHDRAWAL_THRESHOLD = 3;
+
     /**
      * Represents the fixed fee applied to withdrawals that exceed the allowed threshold
      * in a Money Market account's statement cycle.
      */
     private static final double WITHDRAWAL_FEE = 10;
+
     /**
      * Represents the fixed account maintenance fee applied to a Money Market account.
      */
     private static final double ACCOUNT_FEE = 25;
+
     /**
      * Represents the minimum balance required in a Money Market account
      * to achieve loyalty status. Loyalty status can influence aspects
      * such as interest rates and account benefits.
      */
     private static final double LOYALTY_THRESHOLD = 5000;
+
     /**
      * Represents the minimum account balance required to avoid incurring an
      * account maintenance fee in a Money Market account.
      */
     private static final double FEE_THRESHOLD = 2000;
+
     /**
      * Represents the annual interest rate applied to a Money Market account
      * when the account holder qualifies for loyalty status.
      */
     private static final double LOYAL_INTEREST_RATE = 0.0375;
+
     /**
      * Represents the annual interest rate applied to a Money Market account when
      * the account holder does not meet the criteria for loyalty status.
      * It is a lower interest rate compared to the one provided for loyal accounts.
      */
     private static final double NOT_LOYAL_INTEREST_RATE = 0.035;
+
     /**
      * Number of withdrawals in the current statement cycle.
      */
@@ -136,8 +152,6 @@ public class MoneyMarket extends Savings {
 
     /**
      * Returns a string representation of the MoneyMarket object.
-     * The returned string includes the string representation of the superclass
-     * along with the current withdrawal count formatted as "Withdrawal[<count>]".
      *
      * @return a string representation of the MoneyMarket account including withdrawal count
      */

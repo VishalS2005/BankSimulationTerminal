@@ -17,6 +17,7 @@ public class AccountDatabaseTest {
     AccountDatabase db;
     Savings accountReg;
     MoneyMarket accountMoneyMarketNonLoyal;
+    MoneyMarket accountMoneyMarketLoyal;
 
     /**
      * Creates AccountDatabase object along with a Savings and MoneyMarket object to populate it
@@ -32,8 +33,13 @@ public class AccountDatabaseTest {
                 AccountType.MONEY_MARKET,
                 new Profile("John", "Doe", new Date(1, 1, 2000)),
                 4900.0);
+        accountMoneyMarketLoyal = new MoneyMarket(Branch.EDISON,
+                AccountType.MONEY_MARKET,
+                new Profile("John", "Doe", new Date(1, 1, 2000)),
+                5100.0);
         db.add(accountReg);
         db.add(accountMoneyMarketNonLoyal);
+        db.add(accountMoneyMarketLoyal);
     }
 
     /**
@@ -75,7 +81,7 @@ public class AccountDatabaseTest {
      */
     @Test
     public void testWithdrawalInvalid() {
-        boolean isWithdrawn = db.withdraw(accountReg.getAccountNumber(), 2000.0);
+        boolean isWithdrawn = db.withdraw(accountReg.getAccountNumber(), 20000.0);
         assertFalse(isWithdrawn);
         assertEquals(accountReg.getBalance(), 1000.0, 0.01);
     }
@@ -86,9 +92,9 @@ public class AccountDatabaseTest {
      */
     @Test
     public void testWithdrawal_MoneyMarketAccount() {
-        assertEquals(accountMoneyMarketNonLoyal.isLoyal(), true);
-        db.withdraw(accountMoneyMarketNonLoyal.getAccountNumber(), 200);
-        assertEquals(accountMoneyMarketNonLoyal.getBalance(), 4900.0, 0.01);
-        assertEquals(accountMoneyMarketNonLoyal.isLoyal(), false);
+        assertEquals(accountMoneyMarketLoyal.isLoyal(), true);
+        db.withdraw(accountMoneyMarketLoyal.getAccountNumber(), 200);
+        assertEquals(accountMoneyMarketLoyal.getBalance(), 4900.0, 0.01);
+        assertEquals(accountMoneyMarketLoyal.isLoyal(), false);
     }
 }

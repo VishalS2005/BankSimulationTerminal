@@ -2,9 +2,11 @@ package banking;
 
 import util.Date;
 
-
 /**
- * Extends the savings class
+ * Represents a Certificate Deposit account, which is a time-bound savings account
+ * with fixed term durations and varying interest rates based on the term selected.
+ * Extends the functionality of the `Savings` class, providing additional attributes
+ * and behaviors for managing Certificate Deposit-specific terms and rates.
  *
  * @author Vishal Saravanan, Yining Chen
  */
@@ -14,42 +16,52 @@ public class CertificateDeposit extends Savings {
      * Represents a term duration of three months for a Certificate Deposit account.
      */
     public static final int THREE_MONTH_TERM = 3;
+
     /**
      * Represents a fixed term duration of six months for Certificate Deposit accounts.
      */
     public static final int SIX_MONTH_TERM = 6;
+
     /**
      * Represents a constant value defining a nine-month term period for a certificate of deposit.
      */
     public static final int NINE_MONTH_TERM = 9;
+
     /**
      * Represents a 12-month term duration constant for a certificate of deposit.
      */
     public static final int TWELVE_MONTH_TERM = 12;
+
     /**
      * Represents the approximate number of days in a single month.
      */
     private static final double DAYS_IN_MONTHS = 30.0;
+
     /**
      * Represents the interest rate associated with a three-month term
      */
     private static final double THREE_MONTH_TERM_INTEREST_RATE = 0.03;
+
     /**
      * Represents the interest rate for a six-month term certificate of deposit.
      */
     private static final double SIX_MONTH_TERM_INTEREST_RATE = 0.0325;
+
     /**
      * Represents the interest rate for a nine-month term certificate of deposit.
      */
     private static final double NINE_MONTH_TERM_INTEREST_RATE = 0.035;
+
     /**
      * Represents the fixed annual interest rate for a twelve-month term Certificate of Deposit.
      */
     private static final double TWELVE_MONTH_TERM_INTEREST_RATE = 0.04;
+
     /**
      * Represents the term duration of the Certificate Deposit in months.
      */
     private int term;
+
     /**
      * Represents the date when the Certificate Deposit account was opened.
      */

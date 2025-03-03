@@ -11,6 +11,7 @@ import java.util.Iterator;
  * @author Vishal Saravanan, Yining Chen
  */
 public class List<E> implements Iterable<E> {
+
     /**
      * The growth size used to expand the internal storage of the list when its capacity is exceeded.
      * This constant determines the number of additional slots added to the array during resizing.
@@ -152,7 +153,6 @@ public class List<E> implements Iterable<E> {
      * @param index the index of the element to be returned
      * @return the element at the specified position in this list
      * @throws ArrayIndexOutOfBoundsException if the index is out of range
-     * (index < 0 || index >= size)
      */
     public E get(int index) {
         return this.objects[index];
@@ -164,7 +164,6 @@ public class List<E> implements Iterable<E> {
      * @param index the position in the list where the specified element is to be stored
      * @param e the element to be stored at the specified position
      * @throws ArrayIndexOutOfBoundsException if the index is out of range
-     * (index < 0 || index >= size)
      */
     public void set(int index, E e) {
         this.objects[index] = e;
@@ -188,13 +187,29 @@ public class List<E> implements Iterable<E> {
      * sequential order, starting from the first element.
      */
     private class ListIterator implements Iterator<E> {
+
+        /**
+         * Represents the current index position of the iterator while traversing
+         * the elements in the list (array).
+         */
         int current = 0; //current index when traversing the list (array)
 
+        /**
+         * Indicates whether there are more elements to iterate over in the collection.
+         *
+         * @return true if there are remaining elements to iterate over, false otherwise.
+         */
         @Override
         public boolean hasNext() {
             return current < size;
         }
 
+        /**
+         * Returns the next element in the iteration and advances the iterator.
+         *
+         * @return the next element in the iteration
+         * @throws java.util.NoSuchElementException if there are no more elements to iterate
+         */
         @Override
         public E next() {
             if (!hasNext()) {

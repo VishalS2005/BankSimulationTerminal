@@ -16,7 +16,6 @@ import java.util.Scanner;
  *
  * @author Vishal Saravanan, Yining Chen
  */
-
 public class AccountDatabase extends List<Account> {
 
     /**
@@ -323,5 +322,4 @@ public class AccountDatabase extends List<Account> {
             System.out.println(accountNumber + "::" + activity);
         }
     }
-
 }

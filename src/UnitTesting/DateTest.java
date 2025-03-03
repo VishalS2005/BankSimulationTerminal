@@ -2,10 +2,16 @@ package UnitTesting;
 
 import org.junit.Test;
 import util.Date;
-
 import static org.junit.Assert.*;
 
+/**
+ * The DateTest class provides a suite of unit tests to validate the functionality
+ * of the Date class.
+ *
+ * @author Vishal Saravanan, Yining Chen
+ */
 public class DateTest {
+
     /**
      * Test case #1
      * Tests the case where the number of days in February is 29 in a non-leap year.

@@ -6,8 +6,8 @@ package banking;
  *
  * @author Vishal Saravanan, Yining Chen
  */
-
 public enum AccountType {
+
     /**
      * Checking Account - 01.
      */

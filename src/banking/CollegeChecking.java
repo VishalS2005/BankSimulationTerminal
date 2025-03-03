@@ -1,7 +1,10 @@
 package banking;
 
 /**
- * Extends the checking class
+ * CollegeChecking is a specialized type of Checking account tailored for college students.
+ * It includes an associated campus to specify the university location and overrides
+ * certain behaviors of the Checking account, such as having no monthly fees.
+ * This class extends the Checking class.
  *
  * @author Vishal Saravanan, Yining Chen
  */

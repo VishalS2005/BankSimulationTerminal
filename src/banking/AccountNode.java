@@ -7,8 +7,8 @@ import util.Date;
  *
  * @author Vishal Saravanan, Yining Chen
  */
-
 public class AccountNode {
+
     /**
      * Account object with account number, profile of holder, and balance
      */
@@ -26,6 +26,7 @@ public class AccountNode {
      * Creates an AccountNode object.
      *
      * @param account represents an Account that was closed
+     * @param close Date object that represents the Date at which the Account was closed
      */
     public AccountNode(Account account, Date close) {
         this.Account = account;

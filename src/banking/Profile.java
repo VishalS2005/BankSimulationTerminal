@@ -8,8 +8,8 @@ import util.Date;
  *
  * @author Vishal Saravanan, Yining Chen
  */
-
 public class Profile implements Comparable<Profile> {
+
     /**
      * First name of the account holder.
      */

@@ -3,9 +3,14 @@ package UnitTesting;
 import banking.Profile;
 import org.junit.Test;
 import util.Date;
-
 import static org.junit.Assert.*;
 
+/**
+ * The ProfileTest class contains a series of unit tests designed to test the compareTo method
+ * in the Profile class.
+ *
+ * @author Vishal Saravanan, Yining Chen
+ */
 public class ProfileTest {
 
     /**

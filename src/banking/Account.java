@@ -11,8 +11,8 @@ import java.text.DecimalFormat;
  *
  * @author Vishal Saravanan, Yining Chen
  */
-
 public abstract class Account implements Comparable<Account> {
+
     /**
      * Represents the amount of months in one year.
      */
@@ -56,6 +56,7 @@ public abstract class Account implements Comparable<Account> {
      * @param branch 3-digit integer representation of a Branch
      * @param type   2-digit integer representation of the type of Account
      * @param holder Profile object that represents the full name and date of birth of an Account holder
+     * @param balance amount of money that is in an Account
      */
     public Account(Branch branch, AccountType type, Profile holder, double balance) {
         this.number = new AccountNumber(branch, type);
@@ -93,17 +94,26 @@ public abstract class Account implements Comparable<Account> {
         printBalance(interest, fee);
     }
 
+    /**
+     * Adds an activity to the account's record.
+     *
+     * @param activity the Activity object representing the transaction to be added
+     */
     public void addActivity(Activity activity) {
         this.activities.add(activity);
     }
 
     /**
      * Has the monthly interest of an Account.
+     *
+     * @return amount of interest to be paid for an Account
      */
     public abstract double interest();
 
     /**
      * Has the value of the fee on an Account if there is one.
+     *
+     * @return amount required to be paid on an Account
      */
     public abstract double fee();
 
@@ -118,6 +128,7 @@ public abstract class Account implements Comparable<Account> {
      * Deducts money from the account and updates the balance.
      *
      * @param amount quantity of money deducted from the account
+     * @return true if successfully withdrawn, false otherwise
      */
     public boolean withdraw(double amount) { //to update the balance
         if (this.balance < amount) {

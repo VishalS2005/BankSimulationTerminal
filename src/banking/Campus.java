@@ -1,15 +1,23 @@
 package banking;
 
+/**
+ * The Campus enum class represents different campus locations.
+ * Each campus has a corresponding string name that identifies its location.
+ *
+ * @author Vishal Saravanan, Yining Chen
+ */
 public enum Campus {
 
     /**
      * Represents the campus located in New Brunswick.
      */
     _1("NEW_BRUNSWICK"),
+
     /**
      * Represents the campus located in Newark.
      */
     _2("NEWARK"),
+
     /**
      * Represents the campus located in Camden.
      */

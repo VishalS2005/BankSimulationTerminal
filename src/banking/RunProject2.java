@@ -13,7 +13,8 @@ public class RunProject2 {
     /**
      * Executes the Transaction Manager.
      *
-     * @param args String representation of command line inputs
+     * @param args command-line arguments passed to the program.
+     * @throws IOException if an I/O error occurs during the execution of the TransactionManager.
      */
     public static void main(String[] args) throws IOException {
         new TransactionManager().run();
